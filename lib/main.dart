@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/screens/home.dart';
+import 'package:main_sony/controllers/Category.c.dart';
+import 'package:main_sony/controllers/Page.c.dart';
+import 'package:main_sony/controllers/Post.c.dart';
+import 'package:main_sony/views/screens/Home.s.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register controllers BEFORE runApp
-  // Get.put(PostController());
-  // Get.put(PageControllerX());
-  // Get.put(CategoryController());
+  Get.put(PostController());
+  Get.put(PageControllerX());
+  Get.put(CategoryController());
 
   runApp(const StarterScreen());
 }

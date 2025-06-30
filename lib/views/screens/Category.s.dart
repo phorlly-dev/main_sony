@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:main_sony/components/nav_bar.dart';
+import 'package:main_sony/views/widgets/NavBar.w.dart';
 
 class CategoryScreen extends StatefulWidget {
   final String title;
