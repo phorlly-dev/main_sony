@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:main_sony/controllers/Api.c.dart';
 import 'package:main_sony/controllers/Category.c.dart';
 import 'package:main_sony/controllers/Page.c.dart';
 import 'package:main_sony/controllers/Post.c.dart';
@@ -10,6 +11,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register controllers BEFORE runApp
+  Get.put(ApiProvider());
   Get.put(PostController());
   Get.put(PageControllerX());
   Get.put(CategoryController());

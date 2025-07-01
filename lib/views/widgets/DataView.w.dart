@@ -28,6 +28,11 @@ class DataView extends StatelessWidget {
       return Center(child: Text("No data found."));
     }
 
-    return ListView.builder(itemCount: itemCounter, itemBuilder: itemBuilder);
+    return ListView.builder(
+      itemCount: itemCounter,
+      itemBuilder: itemBuilder,
+      physics: NeverScrollableScrollPhysics(), // Not scrollable
+      shrinkWrap: true, // Take only needed space
+    );
   }
 }
