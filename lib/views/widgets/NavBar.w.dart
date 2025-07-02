@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:main_sony/views/screens/AppRoot.s.dart';
 
 class NavBar extends StatefulWidget {
   final String title;
@@ -15,25 +16,27 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title.toUpperCase()),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-            onPressed: () {
-              Get.changeTheme(isDark ? ThemeData.light() : ThemeData.dark());
-              setState(() {
-                isDark = !isDark;
-              });
-            },
-            tooltip: 'Toggle Theme',
-          ),
-        ],
+    return AppRoot(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title.toUpperCase()),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+              onPressed: () {
+                Get.changeTheme(isDark ? ThemeData.light() : ThemeData.dark());
+                setState(() {
+                  isDark = !isDark;
+                });
+              },
+              tooltip: 'Toggle Theme',
+            ),
+          ],
+        ),
+        drawer: widget.menu,
+        body: widget.content,
       ),
-      drawer: widget.menu,
-      body: widget.content,
     );
   }
 }

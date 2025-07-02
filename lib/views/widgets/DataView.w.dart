@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DataView extends StatelessWidget {
   final int itemCounter;
@@ -19,13 +20,22 @@ class DataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading == true) {
-      return Center(child: CircularProgressIndicator());
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: Center(child: CircularProgressIndicator()),
+      );
     }
     if (hasError!.isNotEmpty) {
-      return Center(child: Text(hasError!));
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: Center(child: Text(hasError!)),
+      );
     }
     if (notFound == null || notFound!.isEmpty) {
-      return Center(child: Text("No data found."));
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: Center(child: Text("No data found.")),
+      );
     }
 
     return ListView.builder(

@@ -15,12 +15,13 @@ dependencies:
     sdk: flutter
 
     # The following adds the Flutter Driver extension to your application.
-  webview_flutter:
+  # webview_flutter:
   get:
   wordpress_client:
   onesignal_flutter:
   cached_network_image: 
   carousel_slider:
+  connectivity_plus:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -24,7 +24,7 @@ class ImageContent extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl!,
       width: double.infinity,
-      height: isFullScreen ? screenHeight * 0.5 : 200,
+      height: isFullScreen ? screenHeight * .6 : 200,
       fit: BoxFit.cover,
       placeholder: (context, url) => AspectRatio(
         aspectRatio: 16 / 9,

@@ -1,103 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:main_sony/views/widgets/DataView.w.dart';
 
-class PagedListView<T> extends StatefulWidget {
+class PagedListView<T> extends StatelessWidget {
   final List<T> items;
-  final int itemsPerPage;
-  final Widget Function(BuildContext, T, int) itemBuilder;
+  final int page;
+  final int totalPages;
+  final bool isLoading;
+  final String? hasError;
+  final VoidCallback? onPrev;
+  final VoidCallback? onNext;
+  final Widget Function(BuildContext context, T item, int index) itemBuilder;
 
   const PagedListView({
     super.key,
     required this.items,
+    required this.page,
+    required this.totalPages,
     required this.itemBuilder,
-    this.itemsPerPage = 5,
+    this.isLoading = false,
+    this.hasError,
+    this.onPrev,
+    this.onNext,
   });
-
-  @override
-  State<PagedListView<T>> createState() => _PagedListViewState<T>();
-}
-
-class _PagedListViewState<T> extends State<PagedListView<T>> {
-  int currentPage = 0;
-  bool showPagination = false;
-  final ScrollController _scrollController = ScrollController();
-
-  int get totalPages => (widget.items.length / widget.itemsPerPage).ceil();
-
-  List<T> get currentItems {
-    final start = currentPage * widget.itemsPerPage;
-    final end = (start + widget.itemsPerPage).clamp(0, widget.items.length);
-    return widget.items.sublist(start, end);
-  }
-
-  void nextPage() {
-    if (currentPage < totalPages - 1) {
-      setState(() => currentPage++);
-      // Scroll to top of list when changing page
-      _scrollController.jumpTo(0);
-      showPagination = false;
-    }
-  }
-
-  void prevPage() {
-    if (currentPage > 0) {
-      setState(() => currentPage--);
-      _scrollController.jumpTo(0);
-      showPagination = false;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      // If user scrolls to the end, show pagination
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 20) {
-        if (!showPagination) setState(() => showPagination = true);
-      } else {
-        if (showPagination) setState(() => showPagination = false);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 80),
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: currentItems.length,
+        Container(
+          margin: EdgeInsets.only(bottom: 80, top: 4),
+          child: DataView(
+            isLoading: isLoading && items.isEmpty,
+            hasError: hasError,
+            notFound: items,
+            itemCounter: items.length,
             itemBuilder: (context, index) =>
-                widget.itemBuilder(context, currentItems[index], index),
+                itemBuilder(context, items[index], index),
           ),
         ),
 
-        // Pagination controls appear only if showPagination is true
-        if (showPagination)
+        // Pagination controls (always show if >1 page)
+        if (totalPages > 1 && items.isNotEmpty)
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: currentPage > 0 ? prevPage : null,
+                  onPressed: page > 1 && !isLoading ? onPrev : null,
                   icon: Icon(Icons.arrow_back_rounded),
                 ),
                 const SizedBox(width: 16),
-                Text('Page ${currentPage + 1} of $totalPages'),
+                Text('Page $page of $totalPages'),
                 const SizedBox(width: 16),
                 IconButton(
-                  onPressed: currentPage < totalPages - 1 ? nextPage : null,
+                  onPressed: page < totalPages && !isLoading ? onNext : null,
                   icon: Icon(Icons.arrow_forward_rounded),
                 ),
               ],

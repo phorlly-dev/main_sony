@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/Api.c.dart';
 import 'package:main_sony/controllers/Category.c.dart';
+import 'package:main_sony/controllers/Connection.c.dart';
 import 'package:main_sony/controllers/Page.c.dart';
 import 'package:main_sony/controllers/Post.c.dart';
 import 'package:main_sony/views/screens/Home.s.dart';
@@ -12,6 +13,7 @@ void main() {
 
   // Register controllers BEFORE runApp
   Get.put(ApiProvider());
+  Get.put(ConnectionController());
   Get.put(PostController());
   Get.put(PageControllerX());
   Get.put(CategoryController());
@@ -45,6 +47,7 @@ class StarterScreen extends StatelessWidget {
       darkTheme: ThemeData.dark(), // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling
       home: const HomeScreen(),
+      // home: TestconnectionScreen(title: "Test Connection"),
     );
   }
 }

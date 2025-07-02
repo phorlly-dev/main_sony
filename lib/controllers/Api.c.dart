@@ -5,9 +5,13 @@ class ApiProvider extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';
   late WordpressClient connx;
   var isLoading = false.obs;
+  var isOnline = true.obs;
+  var totalPages = 1.obs;
   var isDark = Get.isDarkMode.obs;
   var hasError = ''.obs;
   final _selectedIndex = 0.obs;
+  var page = 1.obs;
+  final int perPage = 5;
 
   String get apiUrl => _apiUrl; // optional getter
   int get selectedIndex => _selectedIndex.value;
@@ -25,6 +29,7 @@ class ApiProvider extends GetxController {
   @override
   void onClose() {
     // Clean up if needed
+    connx.clearDiscoveryCache();
     super.onClose();
   }
 }
