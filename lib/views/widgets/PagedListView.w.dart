@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main_sony/views/widgets/DataView.w.dart';
+import 'package:main_sony/views/widgets/PaginationBar.w.dart';
 
 class PagedListView<T> extends StatelessWidget {
   final List<T> items;
@@ -9,6 +10,7 @@ class PagedListView<T> extends StatelessWidget {
   final String? hasError;
   final VoidCallback? onPrev;
   final VoidCallback? onNext;
+  final ValueChanged<int> onGoToPage;
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
 
   const PagedListView({
@@ -21,6 +23,7 @@ class PagedListView<T> extends StatelessWidget {
     this.hasError,
     this.onPrev,
     this.onNext,
+    required this.onGoToPage,
   });
 
   @override
@@ -45,22 +48,50 @@ class PagedListView<T> extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: page > 1 && !isLoading ? onPrev : null,
-                  icon: Icon(Icons.arrow_back_rounded),
-                ),
-                const SizedBox(width: 16),
-                Text('Page $page of $totalPages'),
-                const SizedBox(width: 16),
-                IconButton(
-                  onPressed: page < totalPages && !isLoading ? onNext : null,
-                  icon: Icon(Icons.arrow_forward_rounded),
-                ),
-              ],
+            child: Center(
+              child: PaginationBar(
+                currentPage: page,
+                totalPages: totalPages,
+                onPageSelected: onGoToPage,
+              ),
             ),
+            //  Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     if (page != 1)
+            //       IconButton(
+            //         onPressed: page > 1 && !isLoading ? onPrev : null,
+            //         icon: Icon(Icons.arrow_back_rounded),
+            //       ),
+            //     const SizedBox(width: 16),
+            //     Text('Page $page of $totalPages'),
+            //     const SizedBox(width: 16),
+
+            //     // Jump to Page Dropdown
+            //     DropdownButton<int>(
+            //       value: page,
+            //       icon: const Icon(Icons.arrow_drop_down),
+            //       underline: const SizedBox(),
+            //       onChanged: onGoToPage == null || isLoading
+            //           ? null
+            //           : (newPage) {
+            //               if (newPage != null && newPage != page) {
+            //                 onGoToPage!(newPage);
+            //               }
+            //             },
+            //       items: List.generate(
+            //         totalPages,
+            //         (i) =>
+            //             DropdownMenuItem(value: i + 1, child: Text('${i + 1}')),
+            //       ),
+            //     ),
+
+            //     IconButton(
+            //       onPressed: page < totalPages && !isLoading ? onNext : null,
+            //       icon: Icon(Icons.arrow_forward_rounded),
+            //     ),
+            //   ],
+            // ),
           ),
       ],
     );

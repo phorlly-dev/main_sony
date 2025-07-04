@@ -17,6 +17,7 @@ dependencies:
     # The following adds the Flutter Driver extension to your application.
   # webview_flutter:
   get:
+  intl:
   wordpress_client:
   onesignal_flutter:
   cached_network_image: 

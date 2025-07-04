@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class ImageContent extends StatelessWidget {
   final String? imageUrl;
   final double screenHeight;
-  final bool isFullScreen;
+  final bool isLandscape;
   const ImageContent({
     super.key,
     this.imageUrl,
-    required this.screenHeight,
-    required this.isFullScreen,
+    this.screenHeight = 200,
+    required this.isLandscape,
   });
 
   @override
@@ -21,18 +21,24 @@ class ImageContent extends StatelessWidget {
       );
     }
 
-    return CachedNetworkImage(
-      imageUrl: imageUrl!,
-      width: double.infinity,
-      height: isFullScreen ? screenHeight * .6 : 200,
-      fit: BoxFit.cover,
-      placeholder: (context, url) => AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Center(child: CircularProgressIndicator()),
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
       ),
-      errorWidget: (context, url, error) => const AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Icon(Icons.broken_image, size: 48),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl!,
+        width: double.infinity,
+        height: isLandscape ? screenHeight : 160,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+        errorWidget: (context, url, error) => const AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Icon(Icons.broken_image, size: 48),
+        ),
       ),
     );
   }

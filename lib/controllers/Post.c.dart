@@ -78,6 +78,11 @@ class PostController extends ApiProvider {
     await fetchPosts(pageNum: page.value);
   }
 
+  void goToPage(int pageNum) {
+    if (pageNum < 1 || pageNum > totalPages.value || isLoading.value) return;
+    fetchPosts(pageNum: pageNum);
+  }
+
   @override
   void onInit() {
     super.onInit();

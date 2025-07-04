@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
 /// Picks the best image URL from WordPress media based on device width.
@@ -33,8 +34,16 @@ String substr({required String key, int length = 5}) {
   return summary;
 }
 
-String stripHtml(String htmlText) {
-  return htmlText.replaceAll(RegExp(r'<[^>]*>'), '');
+String stripHtml({required String htmlText, int length = 5}) {
+  final text = htmlText.replaceAll(RegExp(r'<[^>]*>'), '');
+
+  return truncateWithEllipsis(text, length);
+}
+
+String truncateWithEllipsis(String text, int maxChars) {
+  if (text.length <= maxChars) return text;
+
+  return '${text.substring(0, maxChars)}... ';
 }
 
 IconData setIcon(String item) {
@@ -56,4 +65,8 @@ IconData setIcon(String item) {
   }
 
   return icon;
+}
+
+String dateStr({required DateTime date, String? format}) {
+  return DateFormat(format ?? 'd MMM yyyy').format(date);
 }
