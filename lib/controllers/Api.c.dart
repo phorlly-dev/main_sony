@@ -4,6 +4,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 class ApiProvider extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';
   late WordpressClient connx;
+  late GetConnect api;
   var isLoading = false.obs;
   var isOnline = true.obs;
   var totalPages = 1.obs;
@@ -24,6 +25,7 @@ class ApiProvider extends GetxController {
   void onInit() {
     super.onInit();
     connx = WordpressClient(baseUrl: Uri.parse(_apiUrl));
+    api = GetConnect();
   }
 
   @override

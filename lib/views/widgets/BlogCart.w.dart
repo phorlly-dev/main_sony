@@ -5,6 +5,7 @@ import 'package:main_sony/views/widgets/ImageContent.w.dart';
 import 'package:main_sony/views/widgets/TextContent.w.dart';
 
 class BlogCard extends StatelessWidget {
+  final int? id;
   final String imageUrl;
   final String title;
   final DateTime date;
@@ -24,6 +25,7 @@ class BlogCard extends StatelessWidget {
     required this.onReadMore,
     this.onComment,
     this.onAuthor,
+    this.id,
   });
 
   @override
@@ -40,7 +42,6 @@ class BlogCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image at the top
           InkWell(
             onTap: onReadMore,
             child: ImageContent(

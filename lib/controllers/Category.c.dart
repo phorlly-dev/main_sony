@@ -10,7 +10,7 @@ class CategoryController extends ApiProvider {
     hasError.value = '';
     final request = ListCategoryRequest(
       order: Order.asc,
-      perPage: 5,
+      // perPage: 5,
       orderBy: OrderBy.name,
     );
     final response = await connx.categories.list(request);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/Post.c.dart';
@@ -13,6 +15,7 @@ class PostedCard extends StatelessWidget {
     final ctrl = Get.find<PostController>();
 
     return Obx(() {
+      log("The total pages: ${ctrl.totalPages.value}");
       return PagedListView<Post>(
         items: ctrl.posts,
         page: ctrl.page.value,
@@ -28,6 +31,8 @@ class PostedCard extends StatelessWidget {
           // final desc = yoast?['description'] ?? '';
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Decription';
+          final author = ctrl.authorName(item);
+          final media = ctrl.mediaMap[item.featuredMedia];
           final imgUrl =
               (yoast?['og_image'] != null &&
                   yoast?['og_image'] is List &&
@@ -36,14 +41,15 @@ class PostedCard extends StatelessWidget {
               : null;
 
           return BlogCard(
-            imageUrl: imgUrl,
+            id: item.id,
+            imageUrl: media?.sourceUrl ?? imgUrl,
             title: title,
             description: desc,
             date: item.date ?? DateTime.now(),
             onReadMore: () {
               print("Read more");
             },
-            author: ' Karmila',
+            author: author?.name ?? "User",
             onComment: () {},
           );
         },

@@ -17,6 +17,7 @@ void main() {
   Get.put(PostController());
   Get.put(PageControllerX());
   Get.put(CategoryController());
+  // Get.put(MediaController());
 
   runApp(const StarterScreen());
 }

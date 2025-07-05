@@ -68,5 +68,5 @@ IconData setIcon(String item) {
 }
 
 String dateStr({required DateTime date, String? format}) {
-  return DateFormat(format ?? 'd MMM yyyy').format(date);
+  return DateFormat(format ?? 'd MMMM yyyy').format(date);
 }
