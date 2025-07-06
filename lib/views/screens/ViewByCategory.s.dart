@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:main_sony/controllers/Category.c.dart';
 import 'package:main_sony/controllers/Page.c.dart';
 import 'package:main_sony/controllers/Post.c.dart';
-import 'package:main_sony/views/partials/PostCard.p.dart';
+import 'package:main_sony/views/partials/PostByCategoryCard.p.dart';
 import 'package:main_sony/views/widgets/NavBar.w.dart';
 import 'package:main_sony/views/widgets/SideMenu.w.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ViewByCategory extends StatelessWidget {
+  final int id;
+  final String name;
+
+  const ViewByCategory({super.key, required this.id, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +21,13 @@ class HomeScreen extends StatelessWidget {
 
     return SafeArea(
       child: NavBar(
-        title: "Home",
+        title: name,
         menu: SideMenu(category: category, page: page),
         content: RefreshIndicator(
           onRefresh: () => post.refreshCurrentPage(),
-          child: SingleChildScrollView(child: PostCard(controller: post)),
+          child: SingleChildScrollView(
+            child: PostByCategoryCard(controller: post, id: id),
+          ),
         ),
       ),
     );

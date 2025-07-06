@@ -32,4 +32,12 @@ class TagController extends ApiProvider {
     super.onInit();
     _fetchItems();
   }
+
+  @override
+  void onClose() {
+    super.onClose();
+    selectedIndex.value = 0;
+    hasError.value = '';
+    isLoading.value = false;
+  }
 }

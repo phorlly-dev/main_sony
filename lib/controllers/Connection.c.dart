@@ -18,8 +18,8 @@ class ConnectionController extends ApiProvider {
 
   @override
   void onClose() {
-    _subscription.cancel();
     super.onClose();
+    _subscription.cancel();
   }
 
   Future<void> _check() async {

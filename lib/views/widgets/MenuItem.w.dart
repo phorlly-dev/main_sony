@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:main_sony/utils/Constants.u.dart';
 
 class MenuItem extends StatelessWidget {
   final String label;
   final bool isActive;
-  final Widget? desination;
+  final VoidCallback? goTo;
   final IconData? icon;
 
   const MenuItem({
     super.key,
     required this.label,
     this.isActive = false,
-    this.desination,
+    this.goTo,
     this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = Theme.of(context).colorScheme.primary.withAlpha(30);
-    final activeTextColor = Theme.of(context).colorScheme.primary;
+    final activeColor = AppColorRole.info.color;
+    final activeTextColor = AppColorRole.surface.color;
     final borderRadius = BorderRadius.circular(14);
 
     return SafeArea(
@@ -44,7 +43,7 @@ class MenuItem extends StatelessWidget {
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
             ),
           ),
-          onTap: () => Get.to(desination),
+          onTap: goTo,
           selected: isActive,
           trailing: Icon(
             Icons.arrow_forward_rounded,

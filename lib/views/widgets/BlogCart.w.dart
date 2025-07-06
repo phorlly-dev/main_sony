@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main_sony/controllers/Post.c.dart';
+import 'package:main_sony/utils/Constants.u.dart';
 import 'package:main_sony/utils/Utility.u.dart';
 import 'package:main_sony/views/widgets/IconText.w.dart';
 import 'package:main_sony/views/widgets/IconTexts.w.dart';
@@ -34,6 +35,7 @@ class BlogCard extends StatelessWidget {
     //calculate the screen
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+    final colors = Theme.of(context).colorScheme;
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final author = controller.authorName(post);
@@ -43,7 +45,7 @@ class BlogCard extends StatelessWidget {
     final tagNames = controller.tagNames(post);
 
     return Card(
-      color: Theme.of(context).colorScheme.surface,
+      color: colors.surface,
       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       elevation: 4,
       child: Column(
@@ -72,7 +74,7 @@ class BlogCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: colors.onSurface,
                   ),
                 ),
 
@@ -86,20 +88,21 @@ class BlogCard extends StatelessWidget {
                       IconText(
                         icon: Icons.calendar_today,
                         label: dateStr(date: date),
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        color: colors.onSurface.withValues(alpha: 0.7),
                       ),
                       IconText(
                         icon: Icons.person,
                         label: author.toUpperCase(),
-                        onTap: () {},
-                        color: Theme.of(context).colorScheme.primary,
+                        onTap: () {
+                          print("The user id: ${post.author}");
+                        },
+                        color: AppColorRole.secondary.color,
                       ),
                       IconText(
                         icon: Icons.comment,
                         label: 'Comment'.toUpperCase(),
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: AppColorRole.info.color,
+                        onTap: onComment,
                       ),
                     ],
                   ),
@@ -110,7 +113,7 @@ class BlogCard extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextContent(
                     article: description,
-                    navigate: () {},
+                    navigate: onReadMore,
                     isLandscape: isLandscape,
                   ),
                 ),
@@ -126,7 +129,7 @@ class BlogCard extends StatelessWidget {
                         IconTexts(
                           icon: Icons.category_rounded,
                           labels: categoryNames,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: AppColorRole.success.color,
                           onLabelTaps: categoryIds
                               .map(
                                 (id) => () {
@@ -142,7 +145,7 @@ class BlogCard extends StatelessWidget {
                         IconTexts(
                           icon: Icons.tag_rounded,
                           labels: tagNames,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: AppColorRole.primary.color,
                           onLabelTaps: tagIds
                               .map(
                                 (id) => () {

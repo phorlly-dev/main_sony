@@ -7,6 +7,7 @@ import 'package:main_sony/controllers/Page.c.dart';
 import 'package:main_sony/controllers/Post.c.dart';
 import 'package:main_sony/utils/Constants.u.dart';
 import 'package:main_sony/views/screens/Home.s.dart';
+import 'package:main_sony/views/screens/Splash.s.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +17,7 @@ void main() {
   Get.put(ConnectionController());
   Get.put(PostController());
   Get.put(PageControllerX());
-  Get.put(CategoryController());
+  Get.put(CategoryController(), permanent: true);
   // Get.put(MediaController());
 
   runApp(const StarterScreen());
@@ -31,6 +32,11 @@ class StarterScreen extends StatelessWidget {
       title: 'Flutter Demo',
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
+      initialRoute: "/splash",
+      getPages: [
+        GetPage(name: '/splash', page: () => SplashScreen()),
+        GetPage(name: '/home', page: () => HomeScreen()),
+      ],
       theme: lightTheme, // Default light theme
       darkTheme: darkTheme, // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling

@@ -10,16 +10,11 @@ class ApiProvider extends GetxController {
   var totalPages = 1.obs;
   var isDark = Get.isDarkMode.obs;
   var hasError = ''.obs;
-  final _selectedIndex = 0.obs;
+  final selectedIndex = 0.obs;
   var page = 1.obs;
   final int perPage = 5;
 
   String get apiUrl => _apiUrl; // optional getter
-  int get selectedIndex => _selectedIndex.value;
-
-  void setMenuIndex(int index) {
-    _selectedIndex.value = index;
-  }
 
   @override
   void onInit() {

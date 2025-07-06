@@ -27,7 +27,7 @@ class PagedListView<T> extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 80, top: 4),
+          margin: EdgeInsets.only(bottom: 76, top: 4),
           child: DataView(
             isLoading: isLoading && items.isEmpty,
             hasError: hasError,
@@ -43,7 +43,7 @@ class PagedListView<T> extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 2,
+            bottom: 8,
             child: Center(
               child: PaginationBar(
                 currentPage: page,

@@ -3,26 +3,32 @@ import 'package:get/get.dart';
 import 'package:main_sony/controllers/Post.c.dart';
 import 'package:main_sony/utils/Utility.u.dart';
 import 'package:main_sony/views/widgets/BlogCart.w.dart';
-import 'package:main_sony/views/widgets/PagedListView.w.dart';
+import 'package:main_sony/views/widgets/DataView.w.dart';
 
-class PostCard extends StatelessWidget {
+class PostByCategoryCard extends StatelessWidget {
+  final int id;
   final PostController controller;
-  const PostCard({super.key, required this.controller});
+
+  const PostByCategoryCard({
+    super.key,
+    required this.controller,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Filter posts by category
+    final filteredPosts = controller.postsByCategory(id);
+
     return Obx(
-      () => PagedListView(
-        items: controller.items,
-        page: controller.page.value,
-        totalPages: controller.totalPages.value,
+      () => DataView(
         isLoading: controller.isLoading.value,
         hasError: controller.hasError.value,
-        onGoToPage: (page) => controller.goToPage(page),
-        itemBuilder: (context, item, index) {
+        notFound: filteredPosts,
+        itemCounter: filteredPosts.length,
+        itemBuilder: (context, index) {
+          final item = filteredPosts[index];
           final yoast = item.yoastHeadJson;
-          // final title = getValue(object: yoast, key: 'title').toString();
-          // final desc = getValue(object: yoast, key: 'description').toString();
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Decription';
           final media = controller.mediaMap[item.featuredMedia];
@@ -39,7 +45,6 @@ class PostCard extends StatelessWidget {
             onReadMore: () {
               print("Read more");
             },
-            // category: catName,
             onComment: () {
               print("The comment text here!");
             },

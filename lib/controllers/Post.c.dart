@@ -107,6 +107,13 @@ class PostController extends ApiProvider {
     return _user.itemMap[post.author]?.name ?? "User";
   }
 
+  //Post by categories
+  List<Post> postsByCategory(int categoryId) {
+    return items
+        .where((post) => (post.categories ?? []).contains(categoryId))
+        .toList();
+  }
+
   // Reactive variables
   // void nextPage() {
   //   if (page.value < totalPages.value && !isLoading.value) {
@@ -157,5 +164,13 @@ class PostController extends ApiProvider {
   void onInit() {
     super.onInit();
     _fetchItems(pageNum: 1);
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    selectedIndex.value = 0;
+    hasError.value = '';
+    isLoading.value = false;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main_sony/utils/Constants.u.dart';
 import 'package:main_sony/utils/Utility.u.dart';
 
 class TextContent extends StatelessWidget {
@@ -31,7 +32,7 @@ class TextContent extends StatelessWidget {
               child: Text(
                 linkLabel ?? "Read More",
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: AppColorRole.primary.color,
 
                   // fontSize: 15,
                   decoration: TextDecoration.underline,
