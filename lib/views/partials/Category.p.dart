@@ -7,24 +7,24 @@ import 'package:main_sony/views/widgets/DataRender.w.dart';
 import 'package:main_sony/views/widgets/MenuItem.w.dart';
 
 class CategoryPartial extends StatelessWidget {
-  const CategoryPartial({super.key});
+  final CategoryController controller;
+
+  const CategoryPartial({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<CategoryController>();
-
     return Obx(() {
       return DataRender(
-        isLoading: ctrl.isLoading.value,
-        hasError: ctrl.hasError.value,
-        notFound: ctrl.categories,
-        length: ctrl.categories.length,
+        isLoading: controller.isLoading.value,
+        hasError: controller.hasError.value,
+        notFound: controller.items,
+        length: controller.items.length,
         child: (index) {
-          final item = ctrl.categories[index];
+          final item = controller.items[index];
 
           return MenuItem(
             label: item.name ?? "Unknown",
-            isActive: index == ctrl.selectedIndex,
+            isActive: index == controller.selectedIndex,
             desination: HomeScreen(),
             icon: setIcon(item.slug),
           );

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/Connection.c.dart';
@@ -13,7 +11,6 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     final connection = Get.find<ConnectionController>();
     return Obx(() {
-      log("The online is: Closed of ${connection.isOnline.value}");
       if (connection.isChecking.value) {
         return const Center(child: CircularProgressIndicator());
       } else if (!connection.isOnline.value) {
@@ -22,7 +19,6 @@ class AppRoot extends StatelessWidget {
           status: connection.isChecking.value,
         );
       }
-
       return child;
     });
   }

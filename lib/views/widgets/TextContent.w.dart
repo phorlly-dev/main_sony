@@ -22,6 +22,7 @@ class TextContent extends StatelessWidget {
         children: [
           TextSpan(
             text: stripHtml(htmlText: article, length: isLandscape ? 212 : 80),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
           // WidgetSpan(child: SizedBox(width: 6)),
           WidgetSpan(
@@ -30,9 +31,9 @@ class TextContent extends StatelessWidget {
               child: Text(
                 linkLabel ?? "Read More",
                 style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.primary,
 
+                  // fontSize: 15,
                   decoration: TextDecoration.underline,
                   fontWeight: FontWeight.w500,
                 ),

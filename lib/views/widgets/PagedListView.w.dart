@@ -8,8 +8,6 @@ class PagedListView<T> extends StatelessWidget {
   final int totalPages;
   final bool isLoading;
   final String? hasError;
-  final VoidCallback? onPrev;
-  final VoidCallback? onNext;
   final ValueChanged<int> onGoToPage;
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
 
@@ -21,8 +19,6 @@ class PagedListView<T> extends StatelessWidget {
     required this.itemBuilder,
     this.isLoading = false,
     this.hasError,
-    this.onPrev,
-    this.onNext,
     required this.onGoToPage,
   });
 
@@ -55,6 +51,7 @@ class PagedListView<T> extends StatelessWidget {
                 onPageSelected: onGoToPage,
               ),
             ),
+
             //  Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: [

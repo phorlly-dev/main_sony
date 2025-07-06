@@ -70,3 +70,7 @@ IconData setIcon(String item) {
 String dateStr({required DateTime date, String? format}) {
   return DateFormat(format ?? 'd MMMM yyyy').format(date);
 }
+
+Object getValue({Map<String, dynamic>? object, required String key}) {
+  return object?[key] ?? "Unknown";
+}

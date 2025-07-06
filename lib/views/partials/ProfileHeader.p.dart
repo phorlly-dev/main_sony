@@ -6,31 +6,27 @@ import 'package:main_sony/views/widgets/DataRender.w.dart';
 import 'package:main_sony/views/widgets/SmartCircleAvatar.w.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final PageControllerX controller;
+
+  const ProfileHeader({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<PageControllerX>();
-
     return DataRender(
-      isLoading: ctrl.isLoading.value,
-      hasError: ctrl.hasError.value,
-      notFound: ctrl.pages,
-      length: ctrl.pages.length,
+      isLoading: controller.isLoading.value,
+      hasError: controller.hasError.value,
+      notFound: controller.items,
+      length: controller.items.length,
       child: (index) {
         return Obx(() {
-          final items = ctrl.pages;
+          final items = controller.items;
           final item = items[index];
           final yoast = item.yoastHeadJson;
-          final title = yoast?['title'] ?? 'Main Sony Serba Dunia Game';
-          final desc =
-              yoast?['description'] ??
-              'Main Sony adalah portal game seru untuk Android';
-          final imgUrl =
-              (yoast?['og_image'] != null &&
-                  yoast?['og_image'] is List &&
-                  (yoast?['og_image'] as List).isNotEmpty)
-              ? (yoast?['og_image'] as List)[0]['url']
+          final title = getValue(object: yoast, key: 'title').toString();
+          final desc = getValue(object: yoast, key: 'description').toString();
+          final ogImage = getValue(object: yoast, key: 'og_image');
+          final imgUrl = (ogImage is List && ogImage.isNotEmpty)
+              ? ogImage[0]['url']
               : null;
 
           return UserAccountsDrawerHeader(

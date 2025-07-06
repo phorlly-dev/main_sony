@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/Api.c.dart';
 import 'package:main_sony/controllers/Category.c.dart';
 import 'package:main_sony/controllers/Connection.c.dart';
 import 'package:main_sony/controllers/Page.c.dart';
 import 'package:main_sony/controllers/Post.c.dart';
+import 'package:main_sony/utils/Constants.u.dart';
 import 'package:main_sony/views/screens/Home.s.dart';
 
 void main() {
@@ -27,25 +27,12 @@ class StarterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Get.isDarkMode
-            ? Brightness.light
-            : Brightness.dark,
-        systemNavigationBarColor: Get.isDarkMode ? Colors.black : Colors.white,
-        systemNavigationBarIconBrightness: Get.isDarkMode
-            ? Brightness.light
-            : Brightness.dark,
-      ),
-    );
-
     return GetMaterialApp(
       title: 'Flutter Demo',
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(), // Default light theme
-      darkTheme: ThemeData.dark(), // Dark theme
+      theme: lightTheme, // Default light theme
+      darkTheme: darkTheme, // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling
       home: const HomeScreen(),
       // home: TestconnectionScreen(title: "Test Connection"),

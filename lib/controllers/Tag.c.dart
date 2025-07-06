@@ -2,18 +2,19 @@ import 'package:get/get.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 import 'Api.c.dart';
 
-class UserController extends ApiProvider {
-  var items = <User>[].obs;
+class TagController extends ApiProvider {
+  var items = <Tag>[].obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
-    final request = ListUserRequest(
+
+    final request = ListTagRequest(
       order: Order.asc,
       // perPage: 5,
-      orderBy: OrderBy.date,
+      orderBy: OrderBy.name,
     );
-    final response = await connx.users.list(request);
+    final response = await connx.tags.list(request);
 
     response.map(
       onSuccess: (res) => items.value = res.data,
@@ -24,7 +25,7 @@ class UserController extends ApiProvider {
   }
 
   // Build a lookup map by id for fast access
-  Map<int, User> get itemMap => {for (var res in items) res.id: res};
+  Map<int, Tag> get itemMap => {for (var res in items) res.id: res};
 
   @override
   void onInit() {

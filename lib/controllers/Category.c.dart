@@ -3,11 +3,12 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'Api.c.dart';
 
 class CategoryController extends ApiProvider {
-  var categories = <Category>[].obs;
+  var items = <Category>[].obs;
 
-  Future<void> fetchCategories() async {
+  Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
+
     final request = ListCategoryRequest(
       order: Order.asc,
       // perPage: 5,
@@ -16,7 +17,7 @@ class CategoryController extends ApiProvider {
     final response = await connx.categories.list(request);
 
     response.map(
-      onSuccess: (res) => categories.value = res.data,
+      onSuccess: (res) => items.value = res.data,
       onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
     );
 
@@ -24,13 +25,11 @@ class CategoryController extends ApiProvider {
   }
 
   // Build a lookup map by id for fast access
-  Map<int, Category> get categoryMap => {
-    for (var cat in categories) cat.id: cat,
-  };
+  Map<int, Category> get itemMap => {for (var res in items) res.id: res};
 
   @override
   void onInit() {
     super.onInit();
-    fetchCategories();
+    _fetchItems();
   }
 }

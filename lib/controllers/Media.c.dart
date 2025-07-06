@@ -3,9 +3,9 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'Api.c.dart';
 
 class MediaController extends ApiProvider {
-  var media = <Media>[].obs;
+  var items = <Media>[].obs;
 
-  Future<void> fetchMedia() async {
+  Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
 
@@ -17,14 +17,14 @@ class MediaController extends ApiProvider {
     final response = await connx.media.list(request);
 
     response.map(
-      onSuccess: (res) => media.value = res.data,
+      onSuccess: (res) => items.value = res.data,
       onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
     );
 
     isLoading.value = false;
   }
 
-  Future<List<Media>> fetchMediaByIds(List<int> ids) async {
+  Future<List<Media>> fetchItemByIds(List<int> ids) async {
     final url = '$apiUrl/media?include=${ids.join(",")}';
     final response = await api.get(url);
     if (response.statusCode == 200 && response.isOk) {
@@ -44,22 +44,22 @@ class MediaController extends ApiProvider {
     }
   }
 
-  Map<int, List<Media>> get mediaByPost {
+  Map<int, List<Media>> get itemBy {
     final map = <int, List<Media>>{};
-    for (var med in media) {
-      if (med.post != null) {
-        map.putIfAbsent(med.post!, () => []).add(med);
+    for (var res in items) {
+      if (res.post != null) {
+        map.putIfAbsent(res.post!, () => []).add(res);
       }
     }
     return map;
   }
 
   // Build a lookup map by id for fast access
-  Map<int, Media> get mediaMap => {for (var med in media) med.id: med};
+  Map<int, Media> get itemMap => {for (var res in items) res.id: res};
 
   @override
   void onInit() {
     super.onInit();
-    fetchMedia();
+    _fetchItems();
   }
 }
