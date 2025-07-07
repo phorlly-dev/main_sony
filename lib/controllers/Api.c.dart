@@ -10,7 +10,6 @@ class ApiProvider extends GetxController {
   var totalPages = 1.obs;
   var isDark = Get.isDarkMode.obs;
   var hasError = ''.obs;
-  final selectedIndex = 0.obs;
   var page = 1.obs;
   final int perPage = 5;
 

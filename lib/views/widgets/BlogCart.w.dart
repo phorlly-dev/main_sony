@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:main_sony/controllers/Post.c.dart';
 import 'package:main_sony/utils/Constants.u.dart';
 import 'package:main_sony/utils/Utility.u.dart';
+import 'package:main_sony/views/screens/ViewByCategory.s.dart';
 import 'package:main_sony/views/widgets/IconText.w.dart';
 import 'package:main_sony/views/widgets/IconTexts.w.dart';
 import 'package:main_sony/views/widgets/ImageContent.w.dart';
@@ -39,8 +41,7 @@ class BlogCard extends StatelessWidget {
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final author = controller.authorName(post);
-    final categoryIds = controller.categoryIds(post);
-    final categoryNames = controller.categoryNames(post);
+    final categories = controller.categories(post);
     final tagIds = controller.tagIds(post);
     final tagNames = controller.tagNames(post);
 
@@ -67,14 +68,17 @@ class BlogCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Title
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: colors.onSurface,
+                InkWell(
+                  onTap: onReadMore,
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: colors.onSurface,
+                    ),
                   ),
                 ),
 
@@ -125,16 +129,24 @@ class BlogCard extends StatelessWidget {
                     runSpacing: 4,
                     children: [
                       // Categories
-                      if (categoryNames.isNotEmpty)
+                      if (categories.isNotEmpty)
                         IconTexts(
                           icon: Icons.category_rounded,
-                          labels: categoryNames,
+                          labels: categories.map((e) => e.value).toList(),
                           color: AppColorRole.success.color,
-                          onLabelTaps: categoryIds
+                          onLabelTaps: categories
                               .map(
-                                (id) => () {
-                                  print('Clicked category with id $id');
-                                  // navigate to category page with this id
+                                (e) => () {
+                                  print(
+                                    'Clicked category with id ${e.key}, name: ${e.value}',
+                                  );
+                                  controller.selectedIndex.value = e.key;
+                                  Get.offAll(
+                                    () => ViewByCategory(
+                                      id: e.key,
+                                      name: e.value,
+                                    ),
+                                  );
                                 },
                               )
                               .toList(),

@@ -5,7 +5,7 @@ import 'package:main_sony/utils/Utility.u.dart';
 import 'package:main_sony/views/widgets/BlogCart.w.dart';
 import 'package:main_sony/views/widgets/DataView.w.dart';
 
-class PostByCategoryCard extends StatelessWidget {
+class PostByCategoryCard extends StatefulWidget {
   final int id;
   final PostController controller;
 
@@ -16,22 +16,42 @@ class PostByCategoryCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Filter posts by category
-    final filteredPosts = controller.postsByCategory(id);
+  State<PostByCategoryCard> createState() => _PostByCategoryCardState();
+}
 
+class _PostByCategoryCardState extends State<PostByCategoryCard> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.fetchItemsByCategory(widget.id);
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant PostByCategoryCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.id != widget.id) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.controller.fetchItemsByCategory(widget.id);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Obx(
       () => DataView(
-        isLoading: controller.isLoading.value,
-        hasError: controller.hasError.value,
-        notFound: filteredPosts,
-        itemCounter: filteredPosts.length,
+        isLoading: widget.controller.isLoading.value,
+        hasError: widget.controller.hasError.value,
+        notFound: widget.controller.itemsBy,
+        itemCounter: widget.controller.itemsBy.length,
         itemBuilder: (context, index) {
-          final item = filteredPosts[index];
+          final item = widget.controller.itemsBy[index];
           final yoast = item.yoastHeadJson;
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Decription';
-          final media = controller.mediaMap[item.featuredMedia];
+          final media = widget.controller.mediaMap[item.featuredMedia];
           final ogImage = getValue(object: yoast, key: 'og_image');
           final imgUrl = (ogImage is List && ogImage.isNotEmpty)
               ? ogImage[0]['url']
@@ -49,7 +69,7 @@ class PostByCategoryCard extends StatelessWidget {
               print("The comment text here!");
             },
             post: item,
-            controller: controller,
+            controller: widget.controller,
           );
         },
       ),

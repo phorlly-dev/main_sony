@@ -17,7 +17,7 @@ void main() {
   Get.put(ConnectionController());
   Get.put(PostController());
   Get.put(PageControllerX());
-  Get.put(CategoryController(), permanent: true);
+  Get.put(CategoryController());
   // Get.put(MediaController());
 
   runApp(const StarterScreen());

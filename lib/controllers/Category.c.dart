@@ -3,6 +3,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'Api.c.dart';
 
 class CategoryController extends ApiProvider {
+  RxInt selectedIndex = 0.obs;
   var items = <Category>[].obs;
 
   Future<void> _fetchItems() async {
@@ -26,6 +27,23 @@ class CategoryController extends ApiProvider {
 
   // Build a lookup map by id for fast access
   Map<int, Category> get itemMap => {for (var res in items) res.id: res};
+
+  List<MapEntry<int, String>> categories(Post post) {
+    final categoryIds = post.categories ?? [];
+    final categoryNames = categoryIds
+        .map((id) => itemMap[id]?.name ?? '')
+        .where((name) => name.isNotEmpty)
+        .toList();
+
+    return categoryIds
+        .asMap()
+        .entries
+        .map((entry) => MapEntry(entry.value, categoryNames[entry.key]))
+        .toList();
+  }
+
+  List<Post> filterByCategory(List<Post> posts, int categoryId) =>
+      posts.where((post) => post.categories!.contains(categoryId)).toList();
 
   @override
   void onInit() {

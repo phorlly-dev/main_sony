@@ -14,6 +14,8 @@ class PostController extends ApiProvider {
 
   // Reactive lists
   var items = <Post>[].obs;
+  var itemsBy = <Post>[].obs;
+  RxInt get selectedIndex => _category.selectedIndex;
 
   // Main fetch
   Future<void> _fetchItems({int? pageNum}) async {
@@ -58,75 +60,54 @@ class PostController extends ApiProvider {
 
   Map<int, Media> get mediaMap => _media.itemMap;
 
-  // Grouped posts by category ID (computed property)
-  // Map<int, List<Post>> groupByCategory(List<Post> posts) {
-  //   final map = <int, List<Post>>{};
-  //   for (final post in posts) {
-  //     for (final cat in post.categories ?? []) {
-  //       map.putIfAbsent(cat, () => []).add(post);
-  //     }
-  //   }
-  //   return map;
-  // }
+  Future<void> fetchItemsByCategory(int id) async {
+    isLoading.value = true;
+    hasError.value = '';
 
-  // Map of category ID to Category
-  // String getCategoryNames(Post post) {
-  //   return post.categories
-  //           ?.map((id) => catCtrl.categoryMap[id]?.name ?? '')
-  //           .where((name) => name.isNotEmpty)
-  //           .join(', ') ??
-  //       'Uncategorized';
-  // }
+    try {
+      // Fetch posts
+      final request = ListPostRequest(
+        order: Order.desc,
+        categories: [id],
+        orderBy: OrderBy.date,
+      );
+      final response = await connx.posts.list(request);
+
+      response.map(
+        onSuccess: (res) => itemsBy.value = res.data,
+        onFailure: (err) =>
+            hasError.value = err.error?.message ?? 'Failure on load data',
+      );
+
+      final featuredIds = itemsBy
+          .map((p) => p.featuredMedia)
+          .whereType<int>()
+          .toSet();
+      if (featuredIds.isNotEmpty) {
+        final mediaResult = await _media.fetchItemByIds(featuredIds.toList());
+        _media.items.value = mediaResult;
+      }
+    } catch (e) {
+      hasError.value = e.toString();
+    }
+
+    isLoading.value = false;
+  }
 
   //Category
-  List<int> categoryIds(Post post) {
-    return post.categories ?? [];
-  }
-
-  List<String> categoryNames(Post post) {
-    return categoryIds(post)
-        .map((id) => _category.itemMap[id]?.name ?? '')
-        .where((name) => name.isNotEmpty)
-        .toList();
-  }
+  List<MapEntry<int, String>> Function(Post post) get categories =>
+      _category.categories;
 
   //Tag
-  List<int> tagIds(Post post) {
-    return post.tags ?? [];
-  }
-
-  List<String> tagNames(Post post) {
-    return tagIds(post)
-        .map((id) => _tag.itemMap[id]?.name ?? '')
-        .where((name) => name.isNotEmpty)
-        .toList();
-  }
+  List<int> Function(Post post) get tagIds => _tag.tagIds;
+  List<String> Function(Post post) get tagNames => _tag.tagNames;
 
   //User
-  String authorName(Post post) {
-    return _user.itemMap[post.author]?.name ?? "User";
-  }
+  String Function(Post post) get authorName => _user.authorName;
 
   //Post by categories
-  List<Post> postsByCategory(int categoryId) {
-    return items
-        .where((post) => (post.categories ?? []).contains(categoryId))
-        .toList();
-  }
-
-  // Reactive variables
-  // void nextPage() {
-  //   if (page.value < totalPages.value && !isLoading.value) {
-  //     fetchPosts(pageNum: page.value + 1);
-  //   }
-  // }
-
-  // // Go to previous page
-  // void prevPage() {
-  //   if (page.value > 1 && !isLoading.value) {
-  //     fetchPosts(pageNum: page.value - 1);
-  //   }
-  // }
+  List<Post> Function(List<Post> posts, int categoryId) get filterByCategory =>
+      _category.filterByCategory;
 
   // Refresh current page
   Future<void> refreshCurrentPage() async {
@@ -139,26 +120,6 @@ class PostController extends ApiProvider {
     _fetchItems(pageNum: pageNum);
   }
 
-  // // Group posts by tag ID
-  // Map<int, List<Post>> groupByTag(List<Post> posts) {
-  //   final map = <int, List<Post>>{};
-  //   for (final post in posts) {
-  //     for (final tag in post.tags ?? []) {
-  //       map.putIfAbsent(tag, () => []).add(post);
-  //     }
-  //   }
-  //   return map;
-  // }
-
-  // // Group posts by author ID
-  // Map<int, List<Post>> groupByAuthor(List<Post> posts) {
-  //   final map = <int, List<Post>>{};
-  //   for (final post in posts) {
-  //     map.putIfAbsent(post.author, () => []).add(post);
-  //   }
-  //   return map;
-  // }
-
   // Reactive variables
   @override
   void onInit() {
@@ -169,7 +130,6 @@ class PostController extends ApiProvider {
   @override
   void onClose() {
     super.onClose();
-    selectedIndex.value = 0;
     hasError.value = '';
     isLoading.value = false;
   }

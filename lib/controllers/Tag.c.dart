@@ -27,6 +27,18 @@ class TagController extends ApiProvider {
   // Build a lookup map by id for fast access
   Map<int, Tag> get itemMap => {for (var res in items) res.id: res};
 
+  //Tag
+  List<int> tagIds(Post post) {
+    return post.tags ?? [];
+  }
+
+  List<String> tagNames(Post post) {
+    return tagIds(post)
+        .map((id) => itemMap[id]?.name ?? '')
+        .where((name) => name.isNotEmpty)
+        .toList();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -36,7 +48,6 @@ class TagController extends ApiProvider {
   @override
   void onClose() {
     super.onClose();
-    selectedIndex.value = 0;
     hasError.value = '';
     isLoading.value = false;
   }

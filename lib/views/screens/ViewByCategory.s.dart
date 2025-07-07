@@ -24,7 +24,7 @@ class ViewByCategory extends StatelessWidget {
         title: name,
         menu: SideMenu(category: category, page: page),
         content: RefreshIndicator(
-          onRefresh: () => post.refreshCurrentPage(),
+          onRefresh: () => post.fetchItemsByCategory(id),
           child: SingleChildScrollView(
             child: PostByCategoryCard(controller: post, id: id),
           ),

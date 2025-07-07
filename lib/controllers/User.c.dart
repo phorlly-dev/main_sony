@@ -26,6 +26,9 @@ class UserController extends ApiProvider {
   // Build a lookup map by id for fast access
   Map<int, User> get itemMap => {for (var res in items) res.id: res};
 
+  //User
+  String authorName(Post post) => itemMap[post.author]?.name ?? "User";
+
   @override
   void onInit() {
     super.onInit();
@@ -35,7 +38,6 @@ class UserController extends ApiProvider {
   @override
   void onClose() {
     super.onClose();
-    selectedIndex.value = 0;
     hasError.value = '';
     isLoading.value = false;
   }

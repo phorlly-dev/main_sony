@@ -33,7 +33,6 @@ class PageControllerX extends ApiProvider {
   @override
   void onClose() {
     super.onClose();
-    selectedIndex.value = 0;
     hasError.value = '';
     isLoading.value = false;
   }
