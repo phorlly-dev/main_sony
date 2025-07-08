@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Category.c.dart';
-import 'package:main_sony/controllers/Page.c.dart';
-import 'package:main_sony/views/partials/Category.p.dart';
-import 'package:main_sony/views/partials/ProfileHeader.p.dart';
-import 'package:main_sony/views/widgets/MenuItem.w.dart';
+import 'package:main_sony/controllers/category_controller.dart';
+import 'package:main_sony/controllers/page_controller.dart';
+import 'package:main_sony/views/partials/category_partial.dart';
+import 'package:main_sony/views/partials/profile_header.dart';
+import 'package:main_sony/views/widgets/menu_item.dart';
 
 class SideMenu extends StatelessWidget {
   final PageControllerX page;

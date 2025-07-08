@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Page.c.dart';
-import 'package:main_sony/utils/Utility.u.dart';
-import 'package:main_sony/views/widgets/DataRender.w.dart';
-import 'package:main_sony/views/widgets/SmartCircleAvatar.w.dart';
+import 'package:main_sony/controllers/page_controller.dart';
+import 'package:main_sony/utils/utility.dart';
+import 'package:main_sony/views/widgets/data_render.dart';
+import 'package:main_sony/views/widgets/smart_circle_avatar.dart';
 
 class ProfileHeader extends StatelessWidget {
   final PageControllerX controller;

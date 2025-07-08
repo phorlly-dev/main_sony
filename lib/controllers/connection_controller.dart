@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/state_manager.dart';
-import 'package:main_sony/controllers/Api.c.dart';
+import 'package:main_sony/controllers/api_provider.dart';
 
 class ConnectionController extends ApiProvider {
   var isChecking = false.obs;

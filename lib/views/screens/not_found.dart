@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class NotFoundPage extends StatelessWidget {
+class NotFound extends StatelessWidget {
   final bool status;
   final VoidCallback onRetry;
-  const NotFoundPage({super.key, required this.onRetry, required this.status});
+  const NotFound({super.key, required this.onRetry, required this.status});
 
   @override
   Widget build(BuildContext context) {

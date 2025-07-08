@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wordpress_client/wordpress_client.dart';
-import 'Api.c.dart';
+import 'api_provider.dart';
 
 class CategoryController extends ApiProvider {
   RxInt selectedIndex = 0.obs;
@@ -42,8 +42,8 @@ class CategoryController extends ApiProvider {
         .toList();
   }
 
-  List<Post> filterByCategory(List<Post> posts, int categoryId) =>
-      posts.where((post) => post.categories!.contains(categoryId)).toList();
+  // List<Post> filterByCategory(List<Post> posts, int categoryId) =>
+  //     posts.where((post) => post.categories!.contains(categoryId)).toList();
 
   @override
   void onInit() {

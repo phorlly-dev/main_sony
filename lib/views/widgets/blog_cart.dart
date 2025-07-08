@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Post.c.dart';
-import 'package:main_sony/utils/Constants.u.dart';
-import 'package:main_sony/utils/Utility.u.dart';
-import 'package:main_sony/views/screens/ViewByCategory.s.dart';
-import 'package:main_sony/views/widgets/IconText.w.dart';
-import 'package:main_sony/views/widgets/IconTexts.w.dart';
-import 'package:main_sony/views/widgets/ImageContent.w.dart';
-import 'package:main_sony/views/widgets/TextContent.w.dart';
+import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/utils/utility.dart';
+import 'package:main_sony/views/screens/home.dart';
+import 'package:main_sony/views/widgets/icon_text.dart';
+import 'package:main_sony/views/widgets/icon_texts.dart';
+import 'package:main_sony/views/widgets/image_content.dart';
+import 'package:main_sony/views/widgets/text_content.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
 class BlogCard extends StatelessWidget {
@@ -42,8 +42,12 @@ class BlogCard extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final author = controller.authorName(post);
     final categories = controller.categories(post);
-    final tagIds = controller.tagIds(post);
-    final tagNames = controller.tagNames(post);
+    final tags = controller.tags(post);
+    for (var tag in tags) {
+      print('${tag.key} => ${tag.value}');
+    }
+
+    // if (tags.isEmpty) return SizedBox.shrink();
 
     return Card(
       color: colors.surface,
@@ -99,6 +103,13 @@ class BlogCard extends StatelessWidget {
                         label: author.toUpperCase(),
                         onTap: () {
                           print("The user id: ${post.author}");
+                          Get.offAll(
+                            () => HomeScreen(
+                              id: post.author,
+                              name: author,
+                              type: 2,
+                            ),
+                          );
                         },
                         color: AppColorRole.secondary.color,
                       ),
@@ -137,14 +148,12 @@ class BlogCard extends StatelessWidget {
                           onLabelTaps: categories
                               .map(
                                 (e) => () {
-                                  print(
-                                    'Clicked category with id ${e.key}, name: ${e.value}',
-                                  );
                                   controller.selectedIndex.value = e.key;
                                   Get.offAll(
-                                    () => ViewByCategory(
+                                    () => HomeScreen(
                                       id: e.key,
                                       name: e.value,
+                                      type: 1,
                                     ),
                                   );
                                 },
@@ -153,16 +162,21 @@ class BlogCard extends StatelessWidget {
                         ),
 
                       //Tags
-                      if (tagNames.isNotEmpty)
+                      if (tags.isNotEmpty)
                         IconTexts(
                           icon: Icons.tag_rounded,
-                          labels: tagNames,
+                          labels: tags.map((e) => e.value).toList(),
                           color: AppColorRole.primary.color,
-                          onLabelTaps: tagIds
+                          onLabelTaps: tags
                               .map(
-                                (id) => () {
-                                  print('Clicked tag with id $id');
-                                  // navigate to category page with this id
+                                (e) => () {
+                                  Get.offAll(
+                                    () => HomeScreen(
+                                      id: e.key,
+                                      name: e.value,
+                                      type: 3,
+                                    ),
+                                  );
                                 },
                               )
                               .toList(),

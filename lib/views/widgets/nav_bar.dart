@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/views/screens/AppRoot.s.dart';
+import 'package:main_sony/views/screens/app_root.dart';
 
 class NavBar extends StatefulWidget {
   final String title;

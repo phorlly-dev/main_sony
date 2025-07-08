@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wordpress_client/wordpress_client.dart';
-import 'Api.c.dart';
+import 'api_provider.dart';
 
 class MediaController extends ApiProvider {
   var items = <Media>[].obs;

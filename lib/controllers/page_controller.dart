@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wordpress_client/wordpress_client.dart';
-import 'Api.c.dart';
+import 'api_provider.dart';
 
 class PageControllerX extends ApiProvider {
   var items = <Page>[].obs;

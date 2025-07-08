@@ -74,3 +74,5 @@ String dateStr({required DateTime date, String? format}) {
 Object getValue({Map<String, dynamic>? object, required String key}) {
   return object?[key] ?? "Unknown";
 }
+
+enum Type { category, tag, author }

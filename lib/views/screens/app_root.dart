@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Connection.c.dart';
-import 'package:main_sony/views/screens/NotFound.s.dart';
+import 'package:main_sony/controllers/connection_controller.dart';
+import 'package:main_sony/views/screens/not_found.dart';
 
 class AppRoot extends StatelessWidget {
   final Widget child;
@@ -14,7 +14,7 @@ class AppRoot extends StatelessWidget {
       if (connection.isChecking.value) {
         return const Center(child: CircularProgressIndicator());
       } else if (!connection.isOnline.value) {
-        return NotFoundPage(
+        return NotFound(
           onRetry: () => connection.retry(),
           status: connection.isChecking.value,
         );

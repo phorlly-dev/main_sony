@@ -1,20 +1,19 @@
 import 'package:get/get.dart';
 import 'package:wordpress_client/wordpress_client.dart';
-import 'Api.c.dart';
+import 'api_provider.dart';
 
-class TagController extends ApiProvider {
-  var items = <Tag>[].obs;
+class UserController extends ApiProvider {
+  var items = <User>[].obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
-
-    final request = ListTagRequest(
+    final request = ListUserRequest(
       order: Order.asc,
       // perPage: 5,
-      orderBy: OrderBy.name,
+      orderBy: OrderBy.date,
     );
-    final response = await connx.tags.list(request);
+    final response = await connx.users.list(request);
 
     response.map(
       onSuccess: (res) => items.value = res.data,
@@ -25,19 +24,10 @@ class TagController extends ApiProvider {
   }
 
   // Build a lookup map by id for fast access
-  Map<int, Tag> get itemMap => {for (var res in items) res.id: res};
+  Map<int, User> get itemMap => {for (var res in items) res.id: res};
 
-  //Tag
-  List<int> tagIds(Post post) {
-    return post.tags ?? [];
-  }
-
-  List<String> tagNames(Post post) {
-    return tagIds(post)
-        .map((id) => itemMap[id]?.name ?? '')
-        .where((name) => name.isNotEmpty)
-        .toList();
-  }
+  //User
+  String authorName(Post post) => itemMap[post.author]?.name ?? "User";
 
   @override
   void onInit() {

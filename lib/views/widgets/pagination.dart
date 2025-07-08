@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:main_sony/views/widgets/PaginationBar.w.dart';
+import 'package:main_sony/views/widgets/pagination_bar.dart';
 
 class Pagination extends StatelessWidget {
   final int page;

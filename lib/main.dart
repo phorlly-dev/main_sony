@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Api.c.dart';
-import 'package:main_sony/controllers/Category.c.dart';
-import 'package:main_sony/controllers/Connection.c.dart';
-import 'package:main_sony/controllers/Page.c.dart';
-import 'package:main_sony/controllers/Post.c.dart';
-import 'package:main_sony/utils/Constants.u.dart';
-import 'package:main_sony/views/screens/Home.s.dart';
-import 'package:main_sony/views/screens/Splash.s.dart';
+import 'package:main_sony/controllers/api_provider.dart';
+import 'package:main_sony/controllers/category_controller.dart';
+import 'package:main_sony/controllers/connection_controller.dart';
+import 'package:main_sony/controllers/page_controller.dart';
+import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/views/screens/home.dart';
+import 'package:main_sony/views/screens/splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +35,15 @@ class StarterScreen extends StatelessWidget {
       initialRoute: "/splash",
       getPages: [
         GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(name: '/home', page: () => HomeScreen()),
+        GetPage(
+          name: '/home',
+          page: () => HomeScreen(id: 0, type: 0, name: 'Home'),
+        ),
       ],
       theme: lightTheme, // Default light theme
       darkTheme: darkTheme, // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling
-      home: const HomeScreen(),
+      home: const HomeScreen(id: 0, type: 0, name: 'Home'),
       // home: TestconnectionScreen(title: "Test Connection"),
     );
   }

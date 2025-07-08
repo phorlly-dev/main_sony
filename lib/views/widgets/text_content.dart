@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:main_sony/utils/Constants.u.dart';
-import 'package:main_sony/utils/Utility.u.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/utils/utility.dart';
 
 class TextContent extends StatelessWidget {
   final String article;

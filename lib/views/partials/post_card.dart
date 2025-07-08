@@ -1,54 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/Post.c.dart';
-import 'package:main_sony/utils/Utility.u.dart';
-import 'package:main_sony/views/widgets/BlogCart.w.dart';
-import 'package:main_sony/views/widgets/DataView.w.dart';
+import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/utils/utility.dart';
+import 'package:main_sony/views/widgets/blog_cart.dart';
+import 'package:main_sony/views/widgets/page_data_view.dart';
+import 'package:wordpress_client/wordpress_client.dart';
 
-class PostByCategoryCard extends StatefulWidget {
-  final int id;
+class PostCard extends StatefulWidget {
+  final int id, type;
   final PostController controller;
-
-  const PostByCategoryCard({
+  const PostCard({
     super.key,
     required this.controller,
     required this.id,
+    required this.type,
   });
 
   @override
-  State<PostByCategoryCard> createState() => _PostByCategoryCardState();
+  State<PostCard> createState() => _PostCardState();
 }
 
-class _PostByCategoryCardState extends State<PostByCategoryCard> {
+class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.controller.fetchItemsByCategory(widget.id);
+      showFilter();
     });
   }
 
   @override
-  void didUpdateWidget(covariant PostByCategoryCard oldWidget) {
+  void didUpdateWidget(covariant PostCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.id != widget.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.controller.fetchItemsByCategory(widget.id);
+        showFilter();
       });
     }
   }
 
+  void showFilter() {
+    widget.controller.dataView(id: widget.id, type: widget.type);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => DataView(
+    return Obx(() {
+      return PageDataView<Post>(
+        items: widget.controller.items,
+        page: widget.controller.page.value,
+        totalPages: widget.controller.totalPages.value,
         isLoading: widget.controller.isLoading.value,
         hasError: widget.controller.hasError.value,
-        notFound: widget.controller.itemsBy,
-        itemCounter: widget.controller.itemsBy.length,
-        itemBuilder: (context, index) {
-          final item = widget.controller.itemsBy[index];
+        prevPage: widget.controller.prevPage,
+        nextPage: widget.controller.nextPage,
+        onGoToPage: (page) => widget.controller.goToPage(page),
+        itemBuilder: (context, item, index) {
           final yoast = item.yoastHeadJson;
+          // final title = getValue(object: yoast, key: 'title').toString();
+          // final desc = getValue(object: yoast, key: 'description').toString();
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Decription';
           final media = widget.controller.mediaMap[item.featuredMedia];
@@ -65,6 +75,7 @@ class _PostByCategoryCardState extends State<PostByCategoryCard> {
             onReadMore: () {
               print("Read more");
             },
+            // category: catName,
             onComment: () {
               print("The comment text here!");
             },
@@ -72,7 +83,7 @@ class _PostByCategoryCardState extends State<PostByCategoryCard> {
             controller: widget.controller,
           );
         },
-      ),
-    );
+      );
+    });
   }
 }

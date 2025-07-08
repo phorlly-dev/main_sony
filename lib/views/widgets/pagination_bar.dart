@@ -4,6 +4,7 @@ class PaginationBar extends StatelessWidget {
   final int currentPage;
   final int totalPages;
   final ValueChanged<int> onPageSelected;
+  final VoidCallback? prevPage, nextPage;
 
   /// Number of page neighbors to show around the current page.
   final int visibleRange;
@@ -13,10 +14,12 @@ class PaginationBar extends StatelessWidget {
     required this.currentPage,
     required this.totalPages,
     required this.onPageSelected,
-    this.visibleRange = 1, // 1 or 2 depending on your taste
+    this.visibleRange = 1,
+    this.prevPage,
+    this.nextPage, // 1 or 2 depending on your taste
   });
 
-  List<Widget> _buildPageItems(BuildContext context) {
+  List<Widget> _buildPageItems(BuildContext context, int currentPageParam) {
     List<Widget> widgets = [];
 
     Color selectedColor = Colors.teal;
@@ -24,7 +27,7 @@ class PaginationBar extends StatelessWidget {
         Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87;
 
     void addPage(int page) {
-      bool selected = page == currentPage;
+      bool selected = page == currentPageParam;
       widgets.add(
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -32,7 +35,6 @@ class PaginationBar extends StatelessWidget {
             color: selected ? selectedColor : Colors.transparent,
             shape: selected ? const CircleBorder() : null,
             child: InkWell(
-              // borderRadius: BorderRadius.circular(38),
               onTap: selected ? null : () => onPageSelected(page),
               child: Container(
                 width: 36,
@@ -65,57 +67,61 @@ class PaginationBar extends StatelessWidget {
       );
     }
 
-    // PREVIOUS Button
-    if (currentPage != 1) {
-      widgets.add(
-        TextButton(
-          onPressed: currentPage > 1
-              ? () => onPageSelected(currentPage - 1)
-              : null,
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            // size: 20,
-            color: normalColor,
-          ),
-        ),
-      );
+    // Disable pagination when no pages or only one page
+    if (totalPages <= 1) {
+      addPage(1);
+      return widgets;
     }
+
+    // PREVIOUS Button
+    widgets.add(
+      TextButton(
+        onPressed: currentPageParam > 1
+            ? () => prevPage ?? onPageSelected(currentPageParam - 1)
+            : null,
+        child: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: currentPageParam != 1 ? normalColor : null,
+        ),
+      ),
+    );
 
     // Always show first page
     addPage(1);
 
     // Left ellipsis
-    if (currentPage > visibleRange + 2) {
+    if (currentPageParam > visibleRange + 2) {
       addEllipsis();
     }
 
-    // Middle page numbers
-    int start = (currentPage - visibleRange).clamp(2, totalPages - 1);
-    int end = (currentPage + visibleRange).clamp(2, totalPages - 1);
-    for (int i = start; i <= end; i++) {
-      addPage(i);
+    // Middle page numbers (only if more than 2 pages)
+    if (totalPages > 2) {
+      int start = (currentPageParam - visibleRange).clamp(2, totalPages - 1);
+      int end = (currentPageParam + visibleRange).clamp(2, totalPages - 1);
+      if (start <= end) {
+        for (int i = start; i <= end; i++) {
+          addPage(i);
+        }
+      }
     }
 
     // Right ellipsis
-    if (currentPage < totalPages - visibleRange - 1) {
+    if (currentPageParam < totalPages - visibleRange - 1) {
       addEllipsis();
     }
 
     // Always show last page if > 1
-    if (totalPages > 1) {
-      addPage(totalPages);
-    }
+    addPage(totalPages);
 
     // NEXT Button
     widgets.add(
       TextButton(
-        onPressed: currentPage < totalPages
-            ? () => onPageSelected(currentPage + 1)
+        onPressed: currentPageParam < totalPages
+            ? () => nextPage ?? onPageSelected(currentPageParam + 1)
             : null,
         child: Icon(
           Icons.arrow_forward_ios_rounded,
-          // size: 20,
-          color: normalColor,
+          color: currentPageParam < totalPages ? normalColor : null,
         ),
       ),
     );
@@ -125,11 +131,17 @@ class PaginationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Prevent going out of page bounds
+    final int validCurrentPage = currentPage.clamp(
+      1,
+      totalPages > 0 ? totalPages : 1,
+    );
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: _buildPageItems(context),
+        children: _buildPageItems(context, validCurrentPage),
       ),
     );
   }
