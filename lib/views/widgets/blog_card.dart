@@ -43,11 +43,6 @@ class BlogCard extends StatelessWidget {
     final author = controller.authorName(post);
     final categories = controller.categories(post);
     final tags = controller.tags(post);
-    for (var tag in tags) {
-      print('${tag.key} => ${tag.value}');
-    }
-
-    // if (tags.isEmpty) return SizedBox.shrink();
 
     return Card(
       color: colors.surface,

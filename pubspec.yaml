@@ -23,6 +23,7 @@ dependencies:
   cached_network_image: 
   carousel_slider:
   connectivity_plus:
+  loading_animation_widget:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

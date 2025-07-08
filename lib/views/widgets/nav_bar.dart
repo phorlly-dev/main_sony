@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/views/screens/app_root.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/views/widgets/app_root.dart';
 
 class NavBar extends StatefulWidget {
   final String title;
   final Widget? menu, content;
+
   const NavBar({super.key, required this.title, this.menu, this.content});
 
   @override
@@ -21,6 +23,8 @@ class _NavBarState extends State<NavBar> {
         appBar: AppBar(
           title: Text(widget.title.toUpperCase()),
           centerTitle: true,
+          elevation: 4,
+          backgroundColor: context.getAppColor(AppColorRole.surface),
           actions: [
             IconButton(
               icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),

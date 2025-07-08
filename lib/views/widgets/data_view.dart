@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/views/widgets/loading_animation.dart';
 
 class DataView extends StatelessWidget {
   final int itemCounter;
@@ -22,19 +24,27 @@ class DataView extends StatelessWidget {
     if (isLoading == true) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
-        child: Center(child: CircularProgressIndicator()),
+        child: LoadingAnimation(),
       );
     }
     if (hasError!.isNotEmpty) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
-        child: Center(child: Text(hasError!)),
+        child: LoadingAnimation(
+          label: hasError!,
+          type: 11,
+          themColor: AppColorRole.error,
+        ),
       );
     }
     if (notFound == null || notFound!.isEmpty) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
-        child: Center(child: Text("No data found.")),
+        child: LoadingAnimation(
+          label: "No data found.",
+          type: 5,
+          themColor: AppColorRole.secondary,
+        ),
       );
     }
 

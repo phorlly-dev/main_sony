@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:get/state_manager.dart';
-import 'package:main_sony/controllers/api_provider.dart';
+import 'package:get/get.dart';
+import 'package:main_sony/controllers/post_controller.dart';
 
-class ConnectionController extends ApiProvider {
-  var isChecking = false.obs;
+class ConnectionController extends PostController {
+  var isOnline = true.obs;
   late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
@@ -14,6 +14,10 @@ class ConnectionController extends ApiProvider {
     _subscription = Connectivity().onConnectivityChanged.listen((result) {
       isOnline.value = result.first != ConnectivityResult.none;
     });
+
+    if (isOnline.value) {
+      refreshCurrentPage();
+    }
   }
 
   @override
@@ -23,11 +27,7 @@ class ConnectionController extends ApiProvider {
   }
 
   Future<void> _check() async {
-    isChecking.value = true;
     final result = await Connectivity().checkConnectivity();
     isOnline.value = result.first != ConnectivityResult.none;
-    isChecking.value = false;
   }
-
-  void retry() => _check();
 }

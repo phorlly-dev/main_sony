@@ -4,7 +4,7 @@ import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/views/partials/post_card.dart';
-import 'package:main_sony/views/widgets/nav_bar.dart';
+import "package:main_sony/views/widgets/nav_bar.dart";
 import 'package:main_sony/views/widgets/side_menu.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -24,15 +24,13 @@ class HomeScreen extends StatelessWidget {
     final category = Get.find<CategoryController>();
     final page = Get.find<PageControllerX>();
 
-    return SafeArea(
-      child: NavBar(
-        title: name,
-        menu: SideMenu(category: category, page: page),
-        content: RefreshIndicator(
-          onRefresh: () => post.refreshCurrentPage(),
-          child: SingleChildScrollView(
-            child: PostCard(controller: post, id: id, type: type),
-          ),
+    return NavBar(
+      title: name,
+      menu: SideMenu(category: category, page: page),
+      content: RefreshIndicator(
+        onRefresh: post.refreshCurrentPage,
+        child: SingleChildScrollView(
+          child: PostCard(controller: post, id: id, type: type),
         ),
       ),
     );

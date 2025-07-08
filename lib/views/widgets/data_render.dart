@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/views/widgets/loading_animation.dart';
 
 class DataRender extends StatelessWidget {
   final int length;
@@ -18,13 +21,30 @@ class DataRender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading == true) {
-      return Center(child: CircularProgressIndicator());
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: LoadingAnimation(),
+      );
     }
     if (hasError!.isNotEmpty) {
-      return Center(child: Text(hasError!));
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: LoadingAnimation(
+          label: hasError!,
+          type: 11,
+          themColor: AppColorRole.error,
+        ),
+      );
     }
     if (notFound == null || notFound!.isEmpty) {
-      return Center(child: Text("No data found."));
+      return Container(
+        margin: EdgeInsets.only(top: Get.height * .3),
+        child: LoadingAnimation(
+          label: "No data found.",
+          type: 5,
+          themColor: AppColorRole.secondary,
+        ),
+      );
     }
 
     return Column(children: List.generate(length, (index) => child(index)));

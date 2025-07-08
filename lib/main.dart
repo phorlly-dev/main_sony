@@ -6,7 +6,7 @@ import 'package:main_sony/controllers/connection_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/utils/constants.dart';
-import 'package:main_sony/views/screens/home.dart';
+import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/screens/splash.dart';
 
 void main() {
@@ -35,15 +35,12 @@ class StarterScreen extends StatelessWidget {
       initialRoute: "/splash",
       getPages: [
         GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(
-          name: '/home',
-          page: () => HomeScreen(id: 0, type: 0, name: 'Home'),
-        ),
+        GetPage(name: '/home', page: () => Dashboard()),
       ],
       theme: lightTheme, // Default light theme
       darkTheme: darkTheme, // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling
-      home: const HomeScreen(id: 0, type: 0, name: 'Home'),
+      home: const Dashboard(),
       // home: TestconnectionScreen(title: "Test Connection"),
     );
   }

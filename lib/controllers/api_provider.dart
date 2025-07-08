@@ -6,7 +6,6 @@ class ApiProvider extends GetxController {
   late WordpressClient connx;
   late GetConnect api;
   var isLoading = false.obs;
-  var isOnline = true.obs;
   var totalPages = 1.obs;
   var isDark = Get.isDarkMode.obs;
   var hasError = ''.obs;
