@@ -29,9 +29,6 @@ class MenuItem extends StatelessWidget {
           borderRadius: isActive ? borderRadius : null,
         ),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding,
-          ),
           leading: Icon(
             icon ?? Icons.app_registration_rounded,
             color: isActive ? activeTextColor : null,

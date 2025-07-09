@@ -4,7 +4,6 @@ class PaginationBar extends StatelessWidget {
   final int currentPage;
   final int totalPages;
   final ValueChanged<int> onPageSelected;
-  final VoidCallback? prevPage, nextPage;
 
   /// Number of page neighbors to show around the current page.
   final int visibleRange;
@@ -15,8 +14,6 @@ class PaginationBar extends StatelessWidget {
     required this.totalPages,
     required this.onPageSelected,
     this.visibleRange = 1,
-    this.prevPage,
-    this.nextPage, // 1 or 2 depending on your taste
   });
 
   List<Widget> _buildPageItems(BuildContext context, int currentPageParam) {
@@ -77,7 +74,7 @@ class PaginationBar extends StatelessWidget {
     widgets.add(
       TextButton(
         onPressed: currentPageParam > 1
-            ? () => prevPage ?? onPageSelected(currentPageParam - 1)
+            ? () => onPageSelected(currentPageParam - 1)
             : null,
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
@@ -117,7 +114,7 @@ class PaginationBar extends StatelessWidget {
     widgets.add(
       TextButton(
         onPressed: currentPageParam < totalPages
-            ? () => nextPage ?? onPageSelected(currentPageParam + 1)
+            ? () => onPageSelected(currentPageParam + 1)
             : null,
         child: Icon(
           Icons.arrow_forward_ios_rounded,

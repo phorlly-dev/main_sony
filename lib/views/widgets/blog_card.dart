@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/utils/utility.dart';
-import 'package:main_sony/views/screens/home.dart';
+import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/widgets/icon_text.dart';
 import 'package:main_sony/views/widgets/icon_texts.dart';
 import 'package:main_sony/views/widgets/image_content.dart';
@@ -97,9 +98,11 @@ class BlogCard extends StatelessWidget {
                         icon: Icons.person,
                         label: author.toUpperCase(),
                         onTap: () {
-                          print("The user id: ${post.author}");
                           Get.offAll(
-                            () => HomeScreen(
+                            () => IndexScreen(),
+                            duration: Duration(milliseconds: 800),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            arguments: ScreenParams(
                               id: post.author,
                               name: author,
                               type: 2,
@@ -143,9 +146,12 @@ class BlogCard extends StatelessWidget {
                           onLabelTaps: categories
                               .map(
                                 (e) => () {
-                                  controller.selectedIndex.value = e.key;
+                                  controller.setActiveMenu(e.key);
                                   Get.offAll(
-                                    () => HomeScreen(
+                                    () => IndexScreen(),
+                                    duration: Duration(milliseconds: 800),
+                                    curve: Curves.fastLinearToSlowEaseIn,
+                                    arguments: ScreenParams(
                                       id: e.key,
                                       name: e.value,
                                       type: 1,
@@ -166,7 +172,10 @@ class BlogCard extends StatelessWidget {
                               .map(
                                 (e) => () {
                                   Get.offAll(
-                                    () => HomeScreen(
+                                    () => IndexScreen(),
+                                    duration: Duration(milliseconds: 800),
+                                    curve: Curves.fastLinearToSlowEaseIn,
+                                    arguments: ScreenParams(
                                       id: e.key,
                                       name: e.value,
                                       type: 3,

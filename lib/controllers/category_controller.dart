@@ -42,6 +42,10 @@ class CategoryController extends ApiProvider {
         .toList();
   }
 
+  void setActiveMenu(int index) {
+    selectedIndex.value = index;
+  }
+
   // List<Post> filterByCategory(List<Post> posts, int categoryId) =>
   //     posts.where((post) => post.categories!.contains(categoryId)).toList();
 

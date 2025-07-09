@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
 /// Picks the best image URL from WordPress media based on device width.
 String getResponsiveImageUrl(Media media) {
   final deviceWidth = Get.width;
+  final sizes = media.mediaDetails?.sizes;
 
   // Try to match size based on device width (change breakpoints as needed)
-  if (deviceWidth <= 400 &&
-      media.mediaDetails?.sizes?['thumbnail']?.sourceUrl != null) {
-    return media.mediaDetails!.sizes!['thumbnail']!.sourceUrl!;
-  } else if (deviceWidth <= 800 &&
-      media.mediaDetails?.sizes?['medium']?.sourceUrl != null) {
-    return media.mediaDetails!.sizes!['medium']!.sourceUrl!;
-  } else if (deviceWidth <= 1200 &&
-      media.mediaDetails?.sizes?['large']?.sourceUrl != null) {
-    return media.mediaDetails!.sizes!['large']!.sourceUrl!;
-  } else if (media.mediaDetails?.sizes?['full']?.sourceUrl != null) {
-    return media.mediaDetails!.sizes!['full']!.sourceUrl!;
+  if (deviceWidth <= 400 && sizes?['thumbnail']?.sourceUrl != null) {
+    return sizes!['thumbnail']!.sourceUrl!;
+  } else if (deviceWidth <= 800 && sizes?['medium']?.sourceUrl != null) {
+    return sizes!['medium']!.sourceUrl!;
+  } else if (deviceWidth <= 1200 && sizes?['large']?.sourceUrl != null) {
+    return sizes!['large']!.sourceUrl!;
+  } else if (sizes?['full']?.sourceUrl != null) {
+    return sizes!['full']!.sourceUrl!;
   } else {
     // Fallback: original source URL or empty
     return media.sourceUrl ?? '';
@@ -76,3 +75,25 @@ Object getValue({Map<String, dynamic>? object, required String key}) {
 }
 
 enum Type { category, tag, author }
+
+Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
+  // Show blocking overlay
+  Get.dialog(
+    Center(
+      child: LoadingAnimationWidget.threeArchedCircle(
+        color: Colors.lightBlue,
+        size: 50,
+      ),
+    ),
+    barrierDismissible: false,
+  );
+
+  try {
+    final result = await fetcher();
+    Get.back(); // Remove overlay
+    return result;
+  } catch (e) {
+    Get.back();
+    rethrow;
+  }
+}

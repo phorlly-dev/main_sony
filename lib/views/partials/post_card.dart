@@ -55,8 +55,6 @@ class _PostCardState extends State<PostCard> {
         totalPages: controller.totalPages.value,
         isLoading: controller.isLoading.value,
         hasError: controller.hasError.value,
-        prevPage: controller.prevPage,
-        nextPage: controller.nextPage,
         onGoToPage: (page) => controller.goToPage(page),
         itemBuilder: (context, item, index) {
           final yoast = item.yoastHeadJson;

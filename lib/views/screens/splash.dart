@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2)); // Simulate loading
     // Add your app start logic here (e.g., check login, fetch config)
     // Then navigate:
-    Get.toNamed('/home'); // or whatever your initial route is
+    Get.toNamed("/dashboard"); // or whatever your initial route is
   }
 
   @override

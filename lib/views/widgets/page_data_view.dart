@@ -9,7 +9,6 @@ class PageDataView<T> extends StatelessWidget {
   final bool isLoading;
   final String? hasError;
   final ValueChanged<int> onGoToPage;
-  final VoidCallback? prevPage, nextPage;
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
 
   const PageDataView({
@@ -21,8 +20,6 @@ class PageDataView<T> extends StatelessWidget {
     this.isLoading = false,
     this.hasError,
     required this.onGoToPage,
-    this.prevPage,
-    this.nextPage,
   });
 
   @override
@@ -54,8 +51,6 @@ class PageDataView<T> extends StatelessWidget {
                 currentPage: safePage,
                 totalPages: totalPages,
                 onPageSelected: onGoToPage,
-                prevPage: prevPage,
-                nextPage: nextPage,
               ),
             ),
           ),

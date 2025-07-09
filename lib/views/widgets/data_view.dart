@@ -37,7 +37,9 @@ class DataView extends StatelessWidget {
         ),
       );
     }
-    if (notFound == null || notFound!.isEmpty) {
+    if ((notFound == null || notFound!.isEmpty) &&
+        !isLoading! &&
+        hasError!.isEmpty) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
         child: LoadingAnimation(

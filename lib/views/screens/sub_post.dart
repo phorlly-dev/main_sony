@@ -6,27 +6,27 @@ import 'package:main_sony/views/partials/post_card.dart';
 import "package:main_sony/views/widgets/nav_bar.dart";
 import 'package:main_sony/views/widgets/side_menu.dart';
 
-class HomeScreen extends StatelessWidget {
+class SubPostScreen extends StatelessWidget {
   final int id, type;
   final String? name;
   final PostController postController;
   final PageControllerX pageController;
   final CategoryController categoryController;
 
-  const HomeScreen({
+  const SubPostScreen({
     super.key,
-    required this.postController,
-    required this.pageController,
-    required this.categoryController,
     required this.id,
     required this.type,
     this.name,
+    required this.postController,
+    required this.pageController,
+    required this.categoryController,
   });
 
   @override
   Widget build(BuildContext context) {
     return NavBar(
-      title: name ?? "Home",
+      title: name ?? "Category",
       menu: SideMenu(
         postController: postController,
         categoryController: categoryController,

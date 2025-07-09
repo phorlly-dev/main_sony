@@ -14,7 +14,6 @@ class PostController extends ApiProvider {
 
   // Reactive lists
   var items = <Post>[].obs;
-  RxInt get selectedIndex => _category.selectedIndex;
 
   // Store last filter type and value
   int? _currentFilterId;
@@ -26,30 +25,30 @@ class PostController extends ApiProvider {
     hasError.value = '';
 
     // Save filter params
-    _currentFilterId = byId;
+    // Save filter
+    if (byId != null) _currentFilterId = byId;
     _currentFilterType = type;
 
     // Define variables for filters
-    List<int>? categories;
-    List<int>? authors;
-    List<int>? tags;
+    List<int>? categories, authors, tags;
 
     // Switch logic for assigning the correct filter
     switch (type) {
       case 1:
-        categories = [?byId];
+        if (byId != null) categories = [byId];
         break;
       case 2:
-        authors = [?byId];
+        if (byId != null) authors = [byId];
         break;
       case 3:
-        tags = [?byId];
+        if (byId != null) tags = [byId];
         break;
       default:
         // no filter
         break;
     }
 
+    // Clamp page
     if (pageNum != null) page.value = pageNum;
 
     try {
@@ -71,14 +70,9 @@ class PostController extends ApiProvider {
           totalPages.value = (res.totalCount / perPage).ceil();
 
           // AUTO-CORRECT: If current page > totalPages, reset to last page and refetch!
-          if (page.value > totalPages.value && totalPages.value > 0) {
+          if (page.value > totalPages.value) {
             page.value = totalPages.value;
-            fetchItems(
-              pageNum: page.value,
-              byId: byId,
-              type: type,
-            ); // Re-call with valid page
-            return;
+            fetchItems(pageNum: page.value); // Re-call with valid page
           }
         },
         onFailure: (err) =>
@@ -100,16 +94,16 @@ class PostController extends ApiProvider {
     isLoading.value = false;
   }
 
+  void Function(int index) get setActiveMenu => _category.setActiveMenu;
+
   Map<int, Media> get mediaMap => _media.itemMap;
 
   //Category
   List<MapEntry<int, String>> Function(Post post) get categories =>
       _category.categories;
-  List<MapEntry<int, String>> Function(Post post) get tags => _tag.tags;
 
   //Tag
-  List<int> Function(Post post) get tagIds => _tag.tagIds;
-  List<String> Function(Post post) get tagNames => _tag.tagNames;
+  List<MapEntry<int, String>> Function(Post post) get tags => _tag.tags;
 
   //User
   String Function(Post post) get authorName => _user.authorName;
@@ -133,34 +127,11 @@ class PostController extends ApiProvider {
     );
   }
 
-  void nextPage() {
-    if (page.value < totalPages.value && !isLoading.value) {
-      goToPage(page.value + 1);
-    }
-  }
-
-  void prevPage() {
-    if (page.value > 1 && !isLoading.value) {
-      goToPage(page.value - 1);
-    }
-  }
-
   void dataView({int type = 0, int? id}) {
     _currentFilterType = type;
     _currentFilterId = id;
-    switch (type) {
-      case 1:
-        fetchItems(byId: id, type: 1, pageNum: 1);
-        break;
-      case 2:
-        fetchItems(byId: id, type: 2, pageNum: 1);
-        break;
-      case 3:
-        fetchItems(byId: id, type: 3, pageNum: 1);
-        break;
-      default:
-        fetchItems(pageNum: 1);
-    }
+
+    fetchItems(pageNum: 1, byId: id, type: type);
   }
 
   // Reactive variables
