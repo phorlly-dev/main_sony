@@ -31,7 +31,7 @@ class DataRender extends StatelessWidget {
         margin: EdgeInsets.only(top: Get.height * .3),
         child: LoadingAnimation(
           label: hasError!,
-          type: 11,
+          type: LoadingType.flickr,
           themColor: AppColorRole.error,
         ),
       );
@@ -41,7 +41,7 @@ class DataRender extends StatelessWidget {
         margin: EdgeInsets.only(top: Get.height * .3),
         child: LoadingAnimation(
           label: "No data found.",
-          type: 5,
+          type: LoadingType.staggeredDotsWave,
           themColor: AppColorRole.secondary,
         ),
       );

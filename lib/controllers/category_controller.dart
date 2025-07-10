@@ -3,7 +3,6 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
 class CategoryController extends ApiProvider {
-  RxInt selectedIndex = 0.obs;
   var items = <Category>[].obs;
 
   Future<void> _fetchItems() async {
@@ -40,10 +39,6 @@ class CategoryController extends ApiProvider {
         .entries
         .map((entry) => MapEntry(entry.value, categoryNames[entry.key]))
         .toList();
-  }
-
-  void setActiveMenu(int index) {
-    selectedIndex.value = index;
   }
 
   // List<Post> filterByCategory(List<Post> posts, int categoryId) =>

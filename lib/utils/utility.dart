@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wordpress_client/wordpress_client.dart';
+
+enum Type { category, tag, author }
 
 /// Picks the best image URL from WordPress media based on device width.
 String getResponsiveImageUrl(Media media) {
@@ -37,6 +40,14 @@ String stripHtml({required String htmlText, int length = 5}) {
   final text = htmlText.replaceAll(RegExp(r'<[^>]*>'), '');
 
   return truncateWithEllipsis(text, length);
+}
+
+String stripHtmls(String raw) {
+  // Remove HTML tags
+  final withoutTags = raw.replaceAll(RegExp(r'<[^>]*>'), '');
+
+  // Decode HTML entities
+  return unescape(withoutTags).trim();
 }
 
 String truncateWithEllipsis(String text, int maxChars) {
@@ -74,8 +85,6 @@ Object getValue({Map<String, dynamic>? object, required String key}) {
   return object?[key] ?? "Unknown";
 }
 
-enum Type { category, tag, author }
-
 Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
   // Show blocking overlay
   Get.dialog(
@@ -96,4 +105,8 @@ Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
     Get.back();
     rethrow;
   }
+}
+
+String unescape(String input) {
+  return HtmlUnescape().convert(input);
 }

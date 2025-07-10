@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class ImageContent extends StatelessWidget {
   final String? imageUrl;
   final double screenHeight;
-  final bool isLandscape;
+  final bool isLandscape, isDetail;
+
   const ImageContent({
     super.key,
     this.imageUrl,
     this.screenHeight = 200,
     required this.isLandscape,
+    this.isDetail = false,
   });
 
   @override
@@ -22,10 +24,12 @@ class ImageContent extends StatelessWidget {
     }
 
     return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(12),
-        topRight: Radius.circular(12),
-      ),
+      borderRadius: isDetail
+          ? BorderRadius.all(Radius.circular(6))
+          : BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+            ),
       child: CachedNetworkImage(
         imageUrl: imageUrl!,
         width: double.infinity,

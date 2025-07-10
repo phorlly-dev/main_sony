@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/utils/utility.dart';
+import 'package:main_sony/views/screens/post_detail.dart';
 import 'package:main_sony/views/widgets/blog_card.dart';
 import 'package:main_sony/views/widgets/page_data_view.dart';
 import 'package:wordpress_client/wordpress_client.dart';
@@ -9,6 +10,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 class PostCard extends StatefulWidget {
   final int id, type;
   final PostController controller;
+
   const PostCard({
     super.key,
     required this.controller,
@@ -21,7 +23,7 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  late PostController controller;
+  late final PostController controller;
 
   @override
   void initState() {
@@ -48,8 +50,8 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return PageDataView<Post>(
+    return Obx(
+      () => PageDataView<Post>(
         items: controller.items,
         page: controller.page.value,
         totalPages: controller.totalPages.value,
@@ -73,8 +75,14 @@ class _PostCardState extends State<PostCard> {
             title: title,
             description: desc,
             date: item.date ?? DateTime.now(),
-            onReadMore: () {
-              print("Read more");
+            onReadMore: () async {
+              final post = await controller.fetchItemById(item.id);
+
+              Get.to(
+                () => PostDetailScreen(post: post, controller: controller),
+                duration: Duration(seconds: 1),
+                curve: Curves.fastLinearToSlowEaseIn,
+              );
             },
             // category: catName,
             onComment: () {
@@ -84,7 +92,7 @@ class _PostCardState extends State<PostCard> {
             controller: controller,
           );
         },
-      );
-    });
+      ),
+    );
   }
 }

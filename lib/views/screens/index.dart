@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/controllers/tag_controller.dart';
 import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/views/screens/home.dart';
 import 'package:main_sony/views/screens/sub_post.dart';
@@ -19,6 +20,7 @@ class _IndexScreenState extends State<IndexScreen> {
   late final PostController post;
   late final CategoryController category;
   late final PageControllerX page;
+  late final TagController tag;
   late final ScreenParams params;
 
   @override
@@ -34,6 +36,7 @@ class _IndexScreenState extends State<IndexScreen> {
     post = Get.find<PostController>();
     category = Get.find<CategoryController>();
     page = Get.find<PageControllerX>();
+    tag = Get.find<TagController>();
   }
 
   @override
@@ -42,17 +45,19 @@ class _IndexScreenState extends State<IndexScreen> {
       return SafeArea(
         child: HomeScreen(
           postController: post,
-          pageController: page,
+          controller: page,
           categoryController: category,
           id: params.id,
           type: params.type,
           name: params.name,
+          tagController: tag,
         ),
       );
     }
 
     return SafeArea(
       child: SubPostScreen(
+        tagController: tag,
         postController: post,
         pageController: page,
         categoryController: category,

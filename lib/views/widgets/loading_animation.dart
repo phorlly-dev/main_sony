@@ -4,14 +4,36 @@ import 'package:main_sony/utils/constants.dart';
 
 const double _kSize = 50;
 
+enum LoadingType {
+  discreteCircle,
+  waveDots,
+  inkDrop,
+  threeRotatingDots,
+  staggeredDotsWave,
+  fourRotatingDots,
+  fallingDot,
+  progressiveDots,
+  threeArchedCircle,
+  bouncingBall,
+  flickr,
+  hexagonDots,
+  beat,
+  horizontalRotatingDots,
+  newtonCradle,
+  stretchedDots,
+  halfTriangleDot,
+  dotsTriangle,
+  twistingDots,
+}
+
 class LoadingAnimation extends StatelessWidget {
-  final int type;
+  final LoadingType? type;
   final String label;
   final double textSize;
   final AppColorRole themColor;
   const LoadingAnimation({
     super.key,
-    this.type = 0,
+    this.type,
     this.themColor = AppColorRole.info,
     this.label = "Loading...",
     this.textSize = 18,
@@ -41,105 +63,105 @@ class LoadingAnimation extends StatelessWidget {
       size: _kSize,
     );
     switch (type) {
-      case 1:
+      case LoadingType.waveDots:
         loading = LoadingAnimationWidget.waveDots(
           color: Colors.blue,
           size: _kSize,
         );
         break;
-      case 2:
+      case LoadingType.inkDrop:
         loading = LoadingAnimationWidget.inkDrop(color: kColor, size: _kSize);
         break;
-      case 3:
+      case LoadingType.twistingDots:
         loading = LoadingAnimationWidget.twistingDots(
           leftDotColor: const Color(0xFF1A1A3F),
           rightDotColor: const Color(0xFFEA3799),
           size: _kSize,
         );
         break;
-      case 4:
+      case LoadingType.threeRotatingDots:
         loading = LoadingAnimationWidget.threeRotatingDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 5:
+      case LoadingType.staggeredDotsWave:
         loading = LoadingAnimationWidget.staggeredDotsWave(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 6:
+      case LoadingType.fourRotatingDots:
         loading = LoadingAnimationWidget.fourRotatingDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 7:
+      case LoadingType.fallingDot:
         loading = LoadingAnimationWidget.fallingDot(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 8:
+      case LoadingType.progressiveDots:
         loading = LoadingAnimationWidget.progressiveDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 9:
+      case LoadingType.threeArchedCircle:
         loading = LoadingAnimationWidget.threeArchedCircle(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 10:
+      case LoadingType.bouncingBall:
         loading = LoadingAnimationWidget.bouncingBall(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 11:
+      case LoadingType.flickr:
         loading = LoadingAnimationWidget.flickr(
           leftDotColor: const Color(0xFF0063DC),
           rightDotColor: const Color(0xFFFF0084),
           size: _kSize,
         );
         break;
-      case 12:
+      case LoadingType.hexagonDots:
         loading = LoadingAnimationWidget.hexagonDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 13:
+      case LoadingType.beat:
         loading = LoadingAnimationWidget.beat(color: kColor, size: _kSize);
         break;
-      case 14:
+      case LoadingType.horizontalRotatingDots:
         loading = LoadingAnimationWidget.horizontalRotatingDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 15:
+      case LoadingType.newtonCradle:
         loading = LoadingAnimationWidget.newtonCradle(
           color: kColor,
           size: 2 * _kSize,
         );
         break;
-      case 16:
+      case LoadingType.stretchedDots:
         loading = LoadingAnimationWidget.stretchedDots(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 17:
+      case LoadingType.halfTriangleDot:
         loading = LoadingAnimationWidget.halfTriangleDot(
           color: kColor,
           size: _kSize,
         );
         break;
-      case 18:
+      case LoadingType.dotsTriangle:
         loading = LoadingAnimationWidget.dotsTriangle(
           color: kColor,
           size: _kSize,

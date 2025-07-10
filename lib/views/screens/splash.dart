@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(image: AssetImage("assets/images/KT2.png")),
-            LoadingAnimation(type: 5),
+            LoadingAnimation(type: LoadingType.staggeredDotsWave),
           ],
         ),
       ),

@@ -16,7 +16,7 @@ class NotFound extends StatelessWidget {
             const SizedBox(height: 16),
             LoadingAnimation(
               label: 'No Internet Connection',
-              type: 11,
+              type: LoadingType.flickr,
               themColor: AppColorRole.primary,
             ),
           ],

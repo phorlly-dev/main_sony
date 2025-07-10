@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/media_controller.dart';
@@ -25,7 +27,6 @@ class PostController extends ApiProvider {
     hasError.value = '';
 
     // Save filter params
-    // Save filter
     if (byId != null) _currentFilterId = byId;
     _currentFilterType = type;
 
@@ -94,7 +95,22 @@ class PostController extends ApiProvider {
     isLoading.value = false;
   }
 
-  void Function(int index) get setActiveMenu => _category.setActiveMenu;
+  // Fetch a single post by ID
+  Future<Post> fetchItemById(int postId) async {
+    try {
+      final request = RetrievePostRequest(id: postId);
+      final response = await connx.posts.retrieve(request);
+
+      return response.map(
+        onSuccess: (res) => res.data,
+        onFailure: (err) => throw Exception(err.error?.message),
+      );
+    } catch (e) {
+      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+    }
+
+    throw Exception('Failed to load post details');
+  }
 
   Map<int, Media> get mediaMap => _media.itemMap;
 

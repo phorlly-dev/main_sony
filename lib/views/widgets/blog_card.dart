@@ -11,7 +11,7 @@ import 'package:main_sony/views/widgets/image_content.dart';
 import 'package:main_sony/views/widgets/text_content.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
-class BlogCard extends StatelessWidget {
+class BlogCard extends StatefulWidget {
   final PostController controller;
   final Post post;
   final String imageUrl;
@@ -34,6 +34,24 @@ class BlogCard extends StatelessWidget {
   });
 
   @override
+  State<BlogCard> createState() => _BlogCardState();
+}
+
+class _BlogCardState extends State<BlogCard> {
+  late final PostController controller;
+  late final String author;
+  late final List<MapEntry<int, String>> categories, tags;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller;
+    author = widget.controller.authorName(widget.post);
+    categories = widget.controller.categories(widget.post);
+    tags = widget.controller.tags(widget.post);
+  }
+
+  @override
   Widget build(BuildContext context) {
     //calculate the screen
     final isLandscape =
@@ -41,9 +59,6 @@ class BlogCard extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final author = controller.authorName(post);
-    final categories = controller.categories(post);
-    final tags = controller.tags(post);
 
     return Card(
       color: colors.surface,
@@ -53,9 +68,9 @@ class BlogCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: onReadMore,
+            onTap: widget.onReadMore,
             child: ImageContent(
-              imageUrl: imageUrl,
+              imageUrl: widget.imageUrl,
               screenHeight: screenHeight,
               isLandscape: isLandscape,
             ),
@@ -69,9 +84,9 @@ class BlogCard extends StatelessWidget {
               children: [
                 // Title
                 InkWell(
-                  onTap: onReadMore,
+                  onTap: widget.onReadMore,
                   child: Text(
-                    title,
+                    unescape(widget.title),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -91,7 +106,7 @@ class BlogCard extends StatelessWidget {
                     children: [
                       IconText(
                         icon: Icons.calendar_today,
-                        label: dateStr(date: date),
+                        label: dateStr(date: widget.date),
                         color: colors.onSurface.withValues(alpha: 0.7),
                       ),
                       IconText(
@@ -103,7 +118,7 @@ class BlogCard extends StatelessWidget {
                             duration: Duration(milliseconds: 800),
                             curve: Curves.fastLinearToSlowEaseIn,
                             arguments: ScreenParams(
-                              id: post.author,
+                              id: widget.post.author,
                               name: author,
                               type: 2,
                             ),
@@ -115,7 +130,7 @@ class BlogCard extends StatelessWidget {
                         icon: Icons.comment,
                         label: 'Comment'.toUpperCase(),
                         color: AppColorRole.info.color,
-                        onTap: onComment,
+                        onTap: widget.onComment,
                       ),
                     ],
                   ),
@@ -125,8 +140,8 @@ class BlogCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextContent(
-                    article: description,
-                    navigate: onReadMore,
+                    article: widget.description,
+                    navigate: widget.onReadMore,
                     isLandscape: isLandscape,
                   ),
                 ),
@@ -146,7 +161,7 @@ class BlogCard extends StatelessWidget {
                           onLabelTaps: categories
                               .map(
                                 (e) => () {
-                                  controller.setActiveMenu(e.key);
+                                  widget.controller.setActiveMenu(e.key);
                                   Get.offAll(
                                     () => IndexScreen(),
                                     duration: Duration(milliseconds: 800),

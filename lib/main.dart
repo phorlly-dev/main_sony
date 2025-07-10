@@ -4,6 +4,7 @@ import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/connection_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/controllers/tag_controller.dart';
 import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/screens/splash.dart';
@@ -16,6 +17,7 @@ void main() {
   Get.put(PostController());
   Get.put(PageControllerX());
   Get.put(CategoryController());
+  Get.put(TagController());
 
   runApp(const StarterScreen());
 }
