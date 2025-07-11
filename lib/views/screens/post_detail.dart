@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/utils/constants.dart';
-import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/utils/utility.dart';
-import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/widgets/html_content.dart';
 import 'package:main_sony/views/widgets/icon_text.dart';
-import 'package:main_sony/views/widgets/icon_texts.dart';
 import 'package:main_sony/views/widgets/nav_bar.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
@@ -26,23 +22,26 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
-  late final Media? media;
   late final Post post;
-  late final Map<String, dynamic>? yoast;
-  late final String title;
+  late final String title, category, tag;
   late final DateTime date;
-  late final List<MapEntry<int, String>> categories, tags;
+  late final List<String>? classList;
 
   @override
   void initState() {
     super.initState();
     post = widget.post;
-    media = widget.controller.mediaMap[widget.post.featuredMedia];
-    yoast = widget.post.yoastHeadJson;
+    classList = post.classList;
     title = post.title?.rendered ?? 'No Title';
     date = post.date!;
-    categories = widget.controller.categories(widget.post);
-    tags = widget.controller.tags(widget.post);
+    // final catEntry = classList?.firstWhere(
+    //   (s) => s.startsWith('category-'),
+    //   orElse: () => '',
+    // );
+    // final slug = catEntry.replaceFirst('category-', '');
+
+    category = post.classList?[6].replaceFirst('category-', '') ?? '';
+    tag = post.classList?[7].replaceFirst('tag-', '') ?? '';
   }
 
   @override
@@ -97,28 +96,23 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             label: dateStr(date: date),
                             color: colors.onSurface.withValues(alpha: 0.7),
                           ),
-                          if (categories.isNotEmpty)
-                            IconTexts(
+                          if (category.isNotEmpty)
+                            IconText(
                               icon: Icons.category_rounded,
-                              labels: categories.map((e) => e.value).toList(),
+                              label: category,
                               color: AppColorRole.success.color,
-                              onLabelTaps: categories
-                                  .map(
-                                    (e) => () {
-                                      widget.controller.setActiveMenu(e.key);
-                                      Get.offAll(
-                                        () => IndexScreen(),
-                                        duration: Duration(milliseconds: 800),
-                                        curve: Curves.fastLinearToSlowEaseIn,
-                                        arguments: ScreenParams(
-                                          id: e.key,
-                                          name: e.value,
-                                          type: 1,
-                                        ),
-                                      );
-                                    },
-                                  )
-                                  .toList(),
+                              onTap: () {
+                                // Get.offAll(
+                                //   () => IndexScreen(),
+                                //   duration: Duration(milliseconds: 800),
+                                //   curve: Curves.fastLinearToSlowEaseIn,
+                                //   arguments: ScreenParams(
+                                //     id: e.key,
+                                //     name: e.value,
+                                //     type: 1,
+                                //   ),
+                                // );
+                              },
                             ),
                         ],
                       ),
@@ -139,29 +133,25 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     // ),
 
                     //Tags
-                    if (tags.isNotEmpty)
+                    if (tag.isNotEmpty)
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        child: IconTexts(
+                        child: IconText(
                           icon: Icons.tag_rounded,
-                          labels: tags.map((e) => e.value).toList(),
+                          label: tag,
                           color: AppColorRole.primary.color,
-                          onLabelTaps: tags
-                              .map(
-                                (e) => () {
-                                  Get.offAll(
-                                    () => IndexScreen(),
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.fastLinearToSlowEaseIn,
-                                    arguments: ScreenParams(
-                                      id: e.key,
-                                      name: e.value,
-                                      type: 3,
-                                    ),
-                                  );
-                                },
-                              )
-                              .toList(),
+                          onTap: () {
+                            // Get.offAll(
+                            //   () => IndexScreen(),
+                            //   duration: Duration(milliseconds: 800),
+                            //   curve: Curves.fastLinearToSlowEaseIn,
+                            //   arguments: ScreenParams(
+                            //     id: e.key,
+                            //     name: e.value,
+                            //     type: 3,
+                            //   ),
+                            // );
+                          },
                         ),
                       ),
 

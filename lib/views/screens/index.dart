@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/category_controller.dart';
+import 'package:main_sony/controllers/menu_item_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_controller.dart';
-import 'package:main_sony/controllers/tag_controller.dart';
 import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/views/screens/home.dart';
 import 'package:main_sony/views/screens/sub_post.dart';
@@ -18,9 +17,8 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   //controller
   late final PostController post;
-  late final CategoryController category;
+  late final MenuItemController menuItem;
   late final PageControllerX page;
-  late final TagController tag;
   late final ScreenParams params;
 
   @override
@@ -30,40 +28,35 @@ class _IndexScreenState extends State<IndexScreen> {
     final args = Get.arguments;
     params = args is ScreenParams
         ? args
-        : const ScreenParams(id: 0, name: "Home", type: 0);
+        : const ScreenParams(id: 0, name: "Home", type: TypeParams.all);
 
     //controller
     post = Get.find<PostController>();
-    category = Get.find<CategoryController>();
     page = Get.find<PageControllerX>();
-    tag = Get.find<TagController>();
+    menuItem = Get.find<MenuItemController>();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (params.type == 0) {
+    if (params.type == TypeParams.all) {
       return SafeArea(
         child: HomeScreen(
-          postController: post,
-          controller: page,
-          categoryController: category,
           id: params.id,
           type: params.type,
-          name: params.name,
-          tagController: tag,
+          controller: post,
+          page: page,
+          menuItem: menuItem,
         ),
       );
     }
 
     return SafeArea(
       child: SubPostScreen(
-        tagController: tag,
-        postController: post,
-        pageController: page,
-        categoryController: category,
         id: params.id,
         type: params.type,
-        name: params.name,
+        controller: post,
+        page: page,
+        menuItem: menuItem,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/utils/utility.dart';
 import 'package:main_sony/views/screens/post_detail.dart';
 import 'package:main_sony/views/widgets/blog_card.dart';
@@ -8,7 +9,8 @@ import 'package:main_sony/views/widgets/page_data_view.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
 class PostCard extends StatefulWidget {
-  final int id, type;
+  final int id;
+  final TypeParams type;
   final PostController controller;
 
   const PostCard({
@@ -60,6 +62,9 @@ class _PostCardState extends State<PostCard> {
         onGoToPage: (page) => controller.goToPage(page),
         itemBuilder: (context, item, index) {
           final yoast = item.yoastHeadJson;
+          // final classList = item.classList;
+          // final t = getValue(object: classList, key: '7').toString();
+
           // final title = getValue(object: yoast, key: 'title').toString();
           // final desc = getValue(object: yoast, key: 'description').toString();
           final title = item.title?.rendered ?? 'No Title';

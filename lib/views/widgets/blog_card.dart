@@ -39,8 +39,9 @@ class BlogCard extends StatefulWidget {
 
 class _BlogCardState extends State<BlogCard> {
   late final PostController controller;
-  late final String author;
+  late final String author, tag, category;
   late final List<MapEntry<int, String>> categories, tags;
+  late final List<String> classList;
 
   @override
   void initState() {
@@ -49,6 +50,8 @@ class _BlogCardState extends State<BlogCard> {
     author = widget.controller.authorName(widget.post);
     categories = widget.controller.categories(widget.post);
     tags = widget.controller.tags(widget.post);
+    tag = widget.post.classList?[7] ?? "";
+    category = widget.post.classList?[6] ?? "";
   }
 
   @override
@@ -120,7 +123,7 @@ class _BlogCardState extends State<BlogCard> {
                             arguments: ScreenParams(
                               id: widget.post.author,
                               name: author,
-                              type: 2,
+                              type: TypeParams.author,
                             ),
                           );
                         },
@@ -161,7 +164,7 @@ class _BlogCardState extends State<BlogCard> {
                           onLabelTaps: categories
                               .map(
                                 (e) => () {
-                                  widget.controller.setActiveMenu(e.key);
+                                  widget.controller.setActiveMenu(e.value);
                                   Get.offAll(
                                     () => IndexScreen(),
                                     duration: Duration(milliseconds: 800),
@@ -169,7 +172,7 @@ class _BlogCardState extends State<BlogCard> {
                                     arguments: ScreenParams(
                                       id: e.key,
                                       name: e.value,
-                                      type: 1,
+                                      type: TypeParams.category,
                                     ),
                                   );
                                 },
@@ -193,7 +196,7 @@ class _BlogCardState extends State<BlogCard> {
                                     arguments: ScreenParams(
                                       id: e.key,
                                       name: e.value,
-                                      type: 3,
+                                      type: TypeParams.tag,
                                     ),
                                   );
                                 },

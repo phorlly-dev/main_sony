@@ -1,6 +1,9 @@
+enum TypeParams { all, category, tag, author, classList }
+
 class ScreenParams {
-  final int id, type;
+  final int id;
+  final TypeParams type;
   final String? name;
 
-  const ScreenParams({required this.id, this.name, required this.type});
+  const ScreenParams({required this.id, this.name, this.type = TypeParams.all});
 }

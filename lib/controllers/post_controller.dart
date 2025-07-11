@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/media_controller.dart';
 import 'package:main_sony/controllers/tag_controller.dart';
 import 'package:main_sony/controllers/user_controller.dart';
+import 'package:main_sony/utils/params.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
@@ -19,10 +18,14 @@ class PostController extends ApiProvider {
 
   // Store last filter type and value
   int? _currentFilterId;
-  int _currentFilterType = 0; // 1=category, 2=author, 3=tag, 0=all
+  TypeParams _currentFilterType = TypeParams.all;
 
   // Main fetch
-  Future<void> fetchItems({int? pageNum, int? byId, int type = 0}) async {
+  Future<void> fetchItems({
+    int? pageNum,
+    int? byId,
+    TypeParams type = TypeParams.all,
+  }) async {
     isLoading.value = true;
     hasError.value = '';
 
@@ -32,16 +35,17 @@ class PostController extends ApiProvider {
 
     // Define variables for filters
     List<int>? categories, authors, tags;
+    List<String>? classList;
 
     // Switch logic for assigning the correct filter
     switch (type) {
-      case 1:
+      case TypeParams.category:
         if (byId != null) categories = [byId];
         break;
-      case 2:
+      case TypeParams.author:
         if (byId != null) authors = [byId];
         break;
-      case 3:
+      case TypeParams.tag:
         if (byId != null) tags = [byId];
         break;
       default:
@@ -61,6 +65,7 @@ class PostController extends ApiProvider {
         categories: categories,
         author: authors,
         tags: tags,
+        classList: classList,
         orderBy: OrderBy.date,
       );
       final response = await connx.posts.list(request);
@@ -143,7 +148,7 @@ class PostController extends ApiProvider {
     );
   }
 
-  void dataView({int type = 0, int? id}) {
+  void dataView({TypeParams type = TypeParams.all, int? id}) {
     _currentFilterType = type;
     _currentFilterId = id;
 

@@ -56,25 +56,46 @@ String truncateWithEllipsis(String text, int maxChars) {
   return '${text.substring(0, maxChars)}... ';
 }
 
-IconData setIcon(String item) {
+List<Object> setIcon(String item) {
   final listIcons = [
-    {"name": "android", 'icon': Icons.android},
-    {"name": "arcade", 'icon': Icons.games_outlined},
-    {"name": "berita", 'icon': Icons.info},
-    {"name": "opini", 'icon': Icons.comment_rounded},
-    {"name": "pc", 'icon': Icons.computer_rounded},
+    //category
+    {"slug": "android", "name": "Android", 'icon': Icons.android},
+    {"slug": "arcade", "name": "Arcade", 'icon': Icons.games_outlined},
+    {"slug": "berita", "name": "Berita", 'icon': Icons.info},
+    {"slug": "pc", "name": "PC", 'icon': Icons.computer_rounded},
+
+    //tag
+    {"slug": "steam", "name": "Steam", 'icon': Icons.gite_rounded},
+    {
+      "slug": "genshin-impact",
+      "name": "Genshin Impact",
+      'icon': Icons.grid_goldenratio_rounded,
+    },
+    {
+      "slug": "roblox",
+      "name": "Roblox",
+      'icon': Icons.confirmation_num_rounded,
+    },
+    {"slug": "pubg", "name": "Pubg", 'icon': Icons.gas_meter_rounded},
+    {
+      "slug": "mlbb",
+      "name": "Mobile Legends",
+      'icon': Icons.security_update_warning_rounded,
+    },
   ];
 
   IconData icon = Icons.apps_rounded;
+  String name = "";
 
   for (var i in listIcons) {
-    if (i['name'] == item.toLowerCase()) {
+    if (i['slug'] == item.toLowerCase()) {
       icon = i['icon'] as IconData;
+      name = i['name'] as String;
       break;
     }
   }
 
-  return icon;
+  return [icon, name];
 }
 
 String dateStr({required DateTime date, String? format}) {
@@ -109,4 +130,19 @@ Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
 
 String unescape(String input) {
   return HtmlUnescape().convert(input);
+}
+
+List<String> extractMenuLabels(List<String> classList) {
+  final labels = <String>[];
+
+  for (final item in classList) {
+    if (item.startsWith("category-")) {
+      final label = item.substring("category-".length).replaceAll('-', ' ');
+      labels.add(label.toUpperCase());
+    } else if (item.startsWith("tag-")) {
+      final label = item.substring("tag-".length).replaceAll('-', ' ');
+      labels.add(label.toUpperCase());
+    }
+  }
+  return labels;
 }

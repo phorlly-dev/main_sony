@@ -11,12 +11,12 @@ class ApiProvider extends GetxController {
   var hasError = ''.obs;
   var page = 1.obs;
   final int perPage = 5;
-  RxInt selectedIndex = 0.obs;
+  var selectedItem = "home".obs;
 
   String get apiUrl => _apiUrl; // optional getter
 
-  void setActiveMenu(int index) {
-    selectedIndex.value = index;
+  void setActiveMenu(String item) {
+    selectedItem.value = item;
   }
 
   @override
