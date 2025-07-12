@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:main_sony/controllers/connection_controller.dart';
 import 'package:main_sony/controllers/menu_item_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/controllers/post_list_controller.dart';
 import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/screens/splash.dart';
@@ -13,7 +13,7 @@ void main() {
 
   // Register controllers BEFORE runApp
   Get.put(ConnectionController());
-  Get.put(PostController());
+  Get.put(PostListController());
   Get.put(PageControllerX());
   Get.put(MenuItemController());
 
@@ -32,7 +32,7 @@ class StarterScreen extends StatelessWidget {
       initialRoute: "/splash",
       getPages: [
         GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(name: '/dashboard', page: () => IndexScreen()),
+        GetPage(name: '/view-posts', page: () => IndexScreen()),
       ],
       theme: lightTheme, // Default light theme
       darkTheme: darkTheme, // Dark theme

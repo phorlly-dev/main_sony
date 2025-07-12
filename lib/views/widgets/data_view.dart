@@ -21,12 +21,15 @@ class DataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // If loading, show a loading animation
     if (isLoading == true) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
         child: LoadingAnimation(),
       );
     }
+
+    // If an error is present, show the error message
     if (hasError!.isNotEmpty) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
@@ -37,6 +40,8 @@ class DataView extends StatelessWidget {
         ),
       );
     }
+
+    // If no items are found and notFound is empty, show a loading animation
     if (notFound == null || notFound!.isEmpty) {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
@@ -48,6 +53,7 @@ class DataView extends StatelessWidget {
       );
     }
 
+    // If items are found, display them in a ListView
     return ListView.builder(
       itemCount: itemCounter,
       itemBuilder: itemBuilder,

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/controllers/post_list_controller.dart';
+import 'package:main_sony/utils/class_list_meta.dart';
 import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/utils/utility.dart';
-import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/widgets/icon_text.dart';
 import 'package:main_sony/views/widgets/icon_texts.dart';
 import 'package:main_sony/views/widgets/image_content.dart';
 import 'package:main_sony/views/widgets/text_content.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
-class BlogCard extends StatefulWidget {
-  final PostController controller;
+class BlogCard extends StatelessWidget {
+  final PostListController controller;
   final Post post;
   final String imageUrl;
   final String title;
@@ -34,27 +34,6 @@ class BlogCard extends StatefulWidget {
   });
 
   @override
-  State<BlogCard> createState() => _BlogCardState();
-}
-
-class _BlogCardState extends State<BlogCard> {
-  late final PostController controller;
-  late final String author, tag, category;
-  late final List<MapEntry<int, String>> categories, tags;
-  late final List<String> classList;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = widget.controller;
-    author = widget.controller.authorName(widget.post);
-    categories = widget.controller.categories(widget.post);
-    tags = widget.controller.tags(widget.post);
-    tag = widget.post.classList?[7] ?? "";
-    category = widget.post.classList?[6] ?? "";
-  }
-
-  @override
   Widget build(BuildContext context) {
     //calculate the screen
     final isLandscape =
@@ -62,18 +41,25 @@ class _BlogCardState extends State<BlogCard> {
     final colors = Theme.of(context).colorScheme;
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final author = controller.authorName(post);
+    final classList = post.classList ?? [];
+    final metaGroups = extractCategoriesAndTags(classList);
+    final uniqueCategories = getMenuMetaList(
+      metaGroups.categories.toSet().toList(),
+    );
+    final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
 
     return Card(
       color: colors.surface,
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: widget.onReadMore,
+            onTap: onReadMore,
             child: ImageContent(
-              imageUrl: widget.imageUrl,
+              imageUrl: imageUrl,
               screenHeight: screenHeight,
               isLandscape: isLandscape,
             ),
@@ -87,9 +73,9 @@ class _BlogCardState extends State<BlogCard> {
               children: [
                 // Title
                 InkWell(
-                  onTap: widget.onReadMore,
+                  onTap: onReadMore,
                   child: Text(
-                    unescape(widget.title),
+                    unescape(title),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -109,22 +95,19 @@ class _BlogCardState extends State<BlogCard> {
                     children: [
                       IconText(
                         icon: Icons.calendar_today,
-                        label: dateStr(date: widget.date),
+                        label: dateStr(date: date),
                         color: colors.onSurface.withValues(alpha: 0.7),
                       ),
                       IconText(
                         icon: Icons.person,
                         label: author.toUpperCase(),
                         onTap: () {
-                          Get.offAll(
-                            () => IndexScreen(),
-                            duration: Duration(milliseconds: 800),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            arguments: ScreenParams(
-                              id: widget.post.author,
-                              name: author,
-                              type: TypeParams.author,
-                            ),
+                          controller.applyFilterAndPaginate(
+                            userId: post.author,
+                          );
+                          Get.toNamed(
+                            "/view-posts",
+                            arguments: ScreenParams(name: author),
                           );
                         },
                         color: AppColorRole.secondary.color,
@@ -133,7 +116,7 @@ class _BlogCardState extends State<BlogCard> {
                         icon: Icons.comment,
                         label: 'Comment'.toUpperCase(),
                         color: AppColorRole.info.color,
-                        onTap: widget.onComment,
+                        onTap: onComment,
                       ),
                     ],
                   ),
@@ -143,12 +126,13 @@ class _BlogCardState extends State<BlogCard> {
                 Container(
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextContent(
-                    article: widget.description,
-                    navigate: widget.onReadMore,
+                    article: description,
+                    navigate: onReadMore,
                     isLandscape: isLandscape,
                   ),
                 ),
 
+                //Categories and Tags
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Wrap(
@@ -156,24 +140,23 @@ class _BlogCardState extends State<BlogCard> {
                     runSpacing: 4,
                     children: [
                       // Categories
-                      if (categories.isNotEmpty)
+                      if (uniqueCategories.isNotEmpty)
                         IconTexts(
                           icon: Icons.category_rounded,
-                          labels: categories.map((e) => e.value).toList(),
+                          labels: uniqueCategories
+                              .map((meta) => meta.name.toUpperCase())
+                              .toList(),
                           color: AppColorRole.success.color,
-                          onLabelTaps: categories
+                          onLabelTaps: uniqueCategories
                               .map(
-                                (e) => () {
-                                  widget.controller.setActiveMenu(e.value);
-                                  Get.offAll(
-                                    () => IndexScreen(),
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.fastLinearToSlowEaseIn,
-                                    arguments: ScreenParams(
-                                      id: e.key,
-                                      name: e.value,
-                                      type: TypeParams.category,
-                                    ),
+                                (meta) => () {
+                                  controller.setActiveMenu(meta.slug);
+                                  controller.applyFilterAndPaginate(
+                                    slug: meta.slug,
+                                  );
+                                  Get.toNamed(
+                                    "/view-posts",
+                                    arguments: ScreenParams(name: meta.name),
                                   );
                                 },
                               )
@@ -181,23 +164,22 @@ class _BlogCardState extends State<BlogCard> {
                         ),
 
                       //Tags
-                      if (tags.isNotEmpty)
+                      if (uniqueTags.isNotEmpty)
                         IconTexts(
                           icon: Icons.tag_rounded,
-                          labels: tags.map((e) => e.value).toList(),
+                          labels: uniqueTags
+                              .map((meta) => meta.name.toUpperCase())
+                              .toList(),
                           color: AppColorRole.primary.color,
-                          onLabelTaps: tags
+                          onLabelTaps: uniqueTags
                               .map(
-                                (e) => () {
-                                  Get.offAll(
-                                    () => IndexScreen(),
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.fastLinearToSlowEaseIn,
-                                    arguments: ScreenParams(
-                                      id: e.key,
-                                      name: e.value,
-                                      type: TypeParams.tag,
-                                    ),
+                                (meta) => () {
+                                  controller.applyFilterAndPaginate(
+                                    slug: meta.slug,
+                                  );
+                                  Get.toNamed(
+                                    "/view-posts",
+                                    arguments: ScreenParams(name: meta.name),
                                   );
                                 },
                               )

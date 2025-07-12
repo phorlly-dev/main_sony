@@ -27,6 +27,7 @@ String getResponsiveImageUrl(Media media) {
   }
 }
 
+/// Extracts a substring from a string, limiting the number of words.
 String substr({required String key, int length = 5}) {
   final words = key.split(' ');
   final summary = words.length > length
@@ -36,12 +37,14 @@ String substr({required String key, int length = 5}) {
   return summary;
 }
 
+/// Strips HTML tags from a string and truncates it to a specified length.
 String stripHtml({required String htmlText, int length = 5}) {
   final text = htmlText.replaceAll(RegExp(r'<[^>]*>'), '');
 
   return truncateWithEllipsis(text, length);
 }
 
+// Unescapes HTML entities and removes HTML tags from a string.
 String stripHtmls(String raw) {
   // Remove HTML tags
   final withoutTags = raw.replaceAll(RegExp(r'<[^>]*>'), '');
@@ -50,12 +53,14 @@ String stripHtmls(String raw) {
   return unescape(withoutTags).trim();
 }
 
+/// Truncates a string to a specified length and adds ellipsis if needed.
 String truncateWithEllipsis(String text, int maxChars) {
   if (text.length <= maxChars) return text;
 
   return '${text.substring(0, maxChars)}... ';
 }
 
+/// Sets the icon and name based on the provided item slug.
 List<Object> setIcon(String item) {
   final listIcons = [
     //category
@@ -98,14 +103,17 @@ List<Object> setIcon(String item) {
   return [icon, name];
 }
 
+/// Formats a date to a string based on the provided format or defaults to 'd MMMM yyyy'.
 String dateStr({required DateTime date, String? format}) {
   return DateFormat(format ?? 'd MMMM yyyy').format(date);
 }
 
+/// Retrieves a value from a map or returns "Unknown" if the key is not present.
 Object getValue({Map<String, dynamic>? object, required String key}) {
   return object?[key] ?? "Unknown";
 }
 
+/// Displays a loading overlay while executing a fetcher function.
 Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
   // Show blocking overlay
   Get.dialog(
@@ -128,10 +136,12 @@ Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
   }
 }
 
+/// Unescapes HTML entities in a string.
 String unescape(String input) {
   return HtmlUnescape().convert(input);
 }
 
+/// Extracts menu labels from a list of class names, converting them to uppercase.
 List<String> extractMenuLabels(List<String> classList) {
   final labels = <String>[];
 

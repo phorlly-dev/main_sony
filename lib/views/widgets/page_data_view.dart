@@ -27,6 +27,7 @@ class PageDataView<T> extends StatelessWidget {
     // Prevent out-of-bounds page
     final safePage = page.clamp(1, totalPages > 0 ? totalPages : 1);
 
+    // If there are no items and an error is present, show the error
     return Stack(
       children: [
         Container(
@@ -41,6 +42,7 @@ class PageDataView<T> extends StatelessWidget {
           ),
         ),
 
+        // Show pagination bar only if there are multiple pages and items
         if (totalPages > 1 && items.isNotEmpty)
           Positioned(
             left: 0,

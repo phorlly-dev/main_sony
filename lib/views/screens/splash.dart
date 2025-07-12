@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/views/widgets/loading_animation.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2)); // Simulate loading
     // Add your app start logic here (e.g., check login, fetch config)
     // Then navigate:
-    Get.toNamed("/dashboard"); // or whatever your initial route is
+    Get.toNamed("/view-posts"); // or whatever your initial route is
   }
 
   @override
@@ -32,7 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(image: AssetImage("assets/images/KT2.png")),
-            LoadingAnimation(type: LoadingType.staggeredDotsWave),
+            LoadingAnimation(
+              type: LoadingType.staggeredDotsWave,
+              label: "Please Wait...",
+              themColor: AppColorRole.warning,
+            ),
           ],
         ),
       ),

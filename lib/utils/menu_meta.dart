@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
+/// Represents metadata for menu items, including icon, name, and slug.
 class MenuMeta {
   final IconData icon;
   final String name;
@@ -9,6 +10,7 @@ class MenuMeta {
   const MenuMeta({required this.slug, required this.name, required this.icon});
 }
 
+/// A predefined list of menu items with their respective slugs, names, and icons.
 final List<MenuMeta> menuItems = [
   // category
   MenuMeta(slug: "android", name: "Android", icon: Icons.android),
@@ -36,6 +38,21 @@ final List<MenuMeta> menuItems = [
   ),
 ];
 
+/// Retrieves a MenuMeta object based on the provided slug.
+MenuMeta getMenuMeta(String slug) {
+  return menuItems.firstWhere(
+    (meta) => meta.slug == slug.toLowerCase(),
+    orElse: () => MenuMeta(
+      slug: slug,
+      name:
+          slug[0].toUpperCase() +
+          slug.substring(1), // Default to capitalized slug
+      icon: Icons.apps_rounded,
+    ),
+  );
+}
+
+/// Retrieves a list of MenuMeta objects based on the provided slugs.
 Set<String> getUsedSlugs(List<Post> posts) {
   final slugs = <String>{};
   for (final post in posts) {
@@ -53,6 +70,7 @@ Set<String> getUsedSlugs(List<Post> posts) {
   return slugs;
 }
 
+/// Filters the menu items based on the provided slugs.
 List<MenuMeta> getVisibleMenuItems(List<MenuMeta> all, Set<String> usedSlugs) {
   return all.where((meta) => usedSlugs.contains(meta.slug)).toList();
 }

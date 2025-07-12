@@ -3,7 +3,9 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
 class TagController extends ApiProvider {
-  var items = <Tag>[].obs;
+  final RxList<Tag> items = <Tag>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;

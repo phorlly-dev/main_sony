@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/menu_item_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/controllers/post_controller.dart';
+import 'package:main_sony/controllers/post_list_controller.dart';
 import 'package:main_sony/utils/params.dart';
-import 'package:main_sony/views/screens/home.dart';
-import 'package:main_sony/views/screens/sub_post.dart';
+import 'package:main_sony/views/screens/view_post.dart';
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({super.key});
@@ -15,8 +14,7 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  //controller
-  late final PostController post;
+  late final PostListController post;
   late final MenuItemController menuItem;
   late final PageControllerX page;
   late final ScreenParams params;
@@ -24,36 +22,32 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   void initState() {
     super.initState();
-    //get arguments
-    final args = Get.arguments;
-    params = args is ScreenParams
-        ? args
-        : const ScreenParams(id: 0, name: "Home", type: TypeParams.all);
 
-    //controller
-    post = Get.find<PostController>();
+    // Defensive argument parsing with fallback
+    params = _getScreenParamsFromArgs(Get.arguments);
+
+    post = Get.find<PostListController>();
     page = Get.find<PageControllerX>();
     menuItem = Get.find<MenuItemController>();
   }
 
+  /// Safely extract ScreenParams from arguments, or return a default.
+  ScreenParams _getScreenParamsFromArgs(dynamic args) {
+    if (args is ScreenParams) {
+      return args;
+    } else if (args is Map) {
+      // If navigation sent a Map, parse as best as possible.
+      return ScreenParams(name: args['name'] as String? ?? 'Home');
+    }
+    // If nothing is passed, return default "home" params.
+    return const ScreenParams(name: 'Home');
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (params.type == TypeParams.all) {
-      return SafeArea(
-        child: HomeScreen(
-          id: params.id,
-          type: params.type,
-          controller: post,
-          page: page,
-          menuItem: menuItem,
-        ),
-      );
-    }
-
     return SafeArea(
-      child: SubPostScreen(
-        id: params.id,
-        type: params.type,
+      child: ViewPostScreen(
+        name: params.name,
         controller: post,
         page: page,
         menuItem: menuItem,

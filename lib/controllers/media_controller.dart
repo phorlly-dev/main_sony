@@ -3,7 +3,9 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
 class MediaController extends ApiProvider {
-  var items = <Media>[].obs;
+  final RxList<Media> items = <Media>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;

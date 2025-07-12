@@ -3,7 +3,6 @@ import 'package:main_sony/controllers/category_controller.dart';
 import 'package:main_sony/controllers/media_controller.dart';
 import 'package:main_sony/controllers/tag_controller.dart';
 import 'package:main_sony/controllers/user_controller.dart';
-import 'package:main_sony/utils/params.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
@@ -14,44 +13,24 @@ class PostController extends ApiProvider {
   final _tag = Get.put(TagController());
 
   // Reactive lists
-  var items = <Post>[].obs;
+  final RxList<Post> items = <Post>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxString hasError = ''.obs;
+  final RxInt page = 1.obs;
+  final RxInt totalPages = 1.obs;
+  final RxInt perPage = 5.obs;
 
-  // Store last filter type and value
-  int? _currentFilterId;
-  TypeParams _currentFilterType = TypeParams.all;
+  int? _currentUser;
 
   // Main fetch
-  Future<void> fetchItems({
-    int? pageNum,
-    int? byId,
-    TypeParams type = TypeParams.all,
-  }) async {
+  Future<void> fetchItems({int? pageNum, int? userId}) async {
     isLoading.value = true;
     hasError.value = '';
 
-    // Save filter params
-    if (byId != null) _currentFilterId = byId;
-    _currentFilterType = type;
-
     // Define variables for filters
-    List<int>? categories, authors, tags;
-    List<String>? classList;
-
-    // Switch logic for assigning the correct filter
-    switch (type) {
-      case TypeParams.category:
-        if (byId != null) categories = [byId];
-        break;
-      case TypeParams.author:
-        if (byId != null) authors = [byId];
-        break;
-      case TypeParams.tag:
-        if (byId != null) tags = [byId];
-        break;
-      default:
-        // no filter
-        break;
-    }
+    List<int>? authors;
+    if (userId != null) authors = [userId];
+    _currentUser = userId;
 
     // Clamp page
     if (pageNum != null) page.value = pageNum;
@@ -60,12 +39,9 @@ class PostController extends ApiProvider {
       // Fetch posts
       final request = ListPostRequest(
         order: Order.desc,
-        perPage: perPage,
+        perPage: perPage.value,
         page: page.value,
-        categories: categories,
         author: authors,
-        tags: tags,
-        classList: classList,
         orderBy: OrderBy.date,
       );
       final response = await connx.posts.list(request);
@@ -73,7 +49,7 @@ class PostController extends ApiProvider {
       response.map(
         onSuccess: (res) {
           items.value = res.data;
-          totalPages.value = (res.totalCount / perPage).ceil();
+          totalPages.value = (res.totalCount / perPage.value).ceil();
 
           // AUTO-CORRECT: If current page > totalPages, reset to last page and refetch!
           if (page.value > totalPages.value) {
@@ -132,27 +108,18 @@ class PostController extends ApiProvider {
   // Refresh current page
   // This will always refresh using the last filter (category/tag/author)
   Future<void> refreshCurrentPage() async {
-    await fetchItems(
-      pageNum: page.value,
-      byId: _currentFilterId,
-      type: _currentFilterType,
-    );
+    await fetchItems(pageNum: page.value, userId: _currentUser);
   }
 
   // Go to specific page
   void goToPage(int pageNum) {
-    fetchItems(
-      byId: _currentFilterId,
-      type: _currentFilterType,
-      pageNum: pageNum,
-    );
+    fetchItems(userId: _currentUser, pageNum: pageNum);
   }
 
-  void dataView({TypeParams type = TypeParams.all, int? id}) {
-    _currentFilterType = type;
-    _currentFilterId = id;
+  void dataView({int? userId}) {
+    _currentUser = userId;
 
-    fetchItems(pageNum: 1, byId: id, type: type);
+    fetchItems(pageNum: 1, userId: userId);
   }
 
   // Reactive variables

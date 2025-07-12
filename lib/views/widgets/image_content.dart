@@ -16,6 +16,7 @@ class ImageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // If the image URL is null or empty, show a placeholder
     if (imageUrl!.isEmpty) {
       return const AspectRatio(
         aspectRatio: 16 / 9,
@@ -23,6 +24,8 @@ class ImageContent extends StatelessWidget {
       );
     }
 
+    // If the image URL is valid, show the network image
+    // Use ClipRRect for rounded corners if it's a detail view
     return ClipRRect(
       borderRadius: isDetail
           ? BorderRadius.all(Radius.circular(6))

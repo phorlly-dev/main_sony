@@ -1,48 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:main_sony/controllers/post_controller.dart';
+import 'package:get/get.dart';
+import 'package:main_sony/controllers/post_list_controller.dart';
+import 'package:main_sony/utils/class_list_meta.dart';
 import 'package:main_sony/utils/constants.dart';
+import 'package:main_sony/utils/params.dart';
 import 'package:main_sony/utils/utility.dart';
 import 'package:main_sony/views/widgets/html_content.dart';
 import 'package:main_sony/views/widgets/icon_text.dart';
+import 'package:main_sony/views/widgets/icon_texts.dart';
 import 'package:main_sony/views/widgets/nav_bar.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
-class PostDetailScreen extends StatefulWidget {
+class PostDetailScreen extends StatelessWidget {
   final Post post;
-  final PostController controller;
+  final PostListController controller;
 
   const PostDetailScreen({
     super.key,
     required this.post,
     required this.controller,
   });
-
-  @override
-  State<PostDetailScreen> createState() => _PostDetailScreenState();
-}
-
-class _PostDetailScreenState extends State<PostDetailScreen> {
-  late final Post post;
-  late final String title, category, tag;
-  late final DateTime date;
-  late final List<String>? classList;
-
-  @override
-  void initState() {
-    super.initState();
-    post = widget.post;
-    classList = post.classList;
-    title = post.title?.rendered ?? 'No Title';
-    date = post.date!;
-    // final catEntry = classList?.firstWhere(
-    //   (s) => s.startsWith('category-'),
-    //   orElse: () => '',
-    // );
-    // final slug = catEntry.replaceFirst('category-', '');
-
-    category = post.classList?[6].replaceFirst('category-', '') ?? '';
-    tag = post.classList?[7].replaceFirst('tag-', '') ?? '';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +29,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final colors = Theme.of(context).colorScheme;
-    // final ogImage = getValue(object: yoast, key: 'og_image');
-    // final imgUrl = (ogImage is List && ogImage.isNotEmpty)
-    //     ? ogImage[0]['url']
-    //     : null;
+
+    final classList = post.classList ?? [];
+    final metaGroups = extractCategoriesAndTags(classList);
+    final uniqueCategories = getMenuMetaList(
+      metaGroups.categories.toSet().toList(),
+    );
+    final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
 
     return NavBar(
       title: "Post Details",
@@ -74,7 +54,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   children: [
                     // Title
                     Text(
-                      unescape(title),
+                      unescape(post.title?.rendered ?? 'No Title'),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -93,31 +73,40 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         children: [
                           IconText(
                             icon: Icons.calendar_today,
-                            label: dateStr(date: date),
+                            label: dateStr(date: post.date ?? DateTime.now()),
                             color: colors.onSurface.withValues(alpha: 0.7),
                           ),
-                          if (category.isNotEmpty)
-                            IconText(
+
+                          // Categories
+                          if (uniqueCategories.isNotEmpty)
+                            IconTexts(
                               icon: Icons.category_rounded,
-                              label: category,
+                              labels: uniqueCategories
+                                  .map((meta) => meta.name.toUpperCase())
+                                  .toList(),
                               color: AppColorRole.success.color,
-                              onTap: () {
-                                // Get.offAll(
-                                //   () => IndexScreen(),
-                                //   duration: Duration(milliseconds: 800),
-                                //   curve: Curves.fastLinearToSlowEaseIn,
-                                //   arguments: ScreenParams(
-                                //     id: e.key,
-                                //     name: e.value,
-                                //     type: 1,
-                                //   ),
-                                // );
-                              },
+                              onLabelTaps: uniqueCategories
+                                  .map(
+                                    (meta) => () {
+                                      controller.setActiveMenu(meta.slug);
+                                      controller.applyFilterAndPaginate(
+                                        slug: meta.slug,
+                                      );
+                                      Get.toNamed(
+                                        "/view-posts",
+                                        arguments: ScreenParams(
+                                          name: meta.name,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                  .toList(),
                             ),
                         ],
                       ),
                     ),
 
+                    //Content post
                     HtmlContent(
                       htmlContent: post.content?.rendered ?? "No Content",
                       screenHeight: screenHeight,
@@ -125,33 +114,29 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       isLandscape: isLandscape,
                     ),
 
-                    // ImageContent(
-                    //   imageUrl: media?.sourceUrl ?? imgUrl,
-                    //   screenHeight: screenHeight,
-                    //   isLandscape: isLandscape,
-                    //   isDetail: true,
-                    // ),
-
                     //Tags
-                    if (tag.isNotEmpty)
+                    if (uniqueTags.isNotEmpty)
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        child: IconText(
+                        child: IconTexts(
                           icon: Icons.tag_rounded,
-                          label: tag,
+                          labels: uniqueTags
+                              .map((meta) => meta.name.toUpperCase())
+                              .toList(),
                           color: AppColorRole.primary.color,
-                          onTap: () {
-                            // Get.offAll(
-                            //   () => IndexScreen(),
-                            //   duration: Duration(milliseconds: 800),
-                            //   curve: Curves.fastLinearToSlowEaseIn,
-                            //   arguments: ScreenParams(
-                            //     id: e.key,
-                            //     name: e.value,
-                            //     type: 3,
-                            //   ),
-                            // );
-                          },
+                          onLabelTaps: uniqueTags
+                              .map(
+                                (meta) => () {
+                                  controller.applyFilterAndPaginate(
+                                    slug: meta.slug,
+                                  );
+                                  Get.toNamed(
+                                    "/view-posts",
+                                    arguments: ScreenParams(name: meta.name),
+                                  );
+                                },
+                              )
+                              .toList(),
                         ),
                       ),
 

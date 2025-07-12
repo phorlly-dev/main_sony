@@ -24,6 +24,7 @@ class SmartCircleAvatar extends StatelessWidget {
       );
     }
 
+    // If the avatar URL is valid, show the network image
     return CircleAvatar(
       radius: radius,
       backgroundColor: Colors.grey.shade200,

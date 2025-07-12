@@ -3,7 +3,9 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
 class PageControllerX extends ApiProvider {
-  var items = <Page>[].obs;
+  final RxList<Page> items = <Page>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxString hasError = ''.obs;
 
   //fetch pages
   Future<void> _fetchItems() async {

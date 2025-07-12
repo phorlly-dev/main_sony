@@ -9,6 +9,7 @@ const kDefaultPadding = 16.0;
 const kMaxWidth = 1232.0;
 const kDefaultDuration = Duration(milliseconds: 250);
 
+// Light theme for the application
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.teal,
@@ -25,6 +26,7 @@ ThemeData lightTheme = ThemeData(
   // Define more if needed
 );
 
+// Dark theme for the application
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.teal[300],
@@ -44,6 +46,7 @@ ThemeData darkTheme = ThemeData(
 final color = Colors.teal;
 final custom = color.withValues(alpha: 0.7, red: 0.2, green: 0.7, blue: 0.4);
 
+/// Enum representing different color roles in the application.
 enum AppColorRole {
   primary,
   secondary,
@@ -57,6 +60,7 @@ enum AppColorRole {
   onSurface,
 }
 
+/// Extension to provide color values based on the AppColorRole.
 extension AppColorsExt on BuildContext {
   Color getAppColor(AppColorRole role) {
     final colorScheme = Theme.of(this).colorScheme;
@@ -85,6 +89,7 @@ extension AppColorsExt on BuildContext {
   }
 }
 
+/// A map to hold color values for different AppColorRoles.
 const appColors = {
   AppColorRole.primary: Color(0xFF4DB6AC),
   AppColorRole.secondary: Color(0xFF43CEA2),
@@ -98,6 +103,7 @@ const appColors = {
   AppColorRole.onSurface: Color(0xFF000000),
 };
 
+/// Extension to provide color values based on the AppColorRole.
 extension AppColorsCustom on AppColorRole {
   Color get color => appColors[this]!;
 }

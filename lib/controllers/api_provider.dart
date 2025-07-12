@@ -5,12 +5,12 @@ class ApiProvider extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';
   late WordpressClient connx;
   late GetConnect api;
-  var isLoading = false.obs;
-  var totalPages = 1.obs;
-  var isDark = Get.isDarkMode.obs;
-  var hasError = ''.obs;
-  var page = 1.obs;
-  final int perPage = 5;
+  // var isLoading = false.obs;
+  // var totalPages = 1.obs;
+  // var isDark = Get.isDarkMode.obs;
+  // var hasError = ''.obs;
+  // var page = 1.obs;
+  // var perPage = 5.obs;
   var selectedItem = "home".obs;
 
   String get apiUrl => _apiUrl; // optional getter

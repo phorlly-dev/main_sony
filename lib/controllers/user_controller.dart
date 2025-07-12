@@ -3,7 +3,9 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'api_provider.dart';
 
 class UserController extends ApiProvider {
-  var items = <User>[].obs;
+  final RxList<User> items = <User>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;
