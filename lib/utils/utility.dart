@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:wordpress_client/wordpress_client.dart';
 
 enum Type { category, tag, author }
@@ -60,51 +61,13 @@ String truncateWithEllipsis(String text, int maxChars) {
   return '${text.substring(0, maxChars)}... ';
 }
 
-/// Sets the icon and name based on the provided item slug.
-List<Object> setIcon(String item) {
-  final listIcons = [
-    //category
-    {"slug": "android", "name": "Android", 'icon': Icons.android},
-    {"slug": "arcade", "name": "Arcade", 'icon': Icons.games_outlined},
-    {"slug": "berita", "name": "Berita", 'icon': Icons.info},
-    {"slug": "pc", "name": "PC", 'icon': Icons.computer_rounded},
-
-    //tag
-    {"slug": "steam", "name": "Steam", 'icon': Icons.gite_rounded},
-    {
-      "slug": "genshin-impact",
-      "name": "Genshin Impact",
-      'icon': Icons.grid_goldenratio_rounded,
-    },
-    {
-      "slug": "roblox",
-      "name": "Roblox",
-      'icon': Icons.confirmation_num_rounded,
-    },
-    {"slug": "pubg", "name": "Pubg", 'icon': Icons.gas_meter_rounded},
-    {
-      "slug": "mlbb",
-      "name": "Mobile Legends",
-      'icon': Icons.security_update_warning_rounded,
-    },
-  ];
-
-  IconData icon = Icons.apps_rounded;
-  String name = "";
-
-  for (var i in listIcons) {
-    if (i['slug'] == item.toLowerCase()) {
-      icon = i['icon'] as IconData;
-      name = i['name'] as String;
-      break;
-    }
-  }
-
-  return [icon, name];
-}
-
 /// Formats a date to a string based on the provided format or defaults to 'd MMMM yyyy'.
 String dateStr({required DateTime date, String? format}) {
+  final now = DateTime.now();
+  if (date.year == now.year) {
+    return timeago.format(date);
+  }
+
   return DateFormat(format ?? 'd MMMM yyyy').format(date);
 }
 

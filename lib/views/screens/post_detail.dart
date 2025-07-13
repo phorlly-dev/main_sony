@@ -72,7 +72,7 @@ class PostDetailScreen extends StatelessWidget {
                         runSpacing: 6,
                         children: [
                           IconText(
-                            icon: Icons.calendar_today,
+                            icon: Icons.calendar_month_rounded,
                             label: dateStr(date: post.date ?? DateTime.now()),
                             color: colors.onSurface.withValues(alpha: 0.7),
                           ),
@@ -80,11 +80,11 @@ class PostDetailScreen extends StatelessWidget {
                           // Categories
                           if (uniqueCategories.isNotEmpty)
                             IconTexts(
-                              icon: Icons.category_rounded,
+                              icon: Icons.list,
                               labels: uniqueCategories
                                   .map((meta) => meta.name.toUpperCase())
                                   .toList(),
-                              color: AppColorRole.success.color,
+                              color: AppColorRole.warning.color,
                               onLabelTaps: uniqueCategories
                                   .map(
                                     (meta) => () {
@@ -114,16 +114,17 @@ class PostDetailScreen extends StatelessWidget {
                       isLandscape: isLandscape,
                     ),
 
+                    Divider(color: colors.onSurface.withValues(alpha: 0.2)),
                     //Tags
                     if (uniqueTags.isNotEmpty)
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.only(top: 2, bottom: 12),
                         child: IconTexts(
                           icon: Icons.tag_rounded,
                           labels: uniqueTags
                               .map((meta) => meta.name.toUpperCase())
                               .toList(),
-                          color: AppColorRole.primary.color,
+                          color: AppColorRole.info.color,
                           onLabelTaps: uniqueTags
                               .map(
                                 (meta) => () {

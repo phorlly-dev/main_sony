@@ -94,7 +94,7 @@ class BlogCard extends StatelessWidget {
                     runSpacing: 6,
                     children: [
                       IconText(
-                        icon: Icons.calendar_today,
+                        icon: Icons.calendar_month_rounded,
                         label: dateStr(date: date),
                         color: colors.onSurface.withValues(alpha: 0.7),
                       ),
@@ -104,13 +104,14 @@ class BlogCard extends StatelessWidget {
                         onTap: () {
                           controller.applyFilterAndPaginate(
                             userId: post.author,
+                            slug: '',
                           );
-                          Get.toNamed(
+                          Get.offAndToNamed(
                             "/view-posts",
                             arguments: ScreenParams(name: author),
                           );
                         },
-                        color: AppColorRole.secondary.color,
+                        color: AppColorRole.warning.color,
                       ),
                       IconText(
                         icon: Icons.comment,
@@ -142,11 +143,11 @@ class BlogCard extends StatelessWidget {
                       // Categories
                       if (uniqueCategories.isNotEmpty)
                         IconTexts(
-                          icon: Icons.category_rounded,
+                          icon: Icons.list,
                           labels: uniqueCategories
                               .map((meta) => meta.name.toUpperCase())
                               .toList(),
-                          color: AppColorRole.success.color,
+                          color: AppColorRole.warning.color,
                           onLabelTaps: uniqueCategories
                               .map(
                                 (meta) => () {
@@ -154,7 +155,7 @@ class BlogCard extends StatelessWidget {
                                   controller.applyFilterAndPaginate(
                                     slug: meta.slug,
                                   );
-                                  Get.toNamed(
+                                  Get.offAndToNamed(
                                     "/view-posts",
                                     arguments: ScreenParams(name: meta.name),
                                   );
@@ -170,14 +171,14 @@ class BlogCard extends StatelessWidget {
                           labels: uniqueTags
                               .map((meta) => meta.name.toUpperCase())
                               .toList(),
-                          color: AppColorRole.primary.color,
+                          color: AppColorRole.info.color,
                           onLabelTaps: uniqueTags
                               .map(
                                 (meta) => () {
                                   controller.applyFilterAndPaginate(
                                     slug: meta.slug,
                                   );
-                                  Get.toNamed(
+                                  Get.offAndToNamed(
                                     "/view-posts",
                                     arguments: ScreenParams(name: meta.name),
                                   );

@@ -20,12 +20,13 @@ dependencies:
   intl:
   wordpress_client:
   onesignal_flutter:
-  cached_network_image: 
+  cached_network_image:
   carousel_slider:
   connectivity_plus:
   loading_animation_widget:
   html_unescape:
   flutter_html:
+  timeago:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

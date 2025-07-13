@@ -43,8 +43,8 @@ class CategoryController extends ApiProvider {
         .toList();
   }
 
-  // List<Post> filterByCategory(List<Post> posts, int categoryId) =>
-  //     posts.where((post) => post.categories!.contains(categoryId)).toList();
+  List<Post> filterByCategory(List<Post> posts, int categoryId) =>
+      posts.where((post) => post.categories!.contains(categoryId)).toList();
 
   @override
   void onInit() {

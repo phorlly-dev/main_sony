@@ -32,7 +32,7 @@ class TextContent extends StatelessWidget {
               child: Text(
                 linkLabel ?? "Read More",
                 style: TextStyle(
-                  color: AppColorRole.primary.color,
+                  color: AppColorRole.info.color,
 
                   // fontSize: 15,
                   decoration: TextDecoration.underline,

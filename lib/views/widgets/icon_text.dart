@@ -11,8 +11,8 @@ class IconText extends StatelessWidget {
     super.key,
     required this.label,
     this.icon = Icons.menu_open_rounded,
-    this.iconSize = 18,
-    this.textSize = 13,
+    this.iconSize = 16,
+    this.textSize = 12,
     this.color,
     this.onTap,
   });
@@ -32,7 +32,7 @@ class IconText extends StatelessWidget {
             child: GestureDetector(
               onTap: onTap,
               child: Text(
-                label,
+                label.toUpperCase(),
                 style: TextStyle(
                   fontSize: textSize,
                   color: color ?? Colors.grey[600],

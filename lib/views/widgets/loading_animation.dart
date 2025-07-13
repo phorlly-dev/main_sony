@@ -48,7 +48,11 @@ class LoadingAnimation extends StatelessWidget {
         children: [
           Text(
             label.toUpperCase(),
-            style: TextStyle(color: kColor, fontSize: textSize),
+            style: TextStyle(
+              color: kColor,
+              fontSize: textSize,
+              decoration: TextDecoration.none,
+            ),
           ),
           SizedBox(height: 16),
           _widget(kColor),

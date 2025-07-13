@@ -7,21 +7,19 @@ class NotFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.wifi_off, color: Colors.red, size: 80),
-            const SizedBox(height: 16),
-            LoadingAnimation(
-              label: 'No Internet Connection',
-              type: LoadingType.flickr,
-              themColor: AppColorRole.primary,
-            ),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.wifi_off, color: Colors.white, size: 60),
+        const SizedBox(height: 16),
+        LoadingAnimation(
+          label: 'No Internet Connection!',
+          type: LoadingType.horizontalRotatingDots,
+          themColor: AppColorRole.onPrimary,
+          textSize: 14,
         ),
-      ),
+      ],
     );
   }
 }
