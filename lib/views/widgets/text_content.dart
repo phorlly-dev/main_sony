@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/utils/utility.dart';
 
 class TextContent extends StatelessWidget {
@@ -18,12 +17,13 @@ class TextContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(
             text: stripHtml(htmlText: article, length: isLandscape ? 212 : 80),
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            style: TextStyle(color: colors.onSurface),
           ),
           // WidgetSpan(child: SizedBox(width: 6)),
           WidgetSpan(
@@ -32,7 +32,7 @@ class TextContent extends StatelessWidget {
               child: Text(
                 linkLabel ?? "Read More",
                 style: TextStyle(
-                  color: AppColorRole.info.color,
+                  color: colors.primaryFixedDim,
 
                   // fontSize: 15,
                   decoration: TextDecoration.underline,

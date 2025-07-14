@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:main_sony/controllers/image_slider_controller.dart';
 import 'package:main_sony/controllers/menu_item_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_list_controller.dart';
@@ -18,6 +19,7 @@ class _IndexScreenState extends State<IndexScreen> {
   late final MenuItemController menuItem;
   late final PageControllerX page;
   late final ScreenParams params;
+  late final ImageSliderController imageSlider;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _IndexScreenState extends State<IndexScreen> {
     post = Get.find<PostListController>();
     page = Get.find<PageControllerX>();
     menuItem = Get.find<MenuItemController>();
+    imageSlider = Get.find<ImageSliderController>();
   }
 
   /// Safely extract ScreenParams from arguments, or return a default.
@@ -37,7 +40,7 @@ class _IndexScreenState extends State<IndexScreen> {
       return args;
     } else if (args is Map) {
       // If navigation sent a Map, parse as best as possible.
-      return ScreenParams(name: args['name'] as String? ?? 'Home');
+      return ScreenParams(name: args['name']);
     }
     // If nothing is passed, return default "home" params.
     return const ScreenParams(name: 'Home');
@@ -51,6 +54,7 @@ class _IndexScreenState extends State<IndexScreen> {
         controller: post,
         page: page,
         menuItem: menuItem,
+        imageSlider: imageSlider,
       ),
     );
   }

@@ -11,19 +11,24 @@ class PageControllerX extends ApiProvider {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
-    final request = ListPageRequest(
-      order: Order.desc,
-      // perPage: 5,
-      orderBy: OrderBy.date,
-    );
-    final response = await connx.pages.list(request);
 
-    response.map(
-      onSuccess: (res) => items.value = res.data,
-      onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
-    );
+    try {
+      final request = ListPageRequest(
+        order: Order.desc,
+        // perPage: 5,
+        orderBy: OrderBy.date,
+      );
+      final response = await connx.pages.list(request);
 
-    isLoading.value = false;
+      response.map(
+        onSuccess: (res) => items.value = res.data,
+        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
+      );
+    } catch (e) {
+      hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override

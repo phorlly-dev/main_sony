@@ -47,7 +47,7 @@ class LoadingAnimation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            label.toUpperCase(),
+            label,
             style: TextStyle(
               color: kColor,
               fontSize: textSize,

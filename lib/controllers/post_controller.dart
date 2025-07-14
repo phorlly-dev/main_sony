@@ -23,7 +23,7 @@ class PostController extends ApiProvider {
   int? _currentUser;
 
   // Main fetch
-  Future<void> fetchItems({int? pageNum, int? userId}) async {
+  Future<void> _fetchItems({int? pageNum, int? userId}) async {
     isLoading.value = true;
     hasError.value = '';
 
@@ -54,7 +54,7 @@ class PostController extends ApiProvider {
           // AUTO-CORRECT: If current page > totalPages, reset to last page and refetch!
           if (page.value > totalPages.value) {
             page.value = totalPages.value;
-            fetchItems(pageNum: page.value); // Re-call with valid page
+            _fetchItems(pageNum: page.value); // Re-call with valid page
           }
         },
         onFailure: (err) =>
@@ -71,9 +71,9 @@ class PostController extends ApiProvider {
       }
     } catch (e) {
       hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
     }
-
-    isLoading.value = false;
   }
 
   // Fetch a single post by ID
@@ -108,18 +108,18 @@ class PostController extends ApiProvider {
   // Refresh current page
   // This will always refresh using the last filter (category/tag/author)
   Future<void> refreshCurrentPage() async {
-    await fetchItems(pageNum: page.value, userId: _currentUser);
+    await _fetchItems(pageNum: page.value, userId: _currentUser);
   }
 
   // Go to specific page
   void goToPage(int pageNum) {
-    fetchItems(userId: _currentUser, pageNum: pageNum);
+    _fetchItems(userId: _currentUser, pageNum: pageNum);
   }
 
   void dataView({int? userId}) {
     _currentUser = userId;
 
-    fetchItems(pageNum: 1, userId: userId);
+    _fetchItems(pageNum: 1, userId: userId);
   }
 
   // Reactive variables

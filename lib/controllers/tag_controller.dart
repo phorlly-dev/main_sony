@@ -10,20 +10,23 @@ class TagController extends ApiProvider {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
+    try {
+      final request = ListTagRequest(
+        order: Order.asc,
+        // perPage: 5,
+        orderBy: OrderBy.name,
+      );
+      final response = await connx.tags.list(request);
 
-    final request = ListTagRequest(
-      order: Order.asc,
-      // perPage: 5,
-      orderBy: OrderBy.name,
-    );
-    final response = await connx.tags.list(request);
-
-    response.map(
-      onSuccess: (res) => items.value = res.data,
-      onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
-    );
-
-    isLoading.value = false;
+      response.map(
+        onSuccess: (res) => items.value = res.data,
+        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
+      );
+    } catch (e) {
+      hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Build a lookup map by id for fast access

@@ -51,7 +51,7 @@ class BlogCard extends StatelessWidget {
 
     return Card(
       color: colors.surface,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +96,7 @@ class BlogCard extends StatelessWidget {
                       IconText(
                         icon: Icons.calendar_month_rounded,
                         label: dateStr(date: date),
-                        color: colors.onSurface.withValues(alpha: 0.7),
+                        color: colors.secondaryFixedDim,
                       ),
                       IconText(
                         icon: Icons.person,
@@ -111,12 +111,12 @@ class BlogCard extends StatelessWidget {
                             arguments: ScreenParams(name: author),
                           );
                         },
-                        color: AppColorRole.warning.color,
+                        color: colors.secondary,
                       ),
                       IconText(
                         icon: Icons.comment,
                         label: 'Comment'.toUpperCase(),
-                        color: AppColorRole.info.color,
+                        color: colors.outline,
                         onTap: onComment,
                       ),
                     ],
@@ -144,9 +144,10 @@ class BlogCard extends StatelessWidget {
                       if (uniqueCategories.isNotEmpty)
                         IconTexts(
                           icon: Icons.list,
-                          labels: uniqueCategories
-                              .map((meta) => meta.name.toUpperCase())
-                              .toList(),
+                          labels: uniqueCategories.map((meta) {
+                            final name = meta.name.replaceAll("-", " ");
+                            return name.toUpperCase();
+                          }).toList(),
                           color: AppColorRole.warning.color,
                           onLabelTaps: uniqueCategories
                               .map(
@@ -168,9 +169,10 @@ class BlogCard extends StatelessWidget {
                       if (uniqueTags.isNotEmpty)
                         IconTexts(
                           icon: Icons.tag_rounded,
-                          labels: uniqueTags
-                              .map((meta) => meta.name.toUpperCase())
-                              .toList(),
+                          labels: uniqueTags.map((meta) {
+                            final name = meta.name.replaceAll("-", " ");
+                            return name.toUpperCase();
+                          }).toList(),
                           color: AppColorRole.info.color,
                           onLabelTaps: uniqueTags
                               .map(

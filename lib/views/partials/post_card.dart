@@ -4,6 +4,7 @@ import 'package:main_sony/controllers/post_list_controller.dart';
 import 'package:main_sony/utils/utility.dart';
 import 'package:main_sony/views/screens/post_detail.dart';
 import 'package:main_sony/views/widgets/blog_card.dart';
+import 'package:main_sony/views/widgets/comment_dialog.dart';
 import 'package:main_sony/views/widgets/page_data_view.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
@@ -21,6 +22,9 @@ class PostCard extends StatelessWidget {
         totalPages: controller.totalViewPages,
         isLoading: controller.isLoading.value,
         hasError: controller.hasError.value,
+        noDataMessage: controller.searchQuery.isEmpty
+            ? "No data found."
+            : "No results for '${controller.searchQuery.value}'",
         onGoToPage: (page) => controller.goToPage(page),
         itemBuilder: (context, item, index) {
           final yoast = item.yoastHeadJson;
@@ -50,9 +54,8 @@ class PostCard extends StatelessWidget {
             },
             controller: controller,
             post: item,
-            onComment: () {
-              print("The comment text here!");
-            },
+            onComment: () =>
+                showCommentDialog(context: context, postId: item.id),
           );
         },
       );

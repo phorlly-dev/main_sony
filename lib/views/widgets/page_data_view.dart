@@ -8,6 +8,7 @@ class PageDataView<T> extends StatelessWidget {
   final int totalPages;
   final bool isLoading;
   final String? hasError;
+  final String noDataMessage;
   final ValueChanged<int> onGoToPage;
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
 
@@ -20,6 +21,7 @@ class PageDataView<T> extends StatelessWidget {
     this.isLoading = false,
     this.hasError,
     required this.onGoToPage,
+    required this.noDataMessage,
   });
 
   @override
@@ -35,6 +37,7 @@ class PageDataView<T> extends StatelessWidget {
           child: DataView(
             isLoading: isLoading && items.isEmpty,
             hasError: hasError,
+            noDataMessage: noDataMessage,
             notFound: items,
             itemCounter: items.length,
             itemBuilder: (context, index) =>

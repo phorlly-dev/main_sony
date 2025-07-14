@@ -26,12 +26,14 @@ class HtmlContent extends StatelessWidget {
 
     return Html(
       data: htmlContent,
-      shrinkWrap: true,
       style: {
         "body": Style(
           fontSize: FontSize(14.0),
           lineHeight: LineHeight(1.7),
           margin: Margins.zero,
+          padding: HtmlPaddings.zero,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.normal,
           textAlign: TextAlign.start,
           color: colors.onSurface,
         ),
@@ -57,17 +59,17 @@ class HtmlContent extends StatelessWidget {
           border: Border(left: BorderSide(width: 4, color: colors.primary)),
           padding: HtmlPaddings.all(12, Unit.px),
           margin: Margins.symmetric(vertical: 16, horizontal: 0),
-          color: colors.secondary,
+          color: colors.primary,
         ),
         "img": Style(
           alignment: Alignment.center,
           width: Width(screenWidth, Unit.auto),
-          height: Height(isLandscape ? screenHeight * .7 : screenHeight * .32),
+          height: Height(isLandscape ? screenHeight * .8 : screenHeight * .3),
           margin: Margins.symmetric(vertical: 8),
         ),
-        "figure": Style(margin: Margins.symmetric(vertical: 8)),
+        "figure": Style(margin: Margins.symmetric(vertical: 12)),
         "a": Style(
-          color: colors.secondary,
+          color: colors.primary,
           textDecoration: TextDecoration.underline,
         ),
         "ul": Style(
@@ -92,17 +94,13 @@ class HtmlContent extends StatelessWidget {
           padding: HtmlPaddings.zero,
         ),
         "table": Style(
-          width: Width(screenWidth),
+          width: Width(screenWidth, Unit.auto),
           margin: Margins.symmetric(vertical: 12),
         ),
         "th": Style(
           backgroundColor: colors.surfaceContainerHigh,
           color: colors.onSurface,
-          padding: HtmlPaddings.symmetric(
-            vertical: 8,
-            horizontal: 8,
-            unit: Unit.px,
-          ),
+          padding: HtmlPaddings.symmetric(vertical: 8, unit: Unit.px),
           border: Border.all(width: .6, color: colors.outline),
           fontWeight: FontWeight.w900,
         ),
@@ -111,11 +109,11 @@ class HtmlContent extends StatelessWidget {
           backgroundColor: colors.surfaceContainerLow,
           border: Border.all(width: .4, color: colors.outline),
           padding: HtmlPaddings.symmetric(
-            horizontal: 8,
+            horizontal: isLandscape ? screenWidth * .149 : 16,
             vertical: 8,
             unit: Unit.px,
           ),
-          textAlign: TextAlign.left,
+          textAlign: TextAlign.center,
         ),
         "code": Style(
           backgroundColor: colors.surfaceContainerLow,

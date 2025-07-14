@@ -11,19 +11,23 @@ class MediaController extends ApiProvider {
     isLoading.value = true;
     hasError.value = '';
 
-    final request = ListMediaRequest(
-      order: Order.desc,
-      perPage: 100,
-      orderBy: OrderBy.date,
-    );
-    final response = await connx.media.list(request);
+    try {
+      final request = ListMediaRequest(
+        order: Order.desc,
+        perPage: 100,
+        orderBy: OrderBy.date,
+      );
+      final response = await connx.media.list(request);
 
-    response.map(
-      onSuccess: (res) => items.value = res.data,
-      onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
-    );
-
-    isLoading.value = false;
+      response.map(
+        onSuccess: (res) => items.value = res.data,
+        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
+      );
+    } catch (e) {
+      hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<List<Media>> fetchItemByIds(List<int> ids) async {

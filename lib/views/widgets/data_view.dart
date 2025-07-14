@@ -8,6 +8,7 @@ class DataView extends StatelessWidget {
   final bool? isLoading;
   final String? hasError;
   final List<dynamic>? notFound;
+  final String noDataMessage;
   final NullableIndexedWidgetBuilder itemBuilder;
 
   const DataView({
@@ -17,6 +18,7 @@ class DataView extends StatelessWidget {
     this.isLoading = false,
     this.hasError = '',
     this.notFound = const [],
+    required this.noDataMessage,
   });
 
   @override
@@ -46,7 +48,7 @@ class DataView extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(top: Get.height * .3),
         child: LoadingAnimation(
-          label: "No data found.",
+          label: noDataMessage,
           type: LoadingType.staggeredDotsWave,
           themColor: AppColorRole.secondary,
         ),

@@ -9,8 +9,8 @@ class PostListController extends ApiProvider {
   final _user = Get.put(UserController());
 
   // Data stores
-  final RxList<Post> allPosts = <Post>[].obs;
-  final RxList<Media> allMedia = <Media>[].obs;
+  final RxList<Post> _allPosts = <Post>[].obs;
+  final RxList<Media> _allMedia = <Media>[].obs;
   final RxList<Post> pagedPosts = <Post>[].obs;
 
   final RxBool isLoading = false.obs;
@@ -20,16 +20,18 @@ class PostListController extends ApiProvider {
   final RxInt perPage = 5.obs;
   final RxInt _currentUser = 0.obs;
   final RxString _currentSlug = ''.obs;
+  final RxString searchQuery = ''.obs;
 
   int get totalViewPages =>
-      ((filteredPosts.length / perPage.value).ceil()).clamp(1, 999);
+      ((_filteredPosts.length / perPage.value).ceil()).clamp(1, 999);
 
   // --- FILTER LOGIC ---
-  List<Post> get filteredPosts {
+  List<Post> get _filteredPosts {
     final slug = _currentSlug.value.trim();
     final userId = _currentUser.value;
+    final query = searchQuery.value.trim().toLowerCase();
 
-    List<Post> posts = allPosts;
+    List<Post> posts = _allPosts;
 
     // Filter by user if set
     if (userId != 0) {
@@ -44,15 +46,25 @@ class PostListController extends ApiProvider {
       }).toList();
     }
 
+    // Filter by search query if set
+    if (query.isNotEmpty) {
+      posts = posts.where((post) {
+        final title = post.title?.rendered?.toLowerCase() ?? '';
+        final excerpt = post.excerpt?.rendered?.toLowerCase() ?? '';
+        // You can add more fields as needed!
+        return title.contains(query) || excerpt.contains(query);
+      }).toList();
+    }
+
     return posts;
   }
 
   // --- FETCH ALL POSTS ---
-  Future<void> fetchAllPosts({int? userId}) async {
+  Future<void> _fetchAllPosts({int? userId, String? search}) async {
     isLoading.value = true;
     hasError.value = '';
-    allPosts.clear();
-    allMedia.clear();
+    _allPosts.clear();
+    _allMedia.clear();
 
     List<int>? authors;
     if (userId != null && userId != 0) authors = [userId];
@@ -68,6 +80,7 @@ class PostListController extends ApiProvider {
           perPage: 100,
           page: currPage,
           author: authors,
+          search: search ?? searchQuery.value,
           orderBy: OrderBy.date,
         );
         final response = await connx.posts.list(request);
@@ -76,16 +89,16 @@ class PostListController extends ApiProvider {
         await response.map(
           onSuccess: (res) async {
             final fetchedPosts = res.data;
-            allPosts.addAll(fetchedPosts);
+            _allPosts.addAll(fetchedPosts);
 
-            // Media
+            // Media fetching as before
             final ids = fetchedPosts
                 .map((p) => p.featuredMedia)
                 .whereType<int>()
                 .toSet();
             if (ids.isNotEmpty) {
               final mediaResult = await _media.fetchItemByIds(ids.toList());
-              allMedia.addAll(mediaResult);
+              _allMedia.addAll(mediaResult);
             }
             lastPage = ((res.totalCount / 100).ceil()).clamp(1, 999);
             keepFetching = currPage < lastPage;
@@ -103,8 +116,9 @@ class PostListController extends ApiProvider {
       _updatePagedPosts();
     } catch (e) {
       hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   Future<Post> fetchItemById(int postId) async {
@@ -142,6 +156,13 @@ class PostListController extends ApiProvider {
     _updatePagedPosts();
   }
 
+  void search(String query) async {
+    searchQuery.value = query;
+    page.value = 1; // Reset to first page on search
+    await _fetchAllPosts(search: query); // <-- server-side search!
+    _updatePagedPosts();
+  }
+
   void goToPage(int newPage) {
     page.value = newPage.clamp(1, totalViewPages);
     _updatePagedPosts();
@@ -149,7 +170,7 @@ class PostListController extends ApiProvider {
 
   // Update pagedPosts based on filter/page/perPage
   void _updatePagedPosts() {
-    final all = filteredPosts;
+    final all = _filteredPosts;
     final from = (page.value - 1) * perPage.value;
     final to = (from + perPage.value).clamp(0, all.length);
     pagedPosts.value = all.sublist(
@@ -161,18 +182,18 @@ class PostListController extends ApiProvider {
   // --- STAY ON CURRENT PAGE ON REFRESH ---
   Future<void> refreshCurrentPage() async {
     final int curPage = page.value;
-    await fetchAllPosts(userId: _currentUser.value);
+    await _fetchAllPosts(userId: _currentUser.value);
     // After refetch, reapply filter and go to same page
     goToPage(curPage);
   }
 
   // --- MISC ---
-  Map<int, Media> get mediaMap => {for (var res in allMedia) res.id: res};
+  Map<int, Media> get mediaMap => {for (var res in _allMedia) res.id: res};
   String Function(Post post) get authorName => _user.authorName;
 
   @override
   void onInit() {
     super.onInit();
-    fetchAllPosts();
+    _fetchAllPosts();
   }
 }

@@ -10,19 +10,23 @@ class UserController extends ApiProvider {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
-    final request = ListUserRequest(
-      order: Order.asc,
-      // perPage: 5,
-      orderBy: OrderBy.date,
-    );
-    final response = await connx.users.list(request);
+    try {
+      final request = ListUserRequest(
+        order: Order.asc,
+        // perPage: 5,
+        orderBy: OrderBy.date,
+      );
+      final response = await connx.users.list(request);
 
-    response.map(
-      onSuccess: (res) => items.value = res.data,
-      onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
-    );
-
-    isLoading.value = false;
+      response.map(
+        onSuccess: (res) => items.value = res.data,
+        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
+      );
+    } catch (e) {
+      hasError.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Build a lookup map by id for fast access

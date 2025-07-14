@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/controllers/connection_controller.dart';
+import 'package:main_sony/controllers/image_slider_controller.dart';
 import 'package:main_sony/controllers/menu_item_controller.dart';
 import 'package:main_sony/controllers/page_controller.dart';
 import 'package:main_sony/controllers/post_list_controller.dart';
-import 'package:main_sony/utils/constants.dart';
 import 'package:main_sony/views/screens/index.dart';
 import 'package:main_sony/views/screens/splash.dart';
 
@@ -16,6 +16,7 @@ void main() {
   Get.put(PostListController());
   Get.put(PageControllerX());
   Get.put(MenuItemController());
+  Get.put(ImageSliderController());
 
   runApp(const StarterScreen());
 }
@@ -34,8 +35,8 @@ class StarterScreen extends StatelessWidget {
         GetPage(name: '/splash', page: () => SplashScreen()),
         GetPage(name: '/view-posts', page: () => IndexScreen()),
       ],
-      theme: lightTheme, // Default light theme
-      darkTheme: darkTheme, // Dark theme
+      theme: ThemeData.light(), // Default light theme
+      darkTheme: ThemeData.dark(), // Dark theme
       themeMode: ThemeMode.system, // Follow system or allow toggling
       home: const IndexScreen(),
     );
