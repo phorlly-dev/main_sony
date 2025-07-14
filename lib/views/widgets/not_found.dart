@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:main_sony/utils/constants.dart';
-import 'package:main_sony/views/widgets/loading_animation.dart';
+import '../export_views.dart';
 
 class NotFound extends StatelessWidget {
   const NotFound({super.key});

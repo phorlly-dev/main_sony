@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/utils/utility.dart';
-import 'package:main_sony/views/widgets/data_render.dart';
-import 'package:main_sony/views/widgets/smart_circle_avatar.dart';
+import '../../controllers/export_controller.dart';
+import '../export_views.dart';
 
 class ProfileHeader extends StatelessWidget {
   final PageControllerX controller;

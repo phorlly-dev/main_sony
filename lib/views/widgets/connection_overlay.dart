@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/connection_controller.dart';
-import 'package:main_sony/views/widgets/not_found.dart';
+import '../../controllers/export_controller.dart';
+import '../export_views.dart';
 
 class ConnectionOverlay extends StatelessWidget {
   const ConnectionOverlay({super.key});

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:main_sony/utils/utility.dart';
+import '../export_views.dart';
 
 class TextContent extends StatelessWidget {
   final String article;

@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/image_slider_controller.dart';
-import 'package:main_sony/controllers/menu_item_controller.dart';
-import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
-import 'package:main_sony/utils/params.dart';
-import 'package:main_sony/views/screens/view_post.dart';
+import '../../controllers/export_controller.dart';
+import '../export_views.dart';
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({super.key});

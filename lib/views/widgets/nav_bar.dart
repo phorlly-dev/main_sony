@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../export_views.dart';
 
 class NavBar extends StatefulWidget {
   final String title;

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:wordpress_client/wordpress_client.dart';
-import 'api_provider.dart';
+import 'export_controller.dart';
 
 class TagController extends ApiProvider {
   final RxList<Tag> items = <Tag>[].obs;

@@ -1,8 +1,5 @@
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/api_provider.dart';
-import 'package:main_sony/controllers/media_controller.dart';
-import 'package:main_sony/controllers/user_controller.dart';
-import 'package:wordpress_client/wordpress_client.dart';
+import 'export_controller.dart';
 
 class PostListController extends ApiProvider {
   final _media = Get.put(MediaController());

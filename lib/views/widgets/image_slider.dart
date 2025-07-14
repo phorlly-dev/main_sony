@@ -1,7 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:main_sony/utils/params.dart'; // Assumes SlideItem is defined here
+import '../export_views.dart';
 
 class ImageSlider extends StatefulWidget {
   final List<SlideItem> items;

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../export_views.dart';
 
 class IconText extends StatelessWidget {
   final String label;

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:wordpress_client/wordpress_client.dart';
-import 'api_provider.dart';
+import 'export_controller.dart';
 
 class MediaController extends ApiProvider {
   final RxList<Media> items = <Media>[].obs;

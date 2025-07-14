@@ -1,10 +1,5 @@
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/category_controller.dart';
-import 'package:main_sony/controllers/media_controller.dart';
-import 'package:main_sony/controllers/tag_controller.dart';
-import 'package:main_sony/controllers/user_controller.dart';
-import 'package:wordpress_client/wordpress_client.dart';
-import 'api_provider.dart';
+import 'export_controller.dart';
 
 class PostController extends ApiProvider {
   final _category = Get.put(CategoryController());

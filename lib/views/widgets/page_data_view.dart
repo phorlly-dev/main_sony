@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:main_sony/views/widgets/data_view.dart';
-import 'package:main_sony/views/widgets/pagination_bar.dart';
+import '../export_views.dart';
 
 class PageDataView<T> extends StatelessWidget {
   final List<T> items;

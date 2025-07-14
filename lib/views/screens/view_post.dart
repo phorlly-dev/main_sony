@@ -1,14 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/image_slider_controller.dart';
-import 'package:main_sony/controllers/menu_item_controller.dart';
-import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
-import 'package:main_sony/views/partials/post_card.dart';
-import 'package:main_sony/views/widgets/connection_overlay.dart';
-import 'package:main_sony/views/widgets/image_slider.dart';
-import "package:main_sony/views/widgets/nav_bar.dart";
-import 'package:main_sony/views/widgets/side_menu.dart';
+import '../../controllers/export_controller.dart';
+import '../export_views.dart';
 
 class ViewPostScreen extends StatelessWidget {
   final String name;

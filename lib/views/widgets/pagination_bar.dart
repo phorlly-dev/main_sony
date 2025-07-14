@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../export_views.dart';
 
 class PaginationBar extends StatelessWidget {
   final int currentPage;

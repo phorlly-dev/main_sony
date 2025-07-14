@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
+import 'export_controller.dart';
 
 class ConnectionController extends PostListController {
   var isOnline = true.obs;

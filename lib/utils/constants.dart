@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'export_util.dart';
 
 const kPrimaryColor = Color(0xFFFF3B1D);
 const kDarkBlackColor = Color(0xFF191919);

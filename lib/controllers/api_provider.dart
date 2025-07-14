@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:wordpress_client/wordpress_client.dart';
+import 'export_controller.dart';
 
 class ApiProvider extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';

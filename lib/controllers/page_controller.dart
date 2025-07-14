@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:wordpress_client/wordpress_client.dart';
-import 'api_provider.dart';
+import 'export_controller.dart';
 
 class PageControllerX extends ApiProvider {
   final RxList<Page> items = <Page>[].obs;

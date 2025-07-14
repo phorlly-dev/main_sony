@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:main_sony/utils/constants.dart';
+import '../export_views.dart';
 
 const double _kSize = 50;
 

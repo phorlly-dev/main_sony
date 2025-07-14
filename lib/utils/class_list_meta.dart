@@ -1,4 +1,4 @@
-import 'package:main_sony/utils/menu_meta.dart';
+import 'export_util.dart';
 
 // Represents metadata extracted from class lists, specifically categories and tags.
 class ClassListMeta {

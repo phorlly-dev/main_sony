@@ -1,5 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import '../export_views.dart';
 
 class ImageContent extends StatelessWidget {
   final String? imageUrl;

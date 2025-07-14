@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/utils/constants.dart';
-import 'package:main_sony/views/widgets/loading_animation.dart';
+import '../export_views.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

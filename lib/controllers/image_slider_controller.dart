@@ -1,11 +1,6 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/api_provider.dart';
-import 'package:main_sony/controllers/media_controller.dart';
-import 'package:main_sony/utils/params.dart';
-import 'package:main_sony/utils/utility.dart';
-import 'package:wordpress_client/wordpress_client.dart';
+import 'export_controller.dart';
+import 'package:main_sony/utils/export_util.dart';
 
 final class ImageSliderController extends ApiProvider {
   final _media = Get.put(MediaController());

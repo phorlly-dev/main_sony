@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/api_provider.dart';
-import 'package:wordpress_client/wordpress_client.dart';
+import 'export_controller.dart';
 
 class CommentController extends ApiProvider {
   final RxBool isSubmitting = false.obs;

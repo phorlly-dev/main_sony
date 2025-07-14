@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
+import 'export_util.dart';
 import 'package:get/get.dart';
-import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:wordpress_client/wordpress_client.dart';
+import '../controllers/export_controller.dart';
 
 enum Type { category, tag, author }
 
@@ -74,29 +72,6 @@ String dateStr({required DateTime date, String? format}) {
 /// Retrieves a value from a map or returns "Unknown" if the key is not present.
 Object getValue({Map<String, dynamic>? object, required String key}) {
   return object?[key] ?? "Unknown";
-}
-
-/// Displays a loading overlay while executing a fetcher function.
-Future<T> withLoadingOverlay<T>(Future<T> Function() fetcher) async {
-  // Show blocking overlay
-  Get.dialog(
-    Center(
-      child: LoadingAnimationWidget.threeArchedCircle(
-        color: Colors.lightBlue,
-        size: 50,
-      ),
-    ),
-    barrierDismissible: false,
-  );
-
-  try {
-    final result = await fetcher();
-    Get.back(); // Remove overlay
-    return result;
-  } catch (e) {
-    Get.back();
-    rethrow;
-  }
 }
 
 /// Unescapes HTML entities in a string.

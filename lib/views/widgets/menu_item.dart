@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:main_sony/utils/constants.dart';
+import '../export_views.dart';
 
 class MenuItem extends StatelessWidget {
   final String label;

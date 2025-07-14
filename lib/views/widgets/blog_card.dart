@@ -1,15 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
-import 'package:main_sony/utils/class_list_meta.dart';
-import 'package:main_sony/utils/constants.dart';
-import 'package:main_sony/utils/params.dart';
-import 'package:main_sony/utils/utility.dart';
-import 'package:main_sony/views/widgets/icon_text.dart';
-import 'package:main_sony/views/widgets/icon_texts.dart';
-import 'package:main_sony/views/widgets/image_content.dart';
-import 'package:main_sony/views/widgets/text_content.dart';
-import 'package:wordpress_client/wordpress_client.dart';
+import '../../controllers/export_controller.dart';
+import '../export_views.dart';
 
 class BlogCard extends StatelessWidget {
   final PostListController controller;
