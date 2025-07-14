@@ -100,7 +100,7 @@ class BlogCard extends StatelessWidget {
                       ),
                       IconText(
                         icon: Icons.person,
-                        label: author.toUpperCase(),
+                        label: author,
                         onTap: () {
                           controller.applyFilterAndPaginate(
                             userId: post.author,
@@ -115,7 +115,7 @@ class BlogCard extends StatelessWidget {
                       ),
                       IconText(
                         icon: Icons.comment,
-                        label: 'Comment'.toUpperCase(),
+                        label: 'Comment',
                         color: colors.outline,
                         onTap: onComment,
                       ),
@@ -144,10 +144,9 @@ class BlogCard extends StatelessWidget {
                       if (uniqueCategories.isNotEmpty)
                         IconTexts(
                           icon: Icons.list,
-                          labels: uniqueCategories.map((meta) {
-                            final name = meta.name.replaceAll("-", " ");
-                            return name.toUpperCase();
-                          }).toList(),
+                          labels: uniqueCategories
+                              .map((meta) => meta.name.replaceAll("-", " "))
+                              .toList(),
                           color: AppColorRole.warning.color,
                           onLabelTaps: uniqueCategories
                               .map(
@@ -169,10 +168,9 @@ class BlogCard extends StatelessWidget {
                       if (uniqueTags.isNotEmpty)
                         IconTexts(
                           icon: Icons.tag_rounded,
-                          labels: uniqueTags.map((meta) {
-                            final name = meta.name.replaceAll("-", " ");
-                            return name.toUpperCase();
-                          }).toList(),
+                          labels: uniqueTags
+                              .map((meta) => meta.name.replaceAll("-", " "))
+                              .toList(),
                           color: AppColorRole.info.color,
                           onLabelTaps: uniqueTags
                               .map(

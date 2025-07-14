@@ -80,10 +80,9 @@ class PostDetailScreen extends StatelessWidget {
                         if (uniqueCategories.isNotEmpty)
                           IconTexts(
                             icon: Icons.list,
-                            labels: uniqueCategories.map((meta) {
-                              final name = meta.name.replaceAll("-", " ");
-                              return name.toUpperCase();
-                            }).toList(),
+                            labels: uniqueCategories
+                                .map((meta) => meta.name.replaceAll("-", " "))
+                                .toList(),
                             color: AppColorRole.warning.color,
                             onLabelTaps: uniqueCategories
                                 .map(
@@ -119,10 +118,9 @@ class PostDetailScreen extends StatelessWidget {
                       padding: EdgeInsets.only(top: 2, bottom: 12),
                       child: IconTexts(
                         icon: Icons.tag_rounded,
-                        labels: uniqueTags.map((meta) {
-                          final name = meta.name.replaceAll("-", " ");
-                          return name.toUpperCase();
-                        }).toList(),
+                        labels: uniqueTags
+                            .map((meta) => meta.name.replaceAll("-", " "))
+                            .toList(),
                         color: AppColorRole.info.color,
                         onLabelTaps: uniqueTags
                             .map(

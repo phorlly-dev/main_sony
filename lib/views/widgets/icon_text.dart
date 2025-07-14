@@ -32,7 +32,7 @@ class IconText extends StatelessWidget {
             child: GestureDetector(
               onTap: onTap,
               child: Text(
-                label.toUpperCase(),
+                label,
                 style: TextStyle(
                   fontSize: textSize,
                   color: color ?? Colors.grey[600],

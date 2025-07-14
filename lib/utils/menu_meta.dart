@@ -30,7 +30,7 @@ final List<MenuMeta> menuItems = [
     name: "Roblox",
     icon: Icons.confirmation_num_rounded,
   ),
-  MenuMeta(slug: "pubg", name: "Pubg", icon: Icons.gas_meter_rounded),
+  MenuMeta(slug: "pubg", name: "PUBG", icon: Icons.gas_meter_rounded),
   MenuMeta(
     slug: "mlbb",
     name: "Mobile Legends",
