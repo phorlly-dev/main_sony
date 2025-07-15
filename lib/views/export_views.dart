@@ -2,6 +2,8 @@ library;
 
 //out
 export 'package:flutter/gestures.dart';
+export 'package:url_launcher/link.dart';
+export 'package:url_launcher/url_launcher.dart';
 export 'package:flutter_html/flutter_html.dart';
 export 'package:flutter_html_audio/flutter_html_audio.dart';
 export 'package:flutter_html_iframe/flutter_html_iframe.dart';
@@ -34,12 +36,14 @@ export 'package:main_sony/views/widgets/data_view.dart';
 export 'package:main_sony/views/widgets/html_content.dart';
 export 'package:main_sony/views/widgets/icon_text.dart';
 export 'package:main_sony/views/widgets/icon_texts.dart';
+export 'package:main_sony/views/widgets/image_banner.dart';
 export 'package:main_sony/views/widgets/image_content.dart';
 export 'package:main_sony/views/widgets/image_slider.dart';
 export 'package:main_sony/views/widgets/loading_animation.dart';
 export 'package:main_sony/views/widgets/menu_item.dart';
 export 'package:main_sony/views/widgets/nav_bar.dart';
 export 'package:main_sony/views/widgets/not_found.dart';
+export 'package:main_sony/views/widgets/link_url.dart';
 export 'package:main_sony/views/widgets/page_data_view.dart';
 export 'package:main_sony/views/widgets/pagination_bar.dart';
 export 'package:main_sony/views/widgets/pagination.dart';

@@ -158,6 +158,9 @@ class HtmlContent extends StatelessWidget {
         "center": Style(textAlign: TextAlign.center),
         // More tags as needed...
       },
+      onLinkTap: (url, attributes, element) {
+        if (url != null) linkUrl(url);
+      },
       extensions: const [
         VideoHtmlExtension(),
         TableHtmlExtension(),
