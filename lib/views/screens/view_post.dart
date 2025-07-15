@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../../controllers/export_controller.dart';
-import '../export_views.dart';
+import 'package:main_sony/controllers/export_controller.dart';
+import 'package:main_sony/views/export_views.dart';
 
 class ViewPostScreen extends StatelessWidget {
   final String name;
@@ -22,20 +22,20 @@ class ViewPostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        NavBar(
-          title: name,
-          onSearch: (query) => controller.search(query),
-          menu: SideMenu(controller: menuItem, page: page),
-          content: Obx(() {
-            final sliders = imageSlider.sliderItems;
-            return RefreshIndicator(
-              onRefresh: () async {
-                await Future.wait([
-                  controller.refreshCurrentPage(),
-                  imageSlider.fetchSliderItems(),
-                ]);
-              },
-              child: Column(
+        RefreshIndicator(
+          onRefresh: () async {
+            await Future.wait([
+              controller.refreshCurrentPage(),
+              imageSlider.fetchSliderItems(),
+            ]);
+          },
+          child: NavBar(
+            title: name,
+            onSearch: (query) => controller.search(query),
+            menu: SideMenu(controller: menuItem, page: page),
+            content: Obx(() {
+              final sliders = imageSlider.sliderItems;
+              return Column(
                 children: [
                   ImageBanner(),
                   (sliders.isEmpty || name != "Home")
@@ -43,9 +43,9 @@ class ViewPostScreen extends StatelessWidget {
                       : ImageSlider(items: sliders),
                   PostCard(controller: controller),
                 ],
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
 
         ConnectionOverlay(),

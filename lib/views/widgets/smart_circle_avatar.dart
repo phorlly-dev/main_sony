@@ -1,4 +1,4 @@
-import '../export_views.dart';
+import 'package:main_sony/views/export_views.dart';
 
 class SmartCircleAvatar extends StatelessWidget {
   final String? avatar;

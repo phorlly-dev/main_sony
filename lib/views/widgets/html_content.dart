@@ -1,4 +1,4 @@
-import '../export_views.dart';
+import 'package:main_sony/views/export_views.dart';
 
 class HtmlContent extends StatelessWidget {
   final String htmlContent;

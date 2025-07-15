@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../../controllers/export_controller.dart';
-import '../export_views.dart';
+import 'package:main_sony/controllers/export_controller.dart';
+import 'package:main_sony/views/export_views.dart';
 
 Future<void> showCommentDialog({
   required BuildContext context,

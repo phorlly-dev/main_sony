@@ -1,4 +1,4 @@
-import '../export_views.dart';
+import 'package:main_sony/views/export_views.dart';
 
 const double _kSize = 50;
 

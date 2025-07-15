@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import '../export_views.dart';
+import 'package:main_sony/views/export_views.dart';
 
 class NavBar extends StatefulWidget {
   final String title;
   final Widget? menu, content;
-  final void Function(String query)? onSearch; // Callback for search query
+  final void Function(String query)? onSearch;
 
   const NavBar({
     super.key,
@@ -32,11 +32,19 @@ class _NavBarState extends State<NavBar> {
       isSearching = false;
       _searchController.clear();
     });
+    FocusScope.of(context).unfocus();
     if (widget.onSearch != null) widget.onSearch!('');
   }
 
   void _onSearchSubmitted(String value) {
+    FocusScope.of(context).unfocus();
     if (widget.onSearch != null) widget.onSearch!(value.trim());
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,11 +54,14 @@ class _NavBarState extends State<NavBar> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            floating: true, // show/hide on scroll up/down
-            snap: true, // snap in/out
-            pinned: false, // true = always at top
+            floating: true,
+            snap: true,
+            pinned: false,
             elevation: 4,
             centerTitle: true,
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            automaticallyImplyLeading:
+                !isSearching, // Menu icon when not searching
             title: isSearching
                 ? TextField(
                     controller: _searchController,
@@ -63,20 +74,24 @@ class _NavBarState extends State<NavBar> {
                     onSubmitted: _onSearchSubmitted,
                   )
                 : Text(widget.title.toUpperCase()),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
             leading: isSearching
-                ? IconButton(icon: Icon(Icons.close), onPressed: _stopSearch)
+                ? IconButton(
+                    icon: Icon(Icons.close, semanticLabel: 'Close search'),
+                    onPressed: _stopSearch,
+                  )
                 : null,
             actions: [
               if (!isSearching && widget.onSearch != null)
                 IconButton(
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.search, semanticLabel: 'Search'),
                   onPressed: _startSearch,
                   tooltip: 'Search',
                 ),
-
               IconButton(
-                icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                icon: Icon(
+                  isDark ? Icons.light_mode : Icons.dark_mode,
+                  semanticLabel: 'Toggle theme',
+                ),
                 onPressed: () {
                   Get.changeTheme(
                     isDark ? ThemeData.light() : ThemeData.dark(),
@@ -89,7 +104,6 @@ class _NavBarState extends State<NavBar> {
               ),
             ],
           ),
-          // Main content - as a sliver
           SliverToBoxAdapter(child: widget.content),
         ],
       ),
