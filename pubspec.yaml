@@ -27,6 +27,8 @@ dependencies:
   html_unescape:
   flutter_html:
   timeago:
+  flutter_dotenv:
+  dart_openai:
   url_launcher:
 
   # The following adds the Cupertino Icons font to your application.
@@ -65,6 +67,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - .env
 
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For

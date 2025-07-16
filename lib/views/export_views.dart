@@ -1,5 +1,3 @@
-library;
-
 //out
 export 'package:flutter/gestures.dart';
 export 'package:url_launcher/link.dart';
@@ -14,6 +12,8 @@ export 'package:flutter_html_video/flutter_html_video.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:loading_animation_widget/loading_animation_widget.dart';
+export 'package:flutter_dotenv/flutter_dotenv.dart';
+export 'package:dart_openai/dart_openai.dart';
 
 //partails
 export 'package:flutter/material.dart';
@@ -26,6 +26,7 @@ export 'package:main_sony/views/screens/index.dart';
 export 'package:main_sony/views/screens/post_detail.dart';
 export 'package:main_sony/views/screens/splash.dart';
 export 'package:main_sony/views/screens/view_post.dart';
+export 'package:main_sony/views/screens/ai_chatbot.dart';
 
 //widgets
 export 'package:main_sony/views/widgets/blog_card.dart';
@@ -53,3 +54,6 @@ export 'package:main_sony/views/widgets/text_content.dart';
 
 //utils
 export 'package:main_sony/utils/export_util.dart';
+
+//chatbot
+export 'package:main_sony/controllers/chatbot_controller.dart';

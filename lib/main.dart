@@ -1,14 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:main_sony/controllers/connection_controller.dart';
-import 'package:main_sony/controllers/image_slider_controller.dart';
-import 'package:main_sony/controllers/menu_item_controller.dart';
-import 'package:main_sony/controllers/page_controller.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
-import 'package:main_sony/views/screens/index.dart';
-import 'package:main_sony/views/screens/splash.dart';
+import 'package:main_sony/views/export_views.dart';
+import 'controllers/export_controller.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register controllers BEFORE runApp
@@ -17,6 +11,10 @@ void main() {
   Get.put(PageControllerX());
   Get.put(MenuItemController());
   Get.put(ImageSliderController());
+
+  await dotenv.load(fileName: ".env");
+  final key = dotenv.env['OPENAI_API_KEY']!;
+  OpenAI.apiKey = key;
 
   runApp(const StarterScreen());
 }
@@ -34,6 +32,7 @@ class StarterScreen extends StatelessWidget {
       getPages: [
         GetPage(name: '/splash', page: () => SplashScreen()),
         GetPage(name: '/view-posts', page: () => IndexScreen()),
+        GetPage(name: '/ai-chatbots', page: () => AiChatbotScreen()),
       ],
       theme: ThemeData.light(), // Default light theme
       darkTheme: ThemeData.dark(), // Dark theme
