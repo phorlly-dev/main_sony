@@ -148,7 +148,9 @@ class BlogCard extends StatelessWidget {
                                   );
                                   Get.offAndToNamed(
                                     "/view-posts",
-                                    arguments: ScreenParams(name: meta.name),
+                                    arguments: ScreenParams(
+                                      name: meta.name.replaceAll("-", " "),
+                                    ),
                                   );
                                 },
                               )
@@ -171,7 +173,9 @@ class BlogCard extends StatelessWidget {
                                   );
                                   Get.offAndToNamed(
                                     "/view-posts",
-                                    arguments: ScreenParams(name: meta.name),
+                                    arguments: ScreenParams(
+                                      name: meta.name.replaceAll("-", " "),
+                                    ),
                                   );
                                 },
                               )

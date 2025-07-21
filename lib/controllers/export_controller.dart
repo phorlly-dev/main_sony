@@ -1,5 +1,3 @@
-library;
-
 //out
 export 'package:wordpress_client/wordpress_client.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';

@@ -1,5 +1,3 @@
-library;
-
 //out
 export 'package:flutter/material.dart';
 export 'package:html_unescape/html_unescape.dart';

@@ -37,7 +37,7 @@ class ViewPostScreen extends StatelessWidget {
               final sliders = imageSlider.sliderItems;
               return Column(
                 children: [
-                  ImageBanner(),
+                  // ImageBanner(),
                   (sliders.isEmpty || name != "Home")
                       ? SizedBox.shrink()
                       : ImageSlider(items: sliders),

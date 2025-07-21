@@ -3,7 +3,7 @@ import 'package:main_sony/views/export_views.dart';
 
 class NavBar extends StatefulWidget {
   final String title;
-  final Widget? menu, content;
+  final Widget? menu, content, button;
   final void Function(String query)? onSearch;
 
   const NavBar({
@@ -12,6 +12,7 @@ class NavBar extends StatefulWidget {
     this.menu,
     this.content,
     this.onSearch,
+    this.button,
   });
 
   @override
@@ -107,6 +108,7 @@ class _NavBarState extends State<NavBar> {
           SliverToBoxAdapter(child: widget.content),
         ],
       ),
+      floatingActionButton: widget.button,
     );
   }
 }

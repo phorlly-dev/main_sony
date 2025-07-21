@@ -4,7 +4,7 @@ class TextContent extends StatelessWidget {
   final String article;
   final String? linkLabel;
   final VoidCallback? navigate;
-  final bool isLandscape;
+  final bool isLandscape, isHome;
 
   const TextContent({
     super.key,
@@ -12,6 +12,7 @@ class TextContent extends StatelessWidget {
     this.linkLabel,
     this.navigate,
     required this.isLandscape,
+    this.isHome = false,
   });
 
   @override
@@ -29,12 +30,12 @@ class TextContent extends StatelessWidget {
             child: GestureDetector(
               onTap: navigate,
               child: Text(
-                linkLabel ?? "Read More",
+                "[${linkLabel ?? 'Read More'}]",
                 style: TextStyle(
                   color: colors.primaryFixedDim,
 
                   // fontSize: 15,
-                  decoration: TextDecoration.underline,
+                  // decoration: TextDecoration.underline,
                   fontWeight: FontWeight.w500,
                 ),
               ),

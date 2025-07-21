@@ -26,9 +26,9 @@ dependencies:
   loading_animation_widget:
   html_unescape:
   flutter_html:
+  dart_openai:
   timeago:
   flutter_dotenv:
-  dart_openai:
   url_launcher:
 
   # The following adds the Cupertino Icons font to your application.
