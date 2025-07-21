@@ -166,7 +166,7 @@ class HtmlContent extends StatelessWidget {
         TableHtmlExtension(),
         SvgHtmlExtension(),
         MathHtmlExtension(),
-        IframeHtmlExtension(),
+        // IframeHtmlExtension(),
         AudioHtmlExtension(),
       ],
     );

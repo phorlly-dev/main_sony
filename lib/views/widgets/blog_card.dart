@@ -33,16 +33,16 @@ class BlogCard extends StatelessWidget {
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final author = controller.authorName(post);
-    final classList = post.classList ?? [];
-    final metaGroups = extractCategoriesAndTags(classList);
-    final uniqueCategories = getMenuMetaList(
-      metaGroups.categories.toSet().toList(),
-    );
-    final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
+    // final classList = post.classList ?? [];
+    // final metaGroups = extractCategoriesAndTags(classList);
+    // final uniqueCategories = getMenuMetaList(
+    //   metaGroups.categories.toSet().toList(),
+    // );
+    // final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
 
     return Card(
       color: colors.surface,
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      margin: const EdgeInsets.all(6),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class BlogCard extends StatelessWidget {
 
                 // Date and author
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Wrap(
                     spacing: 20,
                     runSpacing: 6,
@@ -125,65 +125,66 @@ class BlogCard extends StatelessWidget {
                 ),
 
                 //Categories and Tags
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 4,
-                    children: [
-                      // Categories
-                      if (uniqueCategories.isNotEmpty)
-                        IconTexts(
-                          icon: Icons.list,
-                          labels: uniqueCategories
-                              .map((meta) => meta.name.replaceAll("-", " "))
-                              .toList(),
-                          color: AppColorRole.warning.color,
-                          onLabelTaps: uniqueCategories
-                              .map(
-                                (meta) => () {
-                                  controller.setActiveMenu(meta.slug);
-                                  controller.applyFilterAndPaginate(
-                                    slug: meta.slug,
-                                  );
-                                  Get.offAndToNamed(
-                                    "/view-posts",
-                                    arguments: ScreenParams(
-                                      name: meta.name.replaceAll("-", " "),
-                                    ),
-                                  );
-                                },
-                              )
-                              .toList(),
-                        ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(vertical: 16),
+                //   child: Wrap(
+                //     spacing: 8,
+                //     runSpacing: 4,
+                //     children: [
+                //       // Categories
+                //       if (uniqueCategories.isNotEmpty)
+                //         IconTexts(
+                //           icon: Icons.list,
+                //           labels: uniqueCategories
+                //               .map((meta) => meta.name.replaceAll("-", " "))
+                //               .toList(),
+                //           color: AppColorRole.warning.color,
+                //           onLabelTaps: uniqueCategories
+                //               .map(
+                //                 (meta) => () {
+                //                   controller.setActiveMenu(meta.slug);
+                //                   log("The slug card item: ${meta.slug}");
+                //                   controller.applyFilterAndPaginate(
+                //                     slug: meta.slug,
+                //                   );
+                //                   Get.offAndToNamed(
+                //                     "/view-posts",
+                //                     arguments: ScreenParams(
+                //                       name: meta.name.replaceAll("-", " "),
+                //                     ),
+                //                   );
+                //                 },
+                //               )
+                //               .toList(),
+                //         ),
 
-                      //Tags
-                      if (uniqueTags.isNotEmpty)
-                        IconTexts(
-                          icon: Icons.tag_rounded,
-                          labels: uniqueTags
-                              .map((meta) => meta.name.replaceAll("-", " "))
-                              .toList(),
-                          color: AppColorRole.info.color,
-                          onLabelTaps: uniqueTags
-                              .map(
-                                (meta) => () {
-                                  controller.applyFilterAndPaginate(
-                                    slug: meta.slug,
-                                  );
-                                  Get.offAndToNamed(
-                                    "/view-posts",
-                                    arguments: ScreenParams(
-                                      name: meta.name.replaceAll("-", " "),
-                                    ),
-                                  );
-                                },
-                              )
-                              .toList(),
-                        ),
-                    ],
-                  ),
-                ),
+                //       //Tags
+                //       if (uniqueTags.isNotEmpty)
+                //         IconTexts(
+                //           icon: Icons.tag_rounded,
+                //           labels: uniqueTags
+                //               .map((meta) => meta.name.replaceAll("-", " "))
+                //               .toList(),
+                //           color: AppColorRole.info.color,
+                //           onLabelTaps: uniqueTags
+                //               .map(
+                //                 (meta) => () {
+                //                   controller.applyFilterAndPaginate(
+                //                     slug: meta.slug,
+                //                   );
+                //                   Get.offAndToNamed(
+                //                     "/view-posts",
+                //                     arguments: ScreenParams(
+                //                       name: meta.name.replaceAll("-", " "),
+                //                     ),
+                //                   );
+                //                 },
+                //               )
+                //               .toList(),
+                //         ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

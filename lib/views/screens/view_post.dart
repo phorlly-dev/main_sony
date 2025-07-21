@@ -22,20 +22,20 @@ class ViewPostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        RefreshIndicator(
-          onRefresh: () async {
-            await Future.wait([
-              controller.refreshCurrentPage(),
-              imageSlider.fetchSliderItems(),
-            ]);
-          },
-          child: NavBar(
-            title: name,
-            onSearch: (query) => controller.search(query),
-            menu: SideMenu(controller: menuItem, page: page),
-            content: Obx(() {
+        NavBar(
+          title: name,
+          onSearch: (query) => controller.search(query),
+          menu: SideMenu(controller: menuItem, page: page),
+          content: RefreshIndicator(
+            onRefresh: () async {
+              await Future.wait([
+                controller.refreshCurrentPage(),
+                imageSlider.fetchSliderItems(),
+              ]);
+            },
+            child: Obx(() {
               final sliders = imageSlider.sliderItems;
-              return Column(
+              return ListView(
                 children: [
                   // ImageBanner(),
                   (sliders.isEmpty || name != "Home")

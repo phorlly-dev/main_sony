@@ -35,6 +35,7 @@ class ListMenuItems extends StatelessWidget {
               isActive: meta.slug == controller.selectedItem.value,
               goTo: () {
                 controller.setActiveMenu(meta.slug);
+                log("The slug from menu: ${meta.slug}");
                 postList.applyFilterAndPaginate(slug: meta.slug);
                 Get.offAndToNamed(
                   "/view-posts",
