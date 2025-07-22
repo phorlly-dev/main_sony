@@ -32,90 +32,49 @@ class PostDetailScreen extends StatelessWidget {
       title: "Post Details",
       content: Container(
         color: colors.surface,
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Content
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title
-                  Text(
-                    unescape(post.title?.rendered ?? 'No Title'),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: colors.onSurface,
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title
+              Text(
+                unescape(post.title?.rendered ?? 'No Title'),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: colors.onSurface,
+                ),
+              ),
+
+              // Date and author
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 6,
+                  children: [
+                    IconText(
+                      icon: Icons.calendar_month_rounded,
+                      label: dateStr(date: post.date ?? DateTime.now()),
+                      color: colors.onSurface.withValues(alpha: 0.7),
                     ),
-                  ),
 
-                  // Date and author
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Wrap(
-                      spacing: 20,
-                      runSpacing: 6,
-                      children: [
-                        IconText(
-                          icon: Icons.calendar_month_rounded,
-                          label: dateStr(date: post.date ?? DateTime.now()),
-                          color: colors.onSurface.withValues(alpha: 0.7),
-                        ),
-
-                        // Categories
-                        if (uniqueCategories.isNotEmpty)
-                          IconTexts(
-                            icon: Icons.list,
-                            labels: uniqueCategories
-                                .map((meta) => meta.name.replaceAll("-", " "))
-                                .toList(),
-                            color: AppColorRole.warning.color,
-                            onLabelTaps: uniqueCategories
-                                .map(
-                                  (meta) => () {
-                                    controller.setActiveMenu(meta.slug);
-                                    controller.applyFilterAndPaginate(
-                                      slug: meta.slug,
-                                    );
-                                    Get.toNamed(
-                                      "/view-posts",
-                                      arguments: ScreenParams(name: meta.name),
-                                    );
-                                  },
-                                )
-                                .toList(),
-                          ),
-                      ],
-                    ),
-                  ),
-
-                  //Content post
-                  HtmlContent(
-                    htmlContent: post.content?.rendered ?? "No Content",
-                    screenHeight: screenHeight,
-                    screenWidth: screenWidth,
-                    isLandscape: isLandscape,
-                  ),
-
-                  Divider(color: colors.onSurface.withValues(alpha: 0.2)),
-                  //Tags
-                  if (uniqueTags.isNotEmpty)
-                    Container(
-                      padding: EdgeInsets.only(top: 2, bottom: 12),
-                      child: IconTexts(
-                        icon: Icons.tag_rounded,
-                        labels: uniqueTags
+                    // Categories
+                    if (uniqueCategories.isNotEmpty)
+                      IconTexts(
+                        icon: Icons.list,
+                        labels: uniqueCategories
                             .map((meta) => meta.name.replaceAll("-", " "))
                             .toList(),
-                        color: AppColorRole.info.color,
-                        onLabelTaps: uniqueTags
+                        color: AppColorRole.warning.color,
+                        onLabelTaps: uniqueCategories
                             .map(
                               (meta) => () {
+                                controller.setActiveMenu(meta.slug);
                                 controller.applyFilterAndPaginate(
                                   slug: meta.slug,
                                 );
@@ -127,13 +86,44 @@ class PostDetailScreen extends StatelessWidget {
                             )
                             .toList(),
                       ),
-                    ),
-
-                  //Tags
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+
+              //Content post
+              HtmlContent(
+                htmlContent: post.content?.rendered ?? "No Content",
+                screenHeight: screenHeight,
+                screenWidth: screenWidth,
+                isLandscape: isLandscape,
+              ),
+
+              Divider(color: colors.onSurface.withValues(alpha: 0.2)),
+              //Tags
+              if (uniqueTags.isNotEmpty)
+                Container(
+                  padding: EdgeInsets.only(top: 2, bottom: 12),
+                  child: IconTexts(
+                    icon: Icons.tag_rounded,
+                    labels: uniqueTags
+                        .map((meta) => meta.name.replaceAll("-", " "))
+                        .toList(),
+                    color: AppColorRole.info.color,
+                    onLabelTaps: uniqueTags
+                        .map(
+                          (meta) => () {
+                            controller.applyFilterAndPaginate(slug: meta.slug);
+                            Get.toNamed(
+                              "/view-posts",
+                              arguments: ScreenParams(name: meta.name),
+                            );
+                          },
+                        )
+                        .toList(),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
