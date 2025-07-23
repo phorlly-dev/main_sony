@@ -39,7 +39,7 @@ class PostController extends ApiProvider {
         author: authors,
         orderBy: OrderBy.date,
       );
-      final response = await connx.posts.list(request);
+      final response = await cnx.posts.list(request);
 
       response.map(
         onSuccess: (res) {
@@ -75,7 +75,7 @@ class PostController extends ApiProvider {
   Future<Post> fetchItemById(int postId) async {
     try {
       final request = RetrievePostRequest(id: postId);
-      final response = await connx.posts.retrieve(request);
+      final response = await cnx.posts.retrieve(request);
 
       return response.map(
         onSuccess: (res) => res.data,

@@ -11,7 +11,7 @@ final class ImageSliderController extends ApiProvider {
     try {
       final request = ListPostRequest(order: Order.desc, orderBy: OrderBy.date);
 
-      final response = await connx.posts.list(request);
+      final response = await cnx.posts.list(request);
       response.map(
         onSuccess: (res) async {
           final List<Post> posts = res.data;

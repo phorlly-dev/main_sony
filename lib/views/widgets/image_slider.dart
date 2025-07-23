@@ -17,20 +17,20 @@ class _ImageSliderState extends State<ImageSlider> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isLandscape = size.width > size.height;
-    final double sliderHeight = isLandscape ? 280 : 210;
+    final sliderHeight = isLandscape ? .7.sh : .25.sh;
     final double borderRadius = 8;
 
     if (widget.items.isEmpty) return SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 6).w,
       child: Column(
         children: [
           CarouselSlider.builder(
             carouselController: _carouselController,
             itemCount: widget.items.length,
-            itemBuilder: (context, i, _) {
-              final slide = widget.items[i];
+            itemBuilder: (ctx, idx, _) {
+              final slide = widget.items[idx];
               return ClipRRect(
                 borderRadius: BorderRadius.circular(borderRadius),
                 child: Stack(

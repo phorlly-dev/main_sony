@@ -16,7 +16,7 @@ class MediaController extends ApiProvider {
         perPage: 100,
         orderBy: OrderBy.date,
       );
-      final response = await connx.media.list(request);
+      final response = await cnx.media.list(request);
 
       response.map(
         onSuccess: (res) => items.value = res.data,

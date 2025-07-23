@@ -6,7 +6,7 @@ final class MenuItemController extends ApiProvider {
 
   Future<void> _fetchItems() async {
     final request = ListPostRequest(perPage: 100);
-    final response = await connx.posts.list(request);
+    final response = await cnx.posts.list(request);
 
     response.map(
       onSuccess: (res) => items.value = res.data,

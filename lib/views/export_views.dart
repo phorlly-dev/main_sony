@@ -14,6 +14,7 @@ export 'package:carousel_slider/carousel_slider.dart';
 export 'package:loading_animation_widget/loading_animation_widget.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:dart_openai/dart_openai.dart';
+export 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //partails
 export 'package:flutter/material.dart';

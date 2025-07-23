@@ -15,7 +15,7 @@ class TagController extends ApiProvider {
         // perPage: 5,
         orderBy: OrderBy.name,
       );
-      final response = await connx.tags.list(request);
+      final response = await cnx.tags.list(request);
 
       response.map(
         onSuccess: (res) => items.value = res.data,

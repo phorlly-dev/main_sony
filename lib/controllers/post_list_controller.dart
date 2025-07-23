@@ -14,7 +14,7 @@ class PostListController extends ApiProvider {
   final RxString hasError = ''.obs;
 
   final RxInt page = 1.obs;
-  final RxInt perPage = 5.obs;
+  final RxInt perPage = 6.obs;
   final RxInt _currentUser = 0.obs;
   final RxString _currentSlug = ''.obs;
   final RxString searchQuery = ''.obs;
@@ -80,7 +80,7 @@ class PostListController extends ApiProvider {
           search: search ?? searchQuery.value,
           orderBy: OrderBy.date,
         );
-        final response = await connx.posts.list(request);
+        final response = await cnx.posts.list(request);
 
         bool keepFetching = false;
         await response.map(
@@ -121,7 +121,7 @@ class PostListController extends ApiProvider {
   Future<Post> fetchItemById(int postId) async {
     try {
       final request = RetrievePostRequest(id: postId);
-      final response = await connx.posts.retrieve(request);
+      final response = await cnx.posts.retrieve(request);
 
       return response.map(
         onSuccess: (res) => res.data,

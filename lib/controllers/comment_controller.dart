@@ -20,7 +20,7 @@ class CommentController extends ApiProvider {
         authorEmail: authorEmail,
         authorUrl: authorUrl ?? '',
       );
-      final response = await connx.comments.create(request);
+      final response = await cnx.comments.create(request);
       bool success = false;
 
       response.map(

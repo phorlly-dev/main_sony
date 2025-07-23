@@ -15,7 +15,7 @@ class CategoryController extends ApiProvider {
       // perPage: 5,
       orderBy: OrderBy.name,
     );
-    final response = await connx.categories.list(request);
+    final response = await cnx.categories.list(request);
 
     response.map(
       onSuccess: (res) => items.value = res.data,

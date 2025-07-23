@@ -3,7 +3,7 @@ import 'export_controller.dart';
 
 class ApiProvider extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';
-  late WordpressClient connx;
+  late WordpressClient cnx;
   late GetConnect api;
   // var isLoading = false.obs;
   // var totalPages = 1.obs;
@@ -22,14 +22,14 @@ class ApiProvider extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    connx = WordpressClient(baseUrl: Uri.parse(_apiUrl));
+    cnx = WordpressClient(baseUrl: Uri.parse(_apiUrl));
     api = GetConnect();
   }
 
   @override
   void onClose() {
     // Clean up if needed
-    connx.clearDiscoveryCache();
+    cnx.clearDiscoveryCache();
     super.onClose();
   }
 }

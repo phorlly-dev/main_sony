@@ -27,11 +27,8 @@ class BlogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //calculate the screen
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape = context.isLandscape;
     final colors = Theme.of(context).colorScheme;
-    // final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     final author = controller.authorName(post);
     // final classList = post.classList ?? [];
     // final metaGroups = extractCategoriesAndTags(classList);
@@ -39,10 +36,10 @@ class BlogCard extends StatelessWidget {
     //   metaGroups.categories.toSet().toList(),
     // );
     // final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
+    // EdgeInsets.symmetric(horizontal: 12, vertical: 4) // mobile
 
     return Card(
       color: colors.surface,
-      margin: const EdgeInsets.all(6),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,14 +48,14 @@ class BlogCard extends StatelessWidget {
             onTap: onReadMore,
             child: ImageContent(
               imageUrl: imageUrl,
-              screenHeight: screenHeight,
+              screenHeight: .20,
               isLandscape: isLandscape,
             ),
           ),
 
           // Content
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -79,7 +76,7 @@ class BlogCard extends StatelessWidget {
 
                 // Date and author
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 14),
                   child: Wrap(
                     spacing: 20,
                     runSpacing: 6,
@@ -115,8 +112,8 @@ class BlogCard extends StatelessWidget {
                 ),
 
                 // Description
-                Container(
-                  padding: EdgeInsets.only(bottom: 8),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
                   child: TextContent(
                     article: description,
                     navigate: onReadMore,

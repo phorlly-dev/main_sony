@@ -16,7 +16,15 @@ void main() async {
   final key = dotenv.env['OPENAI_API_KEY']!;
   OpenAI.apiKey = key;
 
-  runApp(const StarterScreen());
+  await ScreenUtil.ensureScreenSize();
+
+  runApp(
+    ScreenUtilInit(
+      designSize: Size(375, 812),
+      minTextAdapt: true,
+      builder: (context, child) => const StarterScreen(),
+    ),
+  );
 }
 
 class StarterScreen extends StatelessWidget {

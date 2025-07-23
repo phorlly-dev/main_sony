@@ -8,7 +8,7 @@ class ImageContent extends StatelessWidget {
   const ImageContent({
     super.key,
     this.imageUrl,
-    this.screenHeight = 200,
+    required this.screenHeight,
     required this.isLandscape,
     this.isDetail = false,
   });
@@ -29,13 +29,13 @@ class ImageContent extends StatelessWidget {
       borderRadius: isDetail
           ? BorderRadius.all(Radius.circular(6))
           : BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
       child: CachedNetworkImage(
         imageUrl: imageUrl!,
         width: double.infinity,
-        height: isLandscape ? screenHeight : 160,
+        height: isLandscape ? screenHeight.sw * 1.5 : screenHeight.sh,
         fit: BoxFit.cover,
         placeholder: (context, url) => AspectRatio(
           aspectRatio: 16 / 9,

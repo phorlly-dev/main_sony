@@ -17,7 +17,7 @@ class PageControllerX extends ApiProvider {
         // perPage: 5,
         orderBy: OrderBy.date,
       );
-      final response = await connx.pages.list(request);
+      final response = await cnx.pages.list(request);
 
       response.map(
         onSuccess: (res) => items.value = res.data,

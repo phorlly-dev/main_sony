@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class DataRender extends StatelessWidget {
@@ -21,7 +20,7 @@ class DataRender extends StatelessWidget {
     // If loading, show a loading animation
     if (isLoading == true) {
       return Container(
-        margin: EdgeInsets.only(top: Get.height * .3),
+        margin: EdgeInsets.only(top: .3.sh),
         child: LoadingAnimation(),
       );
     }
@@ -29,7 +28,7 @@ class DataRender extends StatelessWidget {
     // If an error is present, show the error message
     if (hasError!.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(top: Get.height * .3),
+        margin: EdgeInsets.only(top: .3.sh),
         child: LoadingAnimation(
           label: hasError!,
           type: LoadingType.flickr,
@@ -41,7 +40,7 @@ class DataRender extends StatelessWidget {
     // If no items are found and notFound is empty, show a loading animation
     if (notFound == null || notFound!.isEmpty) {
       return Container(
-        margin: EdgeInsets.only(top: Get.height * .3),
+        margin: EdgeInsets.only(top: .3.sh),
         child: LoadingAnimation(
           label: "No data found.",
           type: LoadingType.staggeredDotsWave,

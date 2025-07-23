@@ -43,7 +43,6 @@ class PostCard extends StatelessWidget {
               // Navigate to the post detail screen
               Get.to(
                 () => PostDetailScreen(post: post, controller: controller),
-                curve: Curves.fastLinearToSlowEaseIn,
               );
             },
             controller: controller,

@@ -15,7 +15,7 @@ class UserController extends ApiProvider {
         // perPage: 5,
         orderBy: OrderBy.date,
       );
-      final response = await connx.users.list(request);
+      final response = await cnx.users.list(request);
 
       response.map(
         onSuccess: (res) => items.value = res.data,
