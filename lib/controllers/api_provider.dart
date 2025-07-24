@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'export_controller.dart';
 
 class ApiProvider extends GetxController {
@@ -11,7 +10,7 @@ class ApiProvider extends GetxController {
   // var hasError = ''.obs;
   // var page = 1.obs;
   // var perPage = 5.obs;
-  var selectedItem = "home".obs;
+  final RxString selectedItem = "home".obs;
 
   String get apiUrl => _apiUrl; // optional getter
 

@@ -1,5 +1,11 @@
 //out
 export 'package:flutter/gestures.dart';
+export 'package:flutter/foundation.dart';
+export 'package:get/get_core/src/get_main.dart';
+export 'package:get/get_instance/src/extension_instance.dart';
+export 'package:get/get_navigation/src/routes/get_route.dart';
+export 'package:get/get_navigation/src/extension_navigation.dart';
+export 'package:get/get_navigation/src/root/get_material_app.dart';
 export 'package:url_launcher/link.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:flutter_html/flutter_html.dart';
@@ -12,9 +18,12 @@ export 'package:flutter_html_video/flutter_html_video.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:loading_animation_widget/loading_animation_widget.dart';
+export 'package:get/get_state_manager/src/simple/get_controllers.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:dart_openai/dart_openai.dart';
+export 'package:get/get_rx/src/rx_types/rx_types.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
+export 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 //partails
 export 'package:flutter/material.dart';
@@ -30,6 +39,7 @@ export 'package:main_sony/views/screens/view_post.dart';
 export 'package:main_sony/views/screens/ai_chatbot.dart';
 
 //widgets
+export 'package:main_sony/views/master.dart';
 export 'package:main_sony/views/widgets/blog_card.dart';
 export 'package:main_sony/views/widgets/comment_dialog.dart';
 export 'package:main_sony/views/widgets/connection_overlay.dart';

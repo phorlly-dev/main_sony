@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _initApp();
   }
 
-  void _initApp() async {
+  Future<void> _initApp() async {
     await Future.delayed(
       Duration(seconds: 2),
     ).then((_) => Get.toNamed("/view-posts"));

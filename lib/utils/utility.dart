@@ -1,5 +1,4 @@
 import 'export_util.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:main_sony/controllers/export_controller.dart';

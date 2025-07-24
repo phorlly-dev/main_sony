@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'export_controller.dart';
 import 'package:main_sony/utils/export_util.dart';
 

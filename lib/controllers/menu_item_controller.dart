@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'export_controller.dart';
 
 final class MenuItemController extends ApiProvider {

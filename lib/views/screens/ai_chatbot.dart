@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
 /// Chat screen UI

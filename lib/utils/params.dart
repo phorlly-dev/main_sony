@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
 enum TypeParams { all, category, tag, author, classList }

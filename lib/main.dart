@@ -1,51 +1,45 @@
-import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'controllers/export_controller.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  // Optional: for debugging
+  BindingBase.debugZoneErrorsAreFatal = true;
 
-  // Register controllers BEFORE runApp
-  Get.put(ConnectionController());
-  Get.put(PostListController());
-  Get.put(PageControllerX());
-  Get.put(MenuItemController());
-  Get.put(ImageSliderController());
+  //The guarded zone
+  return runZonedGuarded(
+    () async {
+      // Must be FIRST inside the zone:
+      WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
-  final key = dotenv.env['OPENAI_API_KEY']!;
-  OpenAI.apiKey = key;
+      //The error handler early
+      FlutterError.onError = (details) => FlutterError.presentError(details);
 
-  await ScreenUtil.ensureScreenSize();
+      //Load API Key
+      await dotenv.load(fileName: ".env");
+      final key = dotenv.env['OPENAI_API_KEY']!;
+      OpenAI.apiKey = key;
 
-  runApp(
-    ScreenUtilInit(
-      designSize: Size(375, 812),
-      minTextAdapt: true,
-      builder: (context, child) => const StarterScreen(),
-    ),
+      // Register GetX controllers, etc.
+      Get.put(ConnectionController());
+      Get.put(PostListController());
+      Get.put(PageControllerX());
+      Get.put(MenuItemController());
+      Get.put(ImageSliderController());
+
+      //ScreenUtil
+      await ScreenUtil.ensureScreenSize();
+
+      //Run app
+      return runApp(
+        ScreenUtilInit(
+          designSize: Size(375, 812),
+          minTextAdapt: true,
+          builder: (context, child) => const MasterScreen(),
+        ),
+      );
+    },
+    (error, stack) {
+      log('Caught error: $error');
+    },
   );
-}
-
-class StarterScreen extends StatelessWidget {
-  const StarterScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Main Sony',
-      locale: Get.deviceLocale,
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/splash",
-      getPages: [
-        GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(name: '/view-posts', page: () => IndexScreen()),
-        GetPage(name: '/ai-chatbots', page: () => AiChatbotScreen()),
-      ],
-      theme: ThemeData.light(), // Default light theme
-      darkTheme: ThemeData.dark(), // Dark theme
-      themeMode: ThemeMode.system, // Follow system or allow toggling
-      home: const IndexScreen(),
-    );
-  }
 }
