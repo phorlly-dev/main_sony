@@ -33,7 +33,7 @@ class StarterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Main Sony',
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",

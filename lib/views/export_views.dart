@@ -52,6 +52,7 @@ export 'package:main_sony/views/widgets/pagination.dart';
 export 'package:main_sony/views/widgets/side_menu.dart';
 export 'package:main_sony/views/widgets/smart_circle_avatar.dart';
 export 'package:main_sony/views/widgets/text_content.dart';
+export 'package:main_sony/views/widgets/body_content.dart';
 
 //utils
 export 'package:main_sony/utils/export_util.dart';

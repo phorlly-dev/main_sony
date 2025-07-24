@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class ImageSlider extends StatefulWidget {
@@ -39,8 +40,10 @@ class _ImageSliderState extends State<ImageSlider> {
                     CachedNetworkImage(
                       imageUrl: slide.imageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Container(color: Colors.grey[300]),
+                      placeholder: (context, url) => AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Center(child: CupertinoActivityIndicator()),
+                      ),
                       errorWidget: (context, url, error) => Icon(
                         Icons.broken_image,
                         size: 60,

@@ -22,9 +22,11 @@ class ViewPostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        NavBar(
-          title: name,
-          onSearch: (query) => controller.search(query),
+        BodyContent(
+          header: NavBar(
+            title: name,
+            onSearch: (query) => controller.search(query),
+          ),
           menu: SideMenu(controller: menuItem, page: page),
           content: RefreshIndicator(
             onRefresh: () async {

@@ -116,7 +116,7 @@ class AiChatbotScreen extends StatelessWidget {
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
+          maxWidth: MediaQuery.sizeOf(context).width * 0.7,
         ),
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 6),

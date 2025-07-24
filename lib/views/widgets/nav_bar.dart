@@ -1,22 +1,17 @@
 import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
-class NavBar extends StatefulWidget {
+class NavBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
-  final Widget? menu, content, button;
   final void Function(String query)? onSearch;
 
-  const NavBar({
-    super.key,
-    required this.title,
-    this.menu,
-    this.content,
-    this.onSearch,
-    this.button,
-  });
+  const NavBar({super.key, required this.title, this.onSearch});
 
   @override
   State<NavBar> createState() => _NavBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _NavBarState extends State<NavBar> {
@@ -24,9 +19,7 @@ class _NavBarState extends State<NavBar> {
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
-  void _startSearch() {
-    setState(() => isSearching = true);
-  }
+  void _startSearch() => setState(() => isSearching = true);
 
   void _stopSearch() {
     setState(() {
@@ -34,12 +27,12 @@ class _NavBarState extends State<NavBar> {
       _searchController.clear();
     });
     FocusScope.of(context).unfocus();
-    if (widget.onSearch != null) widget.onSearch!('');
+    widget.onSearch?.call('');
   }
 
   void _onSearchSubmitted(String value) {
     FocusScope.of(context).unfocus();
-    if (widget.onSearch != null) widget.onSearch!(value.trim());
+    widget.onSearch?.call(value.trim());
   }
 
   @override
@@ -50,11 +43,9 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 4,
+    return SafeArea(
+      child: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         automaticallyImplyLeading: !isSearching, // Menu icon when not searching
         title: isSearching
             ? TextField(
@@ -70,22 +61,20 @@ class _NavBarState extends State<NavBar> {
             : Text(widget.title.toUpperCase()),
         leading: isSearching
             ? IconButton(
-                icon: Icon(Icons.close, semanticLabel: 'Close search'),
+                icon: Icon(Icons.close),
                 onPressed: _stopSearch,
+                tooltip: 'Close search',
               )
             : null,
         actions: [
           if (!isSearching && widget.onSearch != null)
             IconButton(
-              icon: Icon(Icons.search, semanticLabel: 'Search'),
+              icon: Icon(Icons.search),
               onPressed: _startSearch,
               tooltip: 'Search',
             ),
           IconButton(
-            icon: Icon(
-              isDark ? Icons.light_mode : Icons.dark_mode,
-              semanticLabel: 'Toggle theme',
-            ),
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
             onPressed: () {
               Get.changeTheme(isDark ? ThemeData.light() : ThemeData.dark());
               setState(() {
@@ -96,65 +85,6 @@ class _NavBarState extends State<NavBar> {
           ),
         ],
       ),
-      drawer: widget.menu,
-      body: SafeArea(child: widget.content!),
-      //  CustomScrollView(
-      //   slivers: [
-      //     SliverAppBar(
-      //       floating: true,
-      //       snap: true,
-      //       pinned: false,
-      //       elevation: 4,
-      //       centerTitle: true,
-      //       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      //       automaticallyImplyLeading:
-      //           !isSearching, // Menu icon when not searching
-      //       title: isSearching
-      //           ? TextField(
-      //               controller: _searchController,
-      //               autofocus: true,
-      //               decoration: InputDecoration(
-      //                 hintText: 'Search...',
-      //                 border: InputBorder.none,
-      //               ),
-      //               textInputAction: TextInputAction.search,
-      //               onSubmitted: _onSearchSubmitted,
-      //             )
-      //           : Text(widget.title.toUpperCase()),
-      //       leading: isSearching
-      //           ? IconButton(
-      //               icon: Icon(Icons.close, semanticLabel: 'Close search'),
-      //               onPressed: _stopSearch,
-      //             )
-      //           : null,
-      //       actions: [
-      //         if (!isSearching && widget.onSearch != null)
-      //           IconButton(
-      //             icon: Icon(Icons.search, semanticLabel: 'Search'),
-      //             onPressed: _startSearch,
-      //             tooltip: 'Search',
-      //           ),
-      //         IconButton(
-      //           icon: Icon(
-      //             isDark ? Icons.light_mode : Icons.dark_mode,
-      //             semanticLabel: 'Toggle theme',
-      //           ),
-      //           onPressed: () {
-      //             Get.changeTheme(
-      //               isDark ? ThemeData.light() : ThemeData.dark(),
-      //             );
-      //             setState(() {
-      //               isDark = !isDark;
-      //             });
-      //           },
-      //           tooltip: 'Toggle Theme',
-      //         ),
-      //       ],
-      //     ),
-      //     SliverToBoxAdapter(child: widget.content),
-      //   ],
-      // ),
-      floatingActionButton: widget.button,
     );
   }
 }

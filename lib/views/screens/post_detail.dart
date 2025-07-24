@@ -28,8 +28,8 @@ class PostDetailScreen extends StatelessWidget {
     );
     final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
 
-    return NavBar(
-      title: "Post Details",
+    return BodyContent(
+      header: NavBar(title: "Post Details"),
       content: Container(
         color: colors.surface,
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
