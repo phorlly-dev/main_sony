@@ -7,6 +7,7 @@ class ChatbotController extends GetxController {
   final RxList<OpenAIChatCompletionChoiceMessageModel> messages =
       <OpenAIChatCompletionChoiceMessageModel>[].obs;
   final RxBool isLoading = false.obs;
+  final RxString prompt = ''.obs; // Make it observable
   final RxString modelName = 'gpt-4.1-mini'.obs;
 
   // Controllers
@@ -14,17 +15,18 @@ class ChatbotController extends GetxController {
   final ScrollController scrollController = ScrollController();
 
   Future<void> sendMessage() async {
-    final prompt = textController.text.trim();
-    if (prompt.isEmpty || isLoading.value) return;
+    final msg = textController.text.trim();
+    if (msg.isEmpty || isLoading.value) return;
 
     // Lock UI and clear input
     isLoading.value = true;
     textController.clear();
+    prompt.value = '';
 
     // 1️⃣ Add user message to UI
     final userMessage = OpenAIChatCompletionChoiceMessageModel(
       role: OpenAIChatMessageRole.user,
-      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
+      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(msg)],
     );
     messages.add(userMessage);
 

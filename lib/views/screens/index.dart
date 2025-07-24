@@ -43,14 +43,12 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ViewPostScreen(
-        name: params.name,
-        controller: post,
-        page: page,
-        menuItem: menuItem,
-        imageSlider: imageSlider,
-      ),
+    return ViewPostScreen(
+      name: params.name,
+      controller: post,
+      page: page,
+      menuItem: menuItem,
+      imageSlider: imageSlider,
     );
   }
 }

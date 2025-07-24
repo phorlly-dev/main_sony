@@ -16,10 +16,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _initApp() async {
-    await Future.delayed(Duration(seconds: 2)); // Simulate loading
-    // Add your app start logic here (e.g., check login, fetch config)
-    // Then navigate:
-    Get.toNamed("/view-posts"); // or whatever your initial route is
+    await Future.delayed(
+      Duration(seconds: 2),
+    ).then((_) => Get.toNamed("/view-posts"));
   }
 
   @override

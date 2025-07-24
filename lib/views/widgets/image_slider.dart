@@ -15,7 +15,7 @@ class _ImageSliderState extends State<ImageSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final isLandscape = size.width > size.height;
     final sliderHeight = isLandscape ? .7.sh : .25.sh;
     final double borderRadius = 8;

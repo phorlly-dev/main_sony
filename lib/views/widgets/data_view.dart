@@ -66,10 +66,10 @@ class DataView<T> extends StatelessWidget {
         primary: false,
         itemCount: itemCounter,
         itemBuilder: itemBuilder,
-        // physics: NeverScrollableScrollPhysics(), // Not scrollable
+        physics: NeverScrollableScrollPhysics(), // Not scrollable
         shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 2,
           // crossAxisSpacing: 0,
           // mainAxisSpacing: 12,
           // childAspectRatio: .98,

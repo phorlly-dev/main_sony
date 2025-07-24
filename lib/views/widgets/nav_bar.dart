@@ -97,7 +97,7 @@ class _NavBarState extends State<NavBar> {
         ],
       ),
       drawer: widget.menu,
-      body: widget.content,
+      body: SafeArea(child: widget.content!),
       //  CustomScrollView(
       //   slivers: [
       //     SliverAppBar(

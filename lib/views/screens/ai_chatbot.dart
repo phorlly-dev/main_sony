@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:main_sony/views/export_views.dart';
 
@@ -48,15 +49,15 @@ class AiChatbotScreen extends StatelessWidget {
                 controller: controller.scrollController,
                 padding: EdgeInsets.all(8),
                 itemCount: controller.messages.length,
-                itemBuilder: (_, i) =>
-                    _buildMessage(controller.messages[i], context),
+                itemBuilder: (ctx, idx) =>
+                    _buildMessage(controller.messages[idx], context),
               ),
             ),
           ),
           Divider(height: 1),
           // Input field + send button
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Row(
               children: [
                 Expanded(
@@ -67,20 +68,30 @@ class AiChatbotScreen extends StatelessWidget {
                     decoration: InputDecoration.collapsed(
                       hintText: 'Type a prompt...',
                     ),
+                    autofocus: true,
+                    onChanged: (value) {
+                      controller.prompt.value = value.trim();
+                    },
                   ),
                 ),
-                Obx(
-                  () => controller.isLoading.value
-                      ? SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: controller.sendMessage,
-                        ),
-                ),
+                Obx(() {
+                  final isLoading = controller.isLoading.value;
+                  final promptNotEmpty = controller.prompt.isNotEmpty;
+                  final colors = Theme.of(context).colorScheme;
+
+                  if (isLoading) {
+                    return CupertinoActivityIndicator(color: colors.primary);
+                  }
+                  if (promptNotEmpty) {
+                    return IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: controller.sendMessage,
+                      color: colors.primary,
+                    );
+                  }
+
+                  return SizedBox.shrink();
+                }),
               ],
             ),
           ),
