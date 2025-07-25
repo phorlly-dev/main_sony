@@ -5,6 +5,7 @@ final class ImageSliderController extends ApiProvider {
   final _media = Get.put(MediaController());
   // Use RxList!
   final RxList<SlideItem> sliderItems = <SlideItem>[].obs;
+  final RxInt postId = 0.obs;
 
   Future<void> fetchSliderItems() async {
     try {
@@ -34,6 +35,7 @@ final class ImageSliderController extends ApiProvider {
             final imgUrl = (ogImage is List && ogImage.isNotEmpty)
                 ? ogImage[0]['url']
                 : null;
+            postId.value = post.id;
 
             return SlideItem(
               imageUrl: media?.sourceUrl ?? imgUrl,

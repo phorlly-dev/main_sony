@@ -41,7 +41,21 @@ class ViewPostScreen extends StatelessWidget {
                   // ImageBanner(),
                   (sliders.isEmpty || name != "Home")
                       ? SizedBox.shrink()
-                      : ImageSlider(items: sliders),
+                      : ImageSlider(
+                          items: sliders,
+                          onTap: () async {
+                            final post = await controller.fetchItemById(
+                              imageSlider.postId.value,
+                            );
+                            // Navigate to the post detail screen
+                            Get.to(
+                              () => PostDetailScreen(
+                                post: post,
+                                controller: controller,
+                              ),
+                            );
+                          },
+                        ),
                   PostCard(controller: controller),
                 ],
               );

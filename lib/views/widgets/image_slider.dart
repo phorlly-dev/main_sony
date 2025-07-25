@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class ImageSlider extends StatefulWidget {
+  final VoidCallback? onTap;
   final List<SlideItem> items;
 
-  const ImageSlider({super.key, required this.items});
+  const ImageSlider({super.key, required this.items, this.onTap});
 
   @override
   State<ImageSlider> createState() => _ImageSliderState();
@@ -32,68 +33,71 @@ class _ImageSliderState extends State<ImageSlider> {
             itemCount: widget.items.length,
             itemBuilder: (ctx, idx, _) {
               final slide = widget.items[idx];
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(borderRadius),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: slide.imageUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Center(child: CupertinoActivityIndicator()),
+              return InkWell(
+                onTap: widget.onTap,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: slide.imageUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Center(child: CupertinoActivityIndicator()),
+                        ),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.broken_image,
+                          size: 60,
+                          color: Colors.grey[400],
+                        ),
                       ),
-                      errorWidget: (context, url, error) => Icon(
-                        Icons.broken_image,
-                        size: 60,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                    // Overlay with gradient and title
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 14),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Colors.black54],
+                      // Overlay with gradient and title
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.fromLTRB(16, 24, 16, 14),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.transparent, Colors.black54],
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                slide.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  shadows: [
+                                    Shadow(blurRadius: 8, color: Colors.black),
+                                  ],
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                slide.date,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              slide.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                                shadows: [
-                                  Shadow(blurRadius: 8, color: Colors.black),
-                                ],
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              slide.date,
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
