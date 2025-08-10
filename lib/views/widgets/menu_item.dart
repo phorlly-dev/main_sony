@@ -23,7 +23,7 @@ class MenuItem extends StatelessWidget {
 
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
           color: isActive ? activeColor : null,
           borderRadius: isActive ? borderRadius : null,
