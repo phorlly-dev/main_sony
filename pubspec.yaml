@@ -41,6 +41,7 @@ dependencies:
   flutter_html_svg: ^3.0.0
   flutter_html_table: ^3.0.0
   flutter_html_video: ^3.0.0
+  appsflyer_sdk: ^6.17.5
 
 dev_dependencies:
   flutter_launcher_icons:

@@ -1,3 +1,5 @@
+import 'package:wordpress_client/wordpress_client.dart';
+
 import 'export_controller.dart';
 
 class ApiProvider extends GetxController {

@@ -1,3 +1,5 @@
+import 'package:wordpress_client/wordpress_client.dart';
+
 import 'export_util.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;

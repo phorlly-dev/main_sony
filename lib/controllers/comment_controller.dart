@@ -1,3 +1,5 @@
+import 'package:wordpress_client/wordpress_client.dart';
+
 import 'export_controller.dart';
 
 class CommentController extends ApiProvider {
@@ -13,7 +15,7 @@ class CommentController extends ApiProvider {
     isSubmitting.value = true;
     try {
       final request = CreateCommentRequest(
-        post: postId.toString(),
+        post: postId,
         content: content,
         authorDisplayName: authorName,
         authorEmail: authorEmail,

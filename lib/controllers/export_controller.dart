@@ -5,7 +5,7 @@ export 'package:get/get_connect/connect.dart';
 export 'package:get/get_core/src/get_main.dart';
 export 'package:get/get_navigation/src/snackbar/snackbar.dart';
 export 'package:get/get_rx/src/rx_types/rx_types.dart';
-export 'package:wordpress_client/wordpress_client.dart';
+// export 'package:wordpress_client/wordpress_client.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:get/get_navigation/src/extension_navigation.dart';
 export 'package:get/get_instance/src/extension_instance.dart';

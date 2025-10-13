@@ -35,13 +35,13 @@ class SideMenu extends StatelessWidget {
           ),
 
           //AI Assistant
-          MenuItem(
-            label: "Chatbot".toUpperCase(),
-            goTo: () {
-              Get.toNamed("/ai-chatbots");
-            },
-            icon: Icons.chat,
-          ),
+          // MenuItem(
+          //   label: "Chatbot".toUpperCase(),
+          //   goTo: () {
+          //     Get.toNamed("/ai-chatbots");
+          //   },
+          //   icon: Icons.chat,
+          // ),
 
           // Add more menu items as needed
           ListMenuItems(controller: controller, postList: postCtrl),

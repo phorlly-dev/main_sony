@@ -1,5 +1,6 @@
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
+import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class PostDetailScreen extends StatelessWidget {
   final Post post;
