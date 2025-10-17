@@ -14,7 +14,7 @@ class NavBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  bool isDark = Get.isDarkMode;
+  // bool isDark = Get.isDarkMode;
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -72,16 +72,6 @@ class _NavBarState extends State<NavBar> {
               onPressed: _startSearch,
               tooltip: 'Search',
             ),
-          IconButton(
-            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-            onPressed: () {
-              Get.changeTheme(isDark ? ThemeData.light() : ThemeData.dark());
-              setState(() {
-                isDark = !isDark;
-              });
-            },
-            tooltip: 'Toggle Theme',
-          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
@@ -21,28 +22,21 @@ class PostCard extends StatelessWidget {
             : "No results for '${controller.searchQuery.value}'",
         onGoToPage: (page) => controller.goToPage(page),
         itemBuilder: (context, item, index) {
-          final yoast = item.yoastHeadJson;
-
           // Extract relevant metadata
           final title = item.title?.rendered ?? 'No Title';
-          final desc = item.excerpt?.rendered ?? 'No Decription';
+          final desc = item.excerpt?.rendered ?? 'No Description';
           final media = controller.mediaMap[item.featuredMedia];
-          final ogImage = getValue(object: yoast, key: 'og_image');
-          final imgUrl = (ogImage is List && ogImage.isNotEmpty)
-              ? ogImage[0]['url']
-              : null;
-
+          final imgUrl = controller.ogImageUrl(item.id) as String;
           return BlogCard(
             imageUrl: media?.sourceUrl ?? imgUrl,
             title: title,
             description: desc,
             date: item.date ?? DateTime.now(),
-            onReadMore: () async {
-              final post = await controller.fetchItemById(item.id);
-
-              // Navigate to the post detail screen
-              Get.to(
-                () => PostDetailScreen(post: post, controller: controller),
+            onReadMore: () {
+              context.pushNamed(
+                'post_detail',
+                pathParameters: {'id': item.id.toString()},
+                extra: controller,
               );
             },
             controller: controller,

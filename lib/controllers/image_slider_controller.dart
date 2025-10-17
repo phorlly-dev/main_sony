@@ -3,7 +3,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 import 'export_controller.dart';
 import 'package:main_sony/utils/export_util.dart';
 
-final class ImageSliderController extends ApiProvider {
+class ImageSliderController extends ApiProvider {
   final _media = Get.put(MediaController());
   // Use RxList!
   final RxList<SlideItem> sliderItems = <SlideItem>[].obs;
@@ -18,6 +18,7 @@ final class ImageSliderController extends ApiProvider {
         onSuccess: (res) async {
           final List<Post> posts = res.data;
           final List<Media> allMedia = [];
+          await fetchExtrasForPostIds(posts.map((p) => p.id).toList());
 
           // Media lookup
           final ids = posts
@@ -30,13 +31,9 @@ final class ImageSliderController extends ApiProvider {
           }
           final mediaMap = {for (var res in allMedia) res.id: res};
 
-          final items = posts.take(10).map((post) {
-            final yoast = post.yoastHeadJson;
+            final items = posts.take(10).map((post) {
             final media = mediaMap[post.featuredMedia];
-            final ogImage = getValue(object: yoast, key: 'og_image');
-            final imgUrl = (ogImage is List && ogImage.isNotEmpty)
-                ? ogImage[0]['url']
-                : null;
+            final imgUrl = ogImageUrl(post.id) as String;
             postId.value = post.id;
 
             return SlideItem(

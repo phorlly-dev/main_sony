@@ -53,28 +53,35 @@ class DataView<T> extends StatelessWidget {
     }
 
     // If items are found, display them in a ListView
-    return Responsive(
-      mobile: ListView.builder(
-        primary: false,
-        itemCount: itemCounter,
-        itemBuilder: itemBuilder,
-        physics: NeverScrollableScrollPhysics(), // Not scrollable
-        shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4).w,
-      ),
-      tablet: GridView.builder(
-        primary: false,
-        itemCount: itemCounter,
-        itemBuilder: itemBuilder,
-        physics: NeverScrollableScrollPhysics(), // Not scrollable
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 2,
-          // crossAxisSpacing: 0,
-          // mainAxisSpacing: 12,
-          // childAspectRatio: .98,
-        ),
-      ),
+
+    return ListView.builder(
+      itemCount: itemCounter,
+      itemBuilder: itemBuilder,
+      physics: NeverScrollableScrollPhysics(), // Not scrollable
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     );
+
+    // return Responsive(
+    //   mobile: ListView.builder(
+    //     itemCount: itemCounter,
+    //     itemBuilder: itemBuilder,
+    //     physics: NeverScrollableScrollPhysics(), // Not scrollable
+    //     shrinkWrap: true,
+    //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4).w,
+    //   ),
+    //   tablet: GridView.builder(
+    //     itemCount: itemCounter,
+    //     itemBuilder: itemBuilder,
+    //     physics: NeverScrollableScrollPhysics(), // Not scrollable
+    //     shrinkWrap: true,
+    //     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    //       maxCrossAxisExtent: 2,
+    //       // crossAxisSpacing: 0,
+    //       // mainAxisSpacing: 12,
+    //       // childAspectRatio: .98,
+    //     ),
+    //   ),
+    // );
   }
 }

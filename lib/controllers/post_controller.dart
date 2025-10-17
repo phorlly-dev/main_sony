@@ -99,7 +99,7 @@ class PostController extends ApiProvider {
   List<MapEntry<int, String>> Function(Post post) get tags => _tag.tags;
 
   //User
-  String Function(Post post) get authorName => _user.authorName;
+  User? Function(Post post) get authorName => _user.authorName;
 
   // Refresh current page
   // This will always refresh using the last filter (category/tag/author)

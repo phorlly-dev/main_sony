@@ -11,11 +11,7 @@ class UserController extends ApiProvider {
     isLoading.value = true;
     hasError.value = '';
     try {
-      final request = ListUserRequest(
-        order: Order.asc,
-        // perPage: 5,
-        orderBy: OrderBy.date,
-      );
+      final request = ListUserRequest();
       final response = await cnx.users.list(request);
 
       response.map(
@@ -33,7 +29,7 @@ class UserController extends ApiProvider {
   Map<int, User> get itemMap => {for (var res in items) res.id: res};
 
   //User
-  String authorName(Post post) => itemMap[post.author]?.name ?? "User";
+  User? authorName(Post post) => itemMap[post.author];
 
   @override
   void onInit() {

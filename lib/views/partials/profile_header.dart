@@ -17,13 +17,10 @@ class ProfileHeader extends StatelessWidget {
         return Obx(() {
           final items = controller.items;
           final item = items[index];
-          final yoast = item.yoastHeadJson;
+          final yoast = controller.yoastFor(item.id);
           final title = getValue(object: yoast, key: 'title').toString();
           final desc = getValue(object: yoast, key: 'description').toString();
-          final ogImage = getValue(object: yoast, key: 'og_image');
-          final imgUrl = (ogImage is List && ogImage.isNotEmpty)
-              ? ogImage[0]['url']
-              : null;
+          final imgUrl = controller.ogImageUrl(item.id);
 
           return UserAccountsDrawerHeader(
             decoration: const BoxDecoration(

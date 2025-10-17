@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 
@@ -15,12 +16,7 @@ class ListMenuItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final posts = controller.items;
-
-      // for (final val in posts) {
-      //   log("The Items: ${val.classList}");
-      // }
-
-      final usedSlugs = getUsedSlugs(posts);
+      final usedSlugs = getUsedSlugs(postList, posts);
 
       // Only menuItems whose slug appears in posts
       final visibleMenuItems = getVisibleMenuItems(menuItems, usedSlugs);
@@ -34,12 +30,12 @@ class ListMenuItems extends StatelessWidget {
               isActive: meta.slug == controller.selectedItem.value,
               goTo: () {
                 controller.setActiveMenu(meta.slug);
-                // log("The slug from menu: ${meta.slug}");
-                postList.applyFilterAndPaginate(slug: meta.slug);
-                Get.offAndToNamed(
-                  "/view-posts",
-                  arguments: ScreenParams(name: meta.name),
+                postList.applyFilterAndPaginate(
+                  slug: meta.slug,
+                  userId: 0,
+                  clearSearch: true,
                 );
+                context.go("/view-posts", extra: ScreenParams(name: meta.name));
               },
             ),
           ),

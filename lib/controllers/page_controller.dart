@@ -21,7 +21,25 @@ class PageControllerX extends ApiProvider {
       final response = await cnx.pages.list(request);
 
       response.map(
-        onSuccess: (res) => items.value = res.data,
+        onSuccess: (res) async {
+          items.value = res.data;
+          final ids = items.map((p) => p.id).toList();
+          await fetchCustomFieldsForIds(
+            slug: 'pages',
+            ids: ids,
+            fields: ['yoast_head_json'],
+          ).then((fetchCustom) {
+            for (final row in fetchCustom) {
+              final id = row['id'] as int;
+
+              // Yoast head JSON as a map
+              final yoast = row['yoast_head_json'];
+              if (yoast is Map<String, dynamic>) {
+                yoastByPost[id] = yoast;
+              }
+            }
+          });
+        },
         onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
       );
     } catch (e) {

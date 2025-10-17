@@ -1,3 +1,4 @@
+import 'package:main_sony/controllers/export_controller.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_util.dart';
@@ -54,10 +55,11 @@ MenuMeta getMenuMeta(String slug) {
 }
 
 /// Retrieves a list of MenuMeta objects based on the provided slugs.
-Set<String> getUsedSlugs(List<Post> posts) {
+Set<String> getUsedSlugs(PostListController controller, List<Post> posts) {
   final slugs = <String>{};
   for (final post in posts) {
-    final classList = post.classList ?? [];
+    // final classList = post.classList ?? [];
+    final classList = controller.classListFor(post.id); 
     for (final c in classList) {
       // Match both 'category-' and 'tag-' (adjust as needed)
       if (c.startsWith('category-')) {

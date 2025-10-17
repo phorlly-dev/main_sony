@@ -42,7 +42,10 @@ class MenuItem extends StatelessWidget {
               fontSize: size / 1.2,
             ),
           ),
-          onTap: goTo,
+          onTap: () {
+            goTo!.call();
+            Navigator.of(context).pop();
+          },
           selected: isActive,
           trailing: Icon(
             Icons.arrow_forward_rounded,

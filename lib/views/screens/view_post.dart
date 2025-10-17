@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 
@@ -19,6 +20,7 @@ class ViewPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('name: $name');
     return Stack(
       children: [
         BodyContent(
@@ -44,15 +46,13 @@ class ViewPostScreen extends StatelessWidget {
                       : ImageSlider(
                           items: sliders,
                           onTap: () async {
-                            final post = await controller.fetchItemById(
-                              imageSlider.postId.value,
-                            );
                             // Navigate to the post detail screen
-                            Get.to(
-                              () => PostDetailScreen(
-                                post: post,
-                                controller: controller,
-                              ),
+                            context.pushNamed(
+                              'post_detail',
+                              pathParameters: {
+                                'id': imageSlider.postId.value.toString(),
+                              },
+                              extra: controller,
                             );
                           },
                         ),

@@ -1,16 +1,46 @@
+import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
 
-class PostDetailScreen extends StatelessWidget {
-  final Post post;
+class PostDetailScreen extends StatefulWidget {
+  final int postId;
   final PostListController controller;
 
   const PostDetailScreen({
     super.key,
-    required this.post,
+    required this.postId,
     required this.controller,
   });
+
+  @override
+  State<PostDetailScreen> createState() => _PostDetailScreenState();
+}
+
+class _PostDetailScreenState extends State<PostDetailScreen> {
+  Post? _post;
+  bool _loading = true;
+  late PostListController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller;
+    if (_post != null) {
+      _loading = false;
+    } else {
+      _load();
+    }
+  }
+
+  Future<void> _load() async {
+    final p = await _controller.fetchItemById(widget.postId);
+    if (!mounted) return;
+    setState(() {
+      _post = p;
+      _loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +50,16 @@ class PostDetailScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final colors = Theme.of(context).colorScheme;
+    final classList = _controller.classListFor(widget.postId);
 
-    final classList = post.classList ?? [];
     final metaGroups = extractCategoriesAndTags(classList);
     final uniqueCategories = getMenuMetaList(
       metaGroups.categories.toSet().toList(),
     );
     final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
+
+    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_post == null) return const Center(child: Text('Not found'));
 
     return BodyContent(
       header: NavBar(title: "Post Details"),
@@ -40,7 +73,7 @@ class PostDetailScreen extends StatelessWidget {
             children: [
               // Title
               Text(
-                unescape(post.title?.rendered ?? 'No Title'),
+                unescape(_post!.title?.rendered ?? 'No Title'),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -59,7 +92,7 @@ class PostDetailScreen extends StatelessWidget {
                   children: [
                     IconText(
                       icon: Icons.calendar_month_rounded,
-                      label: dateStr(date: post.date ?? DateTime.now()),
+                      label: dateStr(date: _post!.date ?? DateTime.now()),
                       color: colors.onSurface.withValues(alpha: 0.7),
                     ),
 
@@ -74,13 +107,14 @@ class PostDetailScreen extends StatelessWidget {
                         onLabelTaps: uniqueCategories
                             .map(
                               (meta) => () {
-                                controller.setActiveMenu(meta.slug);
-                                controller.applyFilterAndPaginate(
+                                _controller.setActiveMenu(meta.slug);
+                                _controller.applyFilterAndPaginate(
                                   slug: meta.slug,
+                                  clearSearch: true,
                                 );
-                                Get.toNamed(
-                                  "/view-posts",
-                                  arguments: ScreenParams(name: meta.name),
+                                context.goNamed(
+                                  'view_posts',
+                                  extra: ScreenParams(name: meta.name),
                                 );
                               },
                             )
@@ -92,7 +126,7 @@ class PostDetailScreen extends StatelessWidget {
 
               //Content post
               HtmlContent(
-                htmlContent: post.content?.rendered ?? "No Content",
+                htmlContent: _post!.content?.rendered ?? "No Content",
                 screenHeight: screenHeight,
                 screenWidth: screenWidth,
                 isLandscape: isLandscape,
@@ -112,10 +146,13 @@ class PostDetailScreen extends StatelessWidget {
                     onLabelTaps: uniqueTags
                         .map(
                           (meta) => () {
-                            controller.applyFilterAndPaginate(slug: meta.slug);
-                            Get.toNamed(
-                              "/view-posts",
-                              arguments: ScreenParams(name: meta.name),
+                            _controller.applyFilterAndPaginate(
+                              slug: meta.slug,
+                              clearSearch: true,
+                            );
+                            context.goNamed(
+                              'view_posts',
+                              extra: ScreenParams(name: meta.name),
                             );
                           },
                         )

@@ -3,9 +3,9 @@ import 'package:main_sony/views/export_views.dart';
 enum TypeParams { all, category, tag, author, classList }
 
 class ScreenParams {
-  final String name;
+  final String? name;
 
-  const ScreenParams({required this.name});
+  const ScreenParams({this.name});
 }
 
 class SlideItem {

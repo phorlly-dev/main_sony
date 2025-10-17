@@ -32,7 +32,7 @@ class PageDataView<T> extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(bottom: 76, top: 4),
-          child: DataView(
+          child: DataView<T>(
             isLoading: isLoading && items.isEmpty,
             hasError: hasError,
             noDataMessage: noDataMessage,

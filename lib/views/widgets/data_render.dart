@@ -1,11 +1,12 @@
 import 'package:main_sony/views/export_views.dart';
 
-class DataRender extends StatelessWidget {
+class DataRender<T> extends StatelessWidget {
   final int length;
   final bool? isLoading;
   final String? hasError;
-  final List<dynamic>? notFound;
+  final List<T>? notFound;
   final Widget Function(int index) child;
+
   const DataRender({
     super.key,
     required this.length,

@@ -1,24 +1,21 @@
 import 'package:main_sony/views/export_views.dart';
+import 'package:main_sony/router.dart';
+import 'package:provider/provider.dart';
+import '../utils/theme_manager.dart';
 
 class MasterScreen extends StatelessWidget {
   const MasterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Main Sony',
+    return MaterialApp.router(
+      title: 'Main SOE',
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      initialRoute: "/splash",
-      getPages: [
-        GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(name: '/view-posts', page: () => IndexScreen()),
-        GetPage(name: '/ai-chatbots', page: () => AiChatbotScreen()),
-      ],
       theme: ThemeData.light(), // Default light theme
       darkTheme: ThemeData.dark(), // Dark theme
-      themeMode: ThemeMode.system, // Follow system or allow toggling
-      home: const IndexScreen(),
+      themeMode: context.watch<ThemeManager>().themeMode, // Provider
+      routerConfig: router,
     );
   }
 }
