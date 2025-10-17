@@ -2,8 +2,8 @@ import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class IndexScreen extends StatefulWidget {
-  final ScreenParams? params;
-  const IndexScreen({super.key, required this.params});
+  final String name;
+  const IndexScreen({super.key, required this.name});
 
   @override
   State<IndexScreen> createState() => _IndexScreenState();
@@ -26,9 +26,9 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final params = widget.params;
+    // final params = widget.params;
     return ViewPostScreen(
-      name: params?.name ?? "Home",
+      name: widget.name,
       controller: post,
       page: page,
       menuItem: menuItem,

@@ -4,8 +4,6 @@ import 'export_controller.dart';
 
 class CategoryController extends ApiProvider {
   final RxList<Category> items = <Category>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;

@@ -9,7 +9,7 @@ class NotificationSettings extends StatefulWidget {
 }
 
 class _NotificationSettingsState extends State<NotificationSettings> {
-  late bool messages, inApp, pushOn, topic;
+  late bool messages, inApp, pushOn, togel, slot;
 
   @override
   void initState() {
@@ -17,21 +17,22 @@ class _NotificationSettingsState extends State<NotificationSettings> {
     messages = NotificationPrefs.messages;
     inApp = NotificationPrefs.inApp;
     pushOn = NotificationPrefs.pushOn;
-    topic = NotificationPrefs.topic;
+    togel = NotificationPrefs.togel;
+    slot = NotificationPrefs.slot;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        SwitchListTile(
-          title: const Text('Messages and mentions'),
-          value: messages,
-          onChanged: (v) async {
-            setState(() => messages = v);
-            await NotificationPrefs.setMessages(v);
-          },
-        ),
+        // SwitchListTile(
+        //   title: const Text('Messages & mentions'),
+        //   value: messages,
+        //   onChanged: (v) async {
+        //     setState(() => messages = v);
+        //     await NotificationPrefs.setMessages(v);
+        //   },
+        // ),
         SwitchListTile(
           title: const Text('In-app notifications'),
           value: inApp,
@@ -41,11 +42,19 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           },
         ),
         SwitchListTile(
-          title: const Text('Topic Togel | Slot)'),
-          value: topic,
+          title: const Text('Topic related to Slot'),
+          value: slot,
           onChanged: (v) async {
-            setState(() => topic = v);
-            await NotificationPrefs.setTopic(v);
+            setState(() => slot = v);
+            await NotificationPrefs.setSlot(v);
+          },
+        ),
+        SwitchListTile(
+          title: const Text('Topic related to Togel'),
+          value: togel,
+          onChanged: (v) async {
+            setState(() => togel = v);
+            await NotificationPrefs.setTogel(v);
           },
         ),
         const Divider(),

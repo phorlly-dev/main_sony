@@ -4,8 +4,6 @@ import 'export_controller.dart';
 
 class PageControllerX extends ApiProvider {
   final RxList<Page> items = <Page>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
 
   //fetch pages
   Future<void> _fetchItems() async {
@@ -35,7 +33,7 @@ class PageControllerX extends ApiProvider {
               // Yoast head JSON as a map
               final yoast = row['yoast_head_json'];
               if (yoast is Map<String, dynamic>) {
-                yoastByPost[id] = yoast;
+                yoasts[id] = yoast;
               }
             }
           });

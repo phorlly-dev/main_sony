@@ -4,9 +4,10 @@ import 'package:main_sony/views/export_views.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class PostCard extends StatelessWidget {
+  final String name;
   final PostListController controller;
 
-  const PostCard({super.key, required this.controller});
+  const PostCard({super.key, required this.controller, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,12 @@ class PostCard extends StatelessWidget {
             description: desc,
             date: item.date ?? DateTime.now(),
             onReadMore: () {
-              context.pushNamed(
-                'post_detail',
-                pathParameters: {'id': item.id.toString()},
+              context.pushNamed<Post>(
+                'details',
+                pathParameters: {
+                  'id': item.id.toString(),
+                  'name': getName(name),
+                },
                 extra: controller,
               );
             },

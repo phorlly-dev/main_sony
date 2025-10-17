@@ -27,6 +27,10 @@ String getResponsiveImageUrl(Media media) {
   }
 }
 
+String getName(String name) {
+  return name.replaceAll(" ", "-").toLowerCase();
+}
+
 /// Extracts a substring from a string, limiting the number of words.
 String substr({required String key, int length = 5}) {
   final words = key.split(' ');

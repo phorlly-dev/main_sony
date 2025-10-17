@@ -30,12 +30,13 @@ class ListMenuItems extends StatelessWidget {
               isActive: meta.slug == controller.selectedItem.value,
               goTo: () {
                 controller.setActiveMenu(meta.slug);
+                postList.setActiveMenu(meta.slug);
                 postList.applyFilterAndPaginate(
                   slug: meta.slug,
                   userId: 0,
                   clearSearch: true,
                 );
-                context.go("/view-posts", extra: ScreenParams(name: meta.name));
+                context.go("/view-posts/${getName(meta.name)}");
               },
             ),
           ),

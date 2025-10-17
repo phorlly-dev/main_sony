@@ -3,20 +3,18 @@ import 'package:main_sony/views/export_views.dart';
 class NavBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final void Function(String query)? onSearch;
-
   const NavBar({super.key, required this.title, this.onSearch});
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  State<NavBar> createState() => _NavBarState();
 }
 
 class _NavBarState extends State<NavBar> {
-  // bool isDark = Get.isDarkMode;
   bool isSearching = false;
-  final TextEditingController _searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
   void _startSearch() => setState(() => isSearching = true);
 
@@ -42,38 +40,36 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: !isSearching, // Menu icon when not searching
-        title: isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  border: InputBorder.none,
-                ),
-                textInputAction: TextInputAction.search,
-                onSubmitted: _onSearchSubmitted,
-              )
-            : Text(widget.title.toUpperCase()),
-        leading: isSearching
-            ? IconButton(
-                icon: Icon(Icons.close),
-                onPressed: _stopSearch,
-                tooltip: 'Close search',
-              )
-            : null,
-        actions: [
-          if (!isSearching && widget.onSearch != null)
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: _startSearch,
-              tooltip: 'Search',
-            ),
-        ],
-      ),
+    return AppBar(
+      centerTitle: true,
+      automaticallyImplyLeading: !isSearching,
+      title: isSearching
+          ? TextField(
+              controller: _searchController,
+              autofocus: true,
+              decoration: const InputDecoration(
+                hintText: 'Search…',
+                border: InputBorder.none,
+              ),
+              textInputAction: TextInputAction.search,
+              onSubmitted: _onSearchSubmitted,
+            )
+          : Text(widget.title.replaceAll('-', ' ').toUpperCase()),
+      leading: isSearching
+          ? IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: _stopSearch,
+              tooltip: 'Close search',
+            )
+          : null,
+      actions: [
+        if (!isSearching && widget.onSearch != null)
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: _startSearch,
+            tooltip: 'Search',
+          ),
+      ],
     );
   }
 }

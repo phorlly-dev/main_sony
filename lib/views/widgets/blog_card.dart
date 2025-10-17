@@ -97,9 +97,8 @@ class BlogCard extends StatelessWidget {
                             slug: '',
                             clearSearch: true,
                           );
-                          context.goNamed(
-                            "view_posts",
-                            extra: ScreenParams(name: author?.name),
+                          context.go(
+                            "/view-posts/${getName(author?.name ?? '')}",
                           );
                         },
                         color: colors.secondary,
@@ -149,11 +148,8 @@ class BlogCard extends StatelessWidget {
                                     clearSearch: true,
                                   );
 
-                                  context.goNamed(
-                                    "view_posts",
-                                    extra: ScreenParams(
-                                      name: meta.name.replaceAll("-", " "),
-                                    ),
+                                  context.go(
+                                    "/view-posts/${getName(meta.name)}",
                                   );
                                 },
                               )
@@ -177,11 +173,8 @@ class BlogCard extends StatelessWidget {
                                     clearSearch: true,
                                   );
 
-                                  context.goNamed(
-                                    "view_posts",
-                                    extra: ScreenParams(
-                                      name: meta.name.replaceAll("-", " "),
-                                    ),
+                                  context.go(
+                                    "/view-posts/${getName(meta.name)}",
                                   );
                                 },
                               )

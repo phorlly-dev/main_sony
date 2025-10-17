@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:main_sony/utils/notification_prefs.dart';
 import 'package:main_sony/utils/theme_manager.dart';
 import 'package:main_sony/views/export_views.dart';
@@ -5,9 +6,9 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'controllers/export_controller.dart';
 
-void appConfig() {
+void appConfig() async {
   //The guarded zone
-  return runZonedGuarded(
+  await runZonedGuarded(
     () async {
       // Must be FIRST inside the zone:
       WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ void appConfig() {
       await ScreenUtil.ensureScreenSize();
 
       //Run app
-      runApp(initApp());
+      runApp(ProviderScope(child: initApp()));
     },
     (error, stack) {
       log('Caught error: $error');
@@ -63,9 +64,6 @@ Future<void> initOneSignal() async {
 
   await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("554a089c-a5ad-4ec6-9741-1063bb2e07e5");
-
-  // Ask for permission (iOS) / subscribe (Android auto)
-  await OneSignal.Notifications.requestPermission(true);
 
   await NotificationPrefs.syncToOneSignal();
 

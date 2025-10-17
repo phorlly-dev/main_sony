@@ -10,11 +10,6 @@ class PostController extends ApiProvider {
 
   // Reactive lists
   final RxList<Post> items = <Post>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
-  final RxInt page = 1.obs;
-  final RxInt totalPages = 1.obs;
-  final RxInt perPage = 5.obs;
 
   int? _currentUser;
 

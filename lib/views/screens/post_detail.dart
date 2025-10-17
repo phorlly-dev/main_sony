@@ -107,15 +107,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         onLabelTaps: uniqueCategories
                             .map(
                               (meta) => () {
-                                _controller.setActiveMenu(meta.slug);
                                 _controller.applyFilterAndPaginate(
                                   slug: meta.slug,
                                   clearSearch: true,
                                 );
-                                context.goNamed(
-                                  'view_posts',
-                                  extra: ScreenParams(name: meta.name),
-                                );
+                                context.go('/view-posts/${getName(meta.name)}');
                               },
                             )
                             .toList(),
@@ -150,10 +146,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               slug: meta.slug,
                               clearSearch: true,
                             );
-                            context.goNamed(
-                              'view_posts',
-                              extra: ScreenParams(name: meta.name),
-                            );
+                            context.go('/view-posts/${getName(meta.name)}');
                           },
                         )
                         .toList(),

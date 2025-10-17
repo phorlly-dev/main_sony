@@ -8,14 +8,16 @@ class NotificationPrefs {
   // keys
   static const _kMessages = 'pref_messages';
   static const _kInApp = 'pref_inapp';
-  static const _kTopic = 'pref_topic';
+  static const _kTogel = 'pref_togel';
+  static const _kSlot = 'pref_slot';
   static const _kPush = 'pref_push_enabled';
 
   // defaults on first install
   static const _dMessages = true;
   static const _dInApp = true;
   static const _dPush = true;
-  static const _dTopic = true;
+  static const _dTogel = true;
+  static const _dSlot = true;
 
   static Future<void> init() async {
     _sp = await SharedPreferences.getInstance();
@@ -24,8 +26,9 @@ class NotificationPrefs {
   // getters (never null)
   static bool get messages => _sp.getBool(_kMessages) ?? _dMessages;
   static bool get inApp => _sp.getBool(_kInApp) ?? _dInApp;
-  static bool get topic => _sp.getBool(_kTopic) ?? _dTopic;
   static bool get pushOn => _sp.getBool(_kPush) ?? _dPush;
+  static bool get togel => _sp.getBool(_kTogel) ?? _dTogel;
+  static bool get slot => _sp.getBool(_kSlot) ?? _dSlot;
 
   // set + persist + sync with OneSignal
   static Future<void> setMessages(bool v) async {
@@ -47,30 +50,39 @@ class NotificationPrefs {
     await _sp.setBool(_kPush, v);
 
     if (v) {
+      await OneSignal.Notifications.requestPermission(true);
       await _user.pushSubscription.optIn();
     } else {
       await _user.pushSubscription.optOut();
     }
   }
 
-  static Future<void> setTopic(bool v) async {
-    await _sp.setBool(_kTopic, v);
+  static Future<void> setTogel(bool v) async {
+    await _sp.setBool(_kTogel, v);
 
-    // OneSignal v5: single tag "topic" with value togel|slot
-    if (v) {
-      await _user.removeTag(_kTopic);
-      await _user.addTagWithKey(_kTopic, 'slot');
-    } else {
-      await _user.removeTag(_kTopic);
-      await _user.addTagWithKey(_kTopic, 'togel');
-    }
+    await toggleTag(_kTogel, v);
+  }
+
+  static Future<void> setSlot(bool v) async {
+    await _sp.setBool(_kSlot, v);
+
+    await toggleTag(_kSlot, v);
   }
 
   /// Call this once at startup so the SDK matches stored settings.
   static Future<void> syncToOneSignal() async {
-    await setMessages(messages);
+    // await setMessages(messages);
     await setInApp(inApp);
-    await setTopic(topic);
+    await setTogel(togel);
+    await setSlot(slot);
     await setPushOn(pushOn);
+  }
+
+  static Future<void> toggleTag(String key, bool value) async {
+    if (value) {
+      await _user.addTagWithKey(key, value);
+    } else {
+      await _user.removeTag(key);
+    }
   }
 }

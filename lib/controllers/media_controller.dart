@@ -4,8 +4,6 @@ import 'export_controller.dart';
 
 class MediaController extends ApiProvider {
   final RxList<Media> items = <Media>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;

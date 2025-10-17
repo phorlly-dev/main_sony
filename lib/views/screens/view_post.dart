@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
+import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class ViewPostScreen extends StatelessWidget {
   final String name;
@@ -20,7 +21,6 @@ class ViewPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('name: $name');
     return Stack(
       children: [
         BodyContent(
@@ -41,22 +41,26 @@ class ViewPostScreen extends StatelessWidget {
               return ListView(
                 children: [
                   // ImageBanner(),
-                  (sliders.isEmpty || name != "Home")
+                  (sliders.isEmpty || name != "home")
                       ? SizedBox.shrink()
                       : ImageSlider(
                           items: sliders,
                           onTap: () async {
                             // Navigate to the post detail screen
-                            context.pushNamed(
-                              'post_detail',
+                            context.pushNamed<Post>(
+                              'details',
                               pathParameters: {
                                 'id': imageSlider.postId.value.toString(),
+                                'name': getName(controller.selectedItem.value),
                               },
                               extra: controller,
                             );
                           },
                         ),
-                  PostCard(controller: controller),
+                  PostCard(
+                    controller: controller,
+                    name: controller.selectedItem.value,
+                  ),
                 ],
               );
             }),

@@ -33,15 +33,16 @@ class SideMenu extends StatelessWidget {
                     isActive: controller.selectedItem.value == "home",
                     goTo: () async {
                       controller.setActiveMenu("home");
+                      postCtrl.setActiveMenu("home");
                       postCtrl.applyFilterAndPaginate(
                         slug: '',
                         userId: 0,
                         clearSearch: true,
                       );
-                      context.go(
-                        "/view-posts",
-                        extra: ScreenParams(name: 'Home'),
-                      );
+                      context.go("/view-posts/home");
+                      if (postCtrl.pageCount.value <= 24) {
+                        await postCtrl.refreshCurrentPage();
+                      }
                     },
                     icon: Icons.home,
                   ),

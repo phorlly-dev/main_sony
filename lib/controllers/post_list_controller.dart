@@ -10,16 +10,11 @@ class PostListController extends ApiProvider {
   final RxList<Post> _allPosts = <Post>[].obs;
   final RxList<Media> _allMedia = <Media>[].obs;
   final RxList<Post> pagedPosts = <Post>[].obs;
-
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
   final RxBool hasMore = true.obs;
-
-  final RxInt page = 1.obs;
-  final RxInt perPage = 6.obs;
   final RxInt _currentUser = 0.obs;
   final RxString _currentSlug = ''.obs;
   final RxString searchQuery = ''.obs;
+  final RxInt pageCount = 24.obs;
 
   int get totalViewPages =>
       ((_filteredPosts.length / perPage.value).ceil()).clamp(1, 999);
@@ -73,10 +68,11 @@ class PostListController extends ApiProvider {
       int currPage = 1;
       int lastPage = 1;
 
+      pageCount.value = 100; // Fetch in larger batches for all-posts
       do {
         final request = ListPostRequest(
           order: Order.desc,
-          perPage: 100,
+          perPage: pageCount.value,
           page: currPage,
           author: authors,
           search: search ?? searchQuery.value,
@@ -192,7 +188,9 @@ class PostListController extends ApiProvider {
   // --- STAY ON CURRENT PAGE ON REFRESH ---
   Future<void> refreshCurrentPage() async {
     final int curPage = page.value;
-    await _fetchAllPosts(userId: _currentUser.value);
+    if (pageCount.value <= 24 || _allPosts.isEmpty) {
+      await _fetchAllPosts(userId: _currentUser.value);
+    }
     // After refetch, reapply filter and go to same page
     goToPage(curPage);
   }
@@ -244,7 +242,7 @@ class PostListController extends ApiProvider {
 
     final request = ListPostRequest(
       order: Order.desc,
-      perPage: 24, // smaller -> faster
+      perPage: pageCount.value, // smaller -> faster
       page: currPage,
       author: authors,
       search: search ?? searchQuery.value,

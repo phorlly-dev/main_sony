@@ -4,8 +4,6 @@ import 'export_controller.dart';
 
 class UserController extends ApiProvider {
   final RxList<User> items = <User>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxString hasError = ''.obs;
 
   Future<void> _fetchItems() async {
     isLoading.value = true;
