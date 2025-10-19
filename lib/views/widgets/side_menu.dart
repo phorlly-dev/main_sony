@@ -39,7 +39,23 @@ class SideMenu extends StatelessWidget {
                         userId: 0,
                         clearSearch: true,
                       );
-                      context.go("/view-posts/home");
+                      final name = 'home';
+                      final uri = Uri(
+                        path: '/view-posts/$name',
+                        queryParameters: {
+                          'src': 'in-app-menu',
+                          'camp': 'home-page',
+                        },
+                      );
+                      context.go(uri.toString());
+                      await setLogEvent(
+                        Params(
+                          name: name,
+                          src: 'in-app-menu',
+                          camp: 'home-page',
+                          path: uri.path,
+                        ),
+                      );
                       if (postCtrl.pageCount.value <= 24) {
                         await postCtrl.refreshCurrentPage();
                       }

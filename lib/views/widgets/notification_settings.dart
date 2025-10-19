@@ -9,57 +9,39 @@ class NotificationSettings extends StatefulWidget {
 }
 
 class _NotificationSettingsState extends State<NotificationSettings> {
-  late bool messages, inApp, pushOn, togel, slot;
+  late bool pushOn, promo, update;
 
   @override
   void initState() {
     super.initState();
-    messages = NotificationPrefs.messages;
-    inApp = NotificationPrefs.inApp;
     pushOn = NotificationPrefs.pushOn;
-    togel = NotificationPrefs.togel;
-    slot = NotificationPrefs.slot;
+    promo = NotificationPrefs.promo;
+    update = NotificationPrefs.update;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        // SwitchListTile(
-        //   title: const Text('Messages & mentions'),
-        //   value: messages,
-        //   onChanged: (v) async {
-        //     setState(() => messages = v);
-        //     await NotificationPrefs.setMessages(v);
-        //   },
-        // ),
         SwitchListTile(
-          title: const Text('In-app notifications'),
-          value: inApp,
+          title: const Text('Promo Notification'),
+          value: promo,
           onChanged: (v) async {
-            setState(() => inApp = v);
-            await NotificationPrefs.setInApp(v);
+            setState(() => promo = v);
+            await NotificationPrefs.setPromo(v);
           },
         ),
         SwitchListTile(
-          title: const Text('Topic related to Slot'),
-          value: slot,
+          title: const Text('Update Notification'),
+          value: update,
           onChanged: (v) async {
-            setState(() => slot = v);
-            await NotificationPrefs.setSlot(v);
-          },
-        ),
-        SwitchListTile(
-          title: const Text('Topic related to Togel'),
-          value: togel,
-          onChanged: (v) async {
-            setState(() => togel = v);
-            await NotificationPrefs.setTogel(v);
+            setState(() => update = v);
+            await NotificationPrefs.setUpdate(v);
           },
         ),
         const Divider(),
         SwitchListTile(
-          title: const Text('Enable push notifications'),
+          title: const Text('Enable Push Notification'),
           value: pushOn,
           onChanged: (v) async {
             setState(() => pushOn = v);

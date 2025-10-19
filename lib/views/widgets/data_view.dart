@@ -35,7 +35,7 @@ class DataView<T> extends StatelessWidget {
         child: LoadingAnimation(
           label: hasError!,
           type: LoadingType.flickr,
-          themColor: AppColorRole.error,
+          themeColor: AppColorRole.error,
         ),
       );
     }
@@ -47,7 +47,7 @@ class DataView<T> extends StatelessWidget {
         child: LoadingAnimation(
           label: noDataMessage,
           type: LoadingType.staggeredDotsWave,
-          themColor: AppColorRole.secondary,
+          themeColor: AppColorRole.secondary,
         ),
       );
     }

@@ -91,14 +91,28 @@ class BlogCard extends StatelessWidget {
                       IconText(
                         icon: Icons.person,
                         label: author?.name?.capitalize ?? '',
-                        onTap: () {
+                        onTap: () async {
                           controller.applyFilterAndPaginate(
                             userId: post.author,
                             slug: '',
                             clearSearch: true,
                           );
-                          context.go(
-                            "/view-posts/${getName(author?.name ?? '')}",
+                          final name = getName(author?.name ?? '');
+                          context.goNamed(
+                            'view_posts',
+                            pathParameters: {'name': name},
+                            queryParameters: {
+                              'src': prefix(name),
+                              'camp': subfix(name),
+                            },
+                          );
+                          await setLogEvent(
+                            Params(
+                              name: name,
+                              src: prefix(name),
+                              camp: subfix(name),
+                              path: '/view-posts/$name',
+                            ),
                           );
                         },
                         color: colors.secondary,
@@ -140,7 +154,7 @@ class BlogCard extends StatelessWidget {
                           color: AppColorRole.warning.color,
                           onLabelTaps: uniqueCategories
                               .map(
-                                (meta) => () {
+                                (meta) => () async {
                                   controller.setActiveMenu(meta.slug);
                                   controller.applyFilterAndPaginate(
                                     slug: meta.slug,
@@ -148,8 +162,22 @@ class BlogCard extends StatelessWidget {
                                     clearSearch: true,
                                   );
 
-                                  context.go(
-                                    "/view-posts/${getName(meta.name)}",
+                                  final name = getName(meta.name);
+                                  context.goNamed(
+                                    'view_posts',
+                                    pathParameters: {'name': name},
+                                    queryParameters: {
+                                      'src': prefix(name),
+                                      'camp': subfix(name),
+                                    },
+                                  );
+                                  await setLogEvent(
+                                    Params(
+                                      name: name,
+                                      src: prefix(name),
+                                      camp: subfix(name),
+                                      path: '/view-posts/$name',
+                                    ),
                                   );
                                 },
                               )
@@ -166,15 +194,29 @@ class BlogCard extends StatelessWidget {
                           color: AppColorRole.info.color,
                           onLabelTaps: uniqueTags
                               .map(
-                                (meta) => () {
+                                (meta) => () async {
                                   controller.applyFilterAndPaginate(
                                     slug: meta.slug,
                                     userId: 0,
                                     clearSearch: true,
                                   );
 
-                                  context.go(
-                                    "/view-posts/${getName(meta.name)}",
+                                  final name = getName(meta.name);
+                                  context.goNamed(
+                                    'view_posts',
+                                    pathParameters: {'name': name},
+                                    queryParameters: {
+                                      'src': prefix(name),
+                                      'camp': subfix(name),
+                                    },
+                                  );
+                                  await setLogEvent(
+                                    Params(
+                                      name: name,
+                                      src: prefix(name),
+                                      camp: subfix(name),
+                                      path: '/view-posts/$name',
+                                    ),
                                   );
                                 },
                               )

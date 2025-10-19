@@ -1,10 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:main_sony/utils/notification_prefs.dart';
 import 'package:main_sony/utils/theme_manager.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'controllers/export_controller.dart';
+import 'firebase_options.dart';
 
 void appConfig() async {
   //The guarded zone
@@ -12,6 +13,10 @@ void appConfig() async {
     () async {
       // Must be FIRST inside the zone:
       WidgetsFlutterBinding.ensureInitialized();
+
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       //init OneSignal
       await initOneSignal();
@@ -31,7 +36,7 @@ void appConfig() async {
       await ScreenUtil.ensureScreenSize();
 
       //Run app
-      runApp(ProviderScope(child: initApp()));
+      runApp(initApp());
     },
     (error, stack) {
       log('Caught error: $error');

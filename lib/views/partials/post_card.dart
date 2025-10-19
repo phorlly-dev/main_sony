@@ -35,18 +35,22 @@ class PostCard extends StatelessWidget {
             date: item.date ?? DateTime.now(),
             onReadMore: () {
               context.pushNamed<Post>(
-                'details',
+                'post_details',
                 pathParameters: {
                   'id': item.id.toString(),
                   'name': getName(name),
                 },
-                extra: controller,
+                queryParameters: {
+                  'src': 'post-${getName(name)}-details',
+                  'camp': 'from-card-blog',
+                },
               );
             },
             controller: controller,
             post: item,
-            onComment: () =>
-                showCommentDialog(context: context, postId: item.id),
+            onComment: () {
+              showCommentDialog(context: context, postId: item.id);
+            },
           );
         },
       );

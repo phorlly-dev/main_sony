@@ -14,7 +14,7 @@ class NotFound extends StatelessWidget {
         LoadingAnimation(
           label: 'No Internet Connection!',
           type: LoadingType.horizontalRotatingDots,
-          themColor: AppColorRole.onPrimary,
+          themeColor: AppColorRole.onPrimary,
           textSize: 14,
         ),
       ],

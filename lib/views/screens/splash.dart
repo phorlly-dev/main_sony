@@ -16,8 +16,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initApp() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(milliseconds: 360));
     appReady.value = true;
+    await analytics.logAppOpen();
   }
 
   @override
@@ -32,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
             LoadingAnimation(
               type: LoadingType.staggeredDotsWave,
               label: "Please Wait...",
-              themColor: AppColorRole.warning,
+              themeColor: AppColorRole.warning,
             ),
           ],
         ),

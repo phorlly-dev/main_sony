@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "866629686405",
-    "project_id": "my-app-82784",
-    "storage_bucket": "my-app-82784.firebasestorage.app"
+    "project_number": "415399221456",
+    "project_id": "game-app-bdcf1",
+    "storage_bucket": "game-app-bdcf1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:866629686405:android:dbd992e7e4ef1e167ec5ec",
-        "android_client_info": {
-          "package_name": "com.indkt78.kt78"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCAEX88Rqsw50rkUlGdYrz8akoJ2mi3W4A"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:866629686405:android:c32c03130ac61d8d7ec5ec",
+        "mobilesdk_app_id": "1:415399221456:android:d64b802bbd40925798a6d5",
         "android_client_info": {
           "package_name": "com.indnkt78.main_soe"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAEX88Rqsw50rkUlGdYrz8akoJ2mi3W4A"
+          "current_key": "AIzaSyBLcaiZeNz0pkg4SzhRZpe1w0Wk7IjStJI"
         }
       ],
       "services": {

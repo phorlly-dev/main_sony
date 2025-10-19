@@ -26,7 +26,16 @@ class ViewPostScreen extends StatelessWidget {
         BodyContent(
           header: NavBar(
             title: name,
-            onSearch: (query) => controller.search(query),
+            onSearch: (query) async {
+              controller.search(query);
+              await analytics.logSearch(
+                searchTerm: query,
+                startDate: DateTime.now().toIso8601String(),
+                endDate: DateTime.now()
+                    .add(const Duration(minutes: 30))
+                    .toIso8601String(),
+              );
+            },
           ),
           menu: SideMenu(controller: menuItem, page: page),
           content: RefreshIndicator(
@@ -47,13 +56,16 @@ class ViewPostScreen extends StatelessWidget {
                           items: sliders,
                           onTap: () async {
                             // Navigate to the post detail screen
+                            final id = imageSlider.postId.value.toString();
+                            final name = getName(controller.selectedItem.value);
+
                             context.pushNamed<Post>(
-                              'details',
-                              pathParameters: {
-                                'id': imageSlider.postId.value.toString(),
-                                'name': getName(controller.selectedItem.value),
+                              'post_details',
+                              pathParameters: {'id': id, 'name': name},
+                              queryParameters: {
+                                'src': 'post-$name-details',
+                                'camp': 'from-image-banner',
                               },
-                              extra: controller,
                             );
                           },
                         ),

@@ -27,6 +27,14 @@ String getResponsiveImageUrl(Media media) {
   }
 }
 
+String prefix(String name) {
+  return '${DateTime.now().microsecond}-$name';
+}
+
+String subfix(String name) {
+  return '$name-${DateTime.now().microsecond}';
+}
+
 String getName(String name) {
   return name.replaceAll(" ", "-").toLowerCase();
 }

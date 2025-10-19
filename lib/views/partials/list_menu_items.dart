@@ -28,7 +28,7 @@ class ListMenuItems extends StatelessWidget {
               label: meta.name.toUpperCase(),
               icon: meta.icon,
               isActive: meta.slug == controller.selectedItem.value,
-              goTo: () {
+              goTo: () async {
                 controller.setActiveMenu(meta.slug);
                 postList.setActiveMenu(meta.slug);
                 postList.applyFilterAndPaginate(
@@ -36,7 +36,21 @@ class ListMenuItems extends StatelessWidget {
                   userId: 0,
                   clearSearch: true,
                 );
-                context.go("/view-posts/${getName(meta.name)}");
+
+                final name = getName(meta.name);
+                final uri = Uri(
+                  path: '/view-posts/$name',
+                  queryParameters: {'src': prefix(name), 'camp': subfix(name)},
+                );
+                context.go(uri.toString());
+                await setLogEvent(
+                  Params(
+                    name: name,
+                    src: prefix(name),
+                    camp: subfix(name),
+                    path: uri.path,
+                  ),
+                );
               },
             ),
           ),

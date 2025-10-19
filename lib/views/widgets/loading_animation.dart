@@ -28,18 +28,18 @@ class LoadingAnimation extends StatelessWidget {
   final LoadingType? type;
   final String label;
   final double textSize;
-  final AppColorRole themColor;
+  final AppColorRole themeColor;
   const LoadingAnimation({
     super.key,
     this.type,
-    this.themColor = AppColorRole.info,
+    this.themeColor = AppColorRole.info,
     this.label = "Loading...",
     this.textSize = 18,
   });
 
   @override
   Widget build(BuildContext context) {
-    final kColor = context.getAppColor(themColor);
+    final kColor = context.getAppColor(themeColor);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,10 @@
+// import 'package:main_sony/config.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class IndexScreen extends StatefulWidget {
+  // final Params params;
+  // const IndexScreen({super.key, required this.params});
   final String name;
   const IndexScreen({super.key, required this.name});
 
@@ -10,29 +13,28 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  late PostListController post;
-  late MenuItemController menuItem;
-  late PageControllerX page;
-  late ImageSliderController imageSlider;
+  late PostListController _post;
+  late MenuItemController _menuItem;
+  late PageControllerX _page;
+  late ImageSliderController _imageSlider;
 
   @override
   void initState() {
     super.initState();
-    post = Get.find<PostListController>();
-    page = Get.find<PageControllerX>();
-    menuItem = Get.find<MenuItemController>();
-    imageSlider = Get.find<ImageSliderController>();
+    _post = Get.find<PostListController>();
+    _page = Get.find<PageControllerX>();
+    _menuItem = Get.find<MenuItemController>();
+    _imageSlider = Get.find<ImageSliderController>();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final params = widget.params;
     return ViewPostScreen(
       name: widget.name,
-      controller: post,
-      page: page,
-      menuItem: menuItem,
-      imageSlider: imageSlider,
+      controller: _post,
+      page: _page,
+      menuItem: _menuItem,
+      imageSlider: _imageSlider,
     );
   }
 }

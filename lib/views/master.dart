@@ -1,14 +1,29 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:main_sony/router.dart';
 import 'package:provider/provider.dart';
 import '../utils/theme_manager.dart';
 
-class MasterScreen extends ConsumerWidget {
+late final FirebaseAnalytics analytics;
+late final FirebaseAnalyticsObserver observer;
+
+class MasterScreen extends StatefulWidget {
   const MasterScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<MasterScreen> createState() => _MasterScreenState();
+}
+
+class _MasterScreenState extends State<MasterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    analytics = FirebaseAnalytics.instance;
+    observer = FirebaseAnalyticsObserver(analytics: analytics);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Main SOE',
       locale: Get.deviceLocale,
@@ -16,7 +31,7 @@ class MasterScreen extends ConsumerWidget {
       theme: ThemeData.light(), // Default light theme
       darkTheme: ThemeData.dark(), // Dark theme
       themeMode: context.watch<ThemeManager>().themeMode, // Provider
-      routerConfig: ref.watch(router),
+      routerConfig: router,
     );
   }
 }
