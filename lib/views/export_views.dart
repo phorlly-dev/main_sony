@@ -35,14 +35,14 @@ export 'package:main_sony/views/partials/profile_header.dart';
 export 'package:main_sony/views/screens/index.dart';
 export 'package:main_sony/views/screens/post_detail.dart';
 export 'package:main_sony/views/screens/splash.dart';
-export 'package:main_sony/views/screens/view_post.dart';
+export 'package:main_sony/views/screens/posts.dart';
 export 'package:main_sony/views/screens/ai_chatbot.dart';
 
 //widgets
 export 'package:main_sony/views/master.dart';
-export 'package:main_sony/views/widgets/blog_card.dart';
-export 'package:main_sony/views/widgets/comment_dialog.dart';
-export 'package:main_sony/views/widgets/connection_overlay.dart';
+export 'package:main_sony/views/partials/blog_card.dart';
+export 'package:main_sony/views/partials/comment_dialog.dart';
+export 'package:main_sony/views/partials/connection_overlay.dart';
 export 'package:main_sony/views/widgets/data_render.dart';
 export 'package:main_sony/views/widgets/data_view.dart';
 export 'package:main_sony/views/widgets/html_content.dart';
@@ -58,8 +58,7 @@ export 'package:main_sony/views/widgets/not_found.dart';
 export 'package:main_sony/views/widgets/link_url.dart';
 export 'package:main_sony/views/widgets/page_data_view.dart';
 export 'package:main_sony/views/widgets/pagination_bar.dart';
-export 'package:main_sony/views/widgets/pagination.dart';
-export 'package:main_sony/views/widgets/side_menu.dart';
+export 'package:main_sony/views/partials/side_menu.dart';
 export 'package:main_sony/views/widgets/smart_circle_avatar.dart';
 export 'package:main_sony/views/widgets/text_content.dart';
 export 'package:main_sony/views/widgets/body_content.dart';

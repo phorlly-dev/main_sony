@@ -1,5 +1,5 @@
 import 'package:main_sony/views/export_views.dart';
-import 'package:main_sony/views/widgets/notification_settings.dart';
+import 'package:main_sony/views/partials/notification_settings.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

@@ -3,15 +3,14 @@ import 'package:main_sony/views/export_views.dart';
 /// Controller for handling chat interactions
 class ChatbotController extends GetxController {
   // Reactive list of messages
-  final RxList<OpenAIChatCompletionChoiceMessageModel> messages =
-      <OpenAIChatCompletionChoiceMessageModel>[].obs;
+  final messages = <OpenAIChatCompletionChoiceMessageModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString prompt = ''.obs; // Make it observable
   final RxString modelName = 'gpt-4.1-mini'.obs;
 
   // Controllers
-  final TextEditingController textController = TextEditingController();
-  final ScrollController scrollController = ScrollController();
+  final textController = TextEditingController();
+  final scrollController = ScrollController();
 
   Future<void> sendMessage() async {
     final msg = textController.text.trim();

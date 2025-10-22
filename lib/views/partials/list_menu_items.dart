@@ -16,22 +16,22 @@ class ListMenuItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final posts = controller.items;
-      final usedSlugs = getUsedSlugs(postList, posts);
+      final usedSlugs = getUsedSlugs(controller, posts);
 
       // Only menuItems whose slug appears in posts
       final visibleMenuItems = getVisibleMenuItems(menuItems, usedSlugs);
 
       return Column(
         children: [
-          ...visibleMenuItems.map(
-            (meta) => MenuItem(
+          ...visibleMenuItems.map((meta) {
+            return MenuItem(
               label: meta.name.toUpperCase(),
               icon: meta.icon,
               isActive: meta.slug == controller.selectedItem.value,
               goTo: () async {
                 controller.setActiveMenu(meta.slug);
                 postList.setActiveMenu(meta.slug);
-                postList.applyFilterAndPaginate(
+                postList.applyFilter(
                   slug: meta.slug,
                   userId: 0,
                   clearSearch: true,
@@ -39,7 +39,7 @@ class ListMenuItems extends StatelessWidget {
 
                 final name = getName(meta.name);
                 final uri = Uri(
-                  path: '/view-posts/$name',
+                  path: '/posts/$name',
                   queryParameters: {'src': prefix(name), 'camp': subfix(name)},
                 );
                 context.go(uri.toString());
@@ -52,8 +52,8 @@ class ListMenuItems extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          ),
+            );
+          }),
         ],
       );
     });

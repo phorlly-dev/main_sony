@@ -13,10 +13,10 @@ class ProfileHeader extends StatelessWidget {
       hasError: controller.hasError.value,
       notFound: controller.items,
       length: controller.items.length,
-      child: (index) {
+      child: (idx) {
         return Obx(() {
           final items = controller.items;
-          final item = items[index];
+          final item = items[idx];
           final yoast = controller.yoastFor(item.id);
           final title = getValue(object: yoast, key: 'title').toString();
           final desc = getValue(object: yoast, key: 'description').toString();

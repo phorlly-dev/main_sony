@@ -34,14 +34,14 @@ class SideMenu extends StatelessWidget {
                     goTo: () async {
                       controller.setActiveMenu("home");
                       postCtrl.setActiveMenu("home");
-                      postCtrl.applyFilterAndPaginate(
+                      postCtrl.applyFilter(
                         slug: '',
                         userId: 0,
                         clearSearch: true,
                       );
                       final name = 'home';
                       final uri = Uri(
-                        path: '/view-posts/$name',
+                        path: '/posts/$name',
                         queryParameters: {
                           'src': 'in-app-menu',
                           'camp': 'home-page',
@@ -56,9 +56,6 @@ class SideMenu extends StatelessWidget {
                           path: uri.path,
                         ),
                       );
-                      if (postCtrl.pageCount.value <= 24) {
-                        await postCtrl.refreshCurrentPage();
-                      }
                     },
                     icon: Icons.home,
                   ),

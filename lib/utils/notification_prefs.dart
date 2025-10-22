@@ -7,7 +7,7 @@ class NotificationPrefs {
 
   // keys
   static const _kUpdate = 'pref_update';
-  static const _kPromo = 'pref_prom';
+  static const _kPromo = 'pref_promo';
   static const _kPush = 'pref_push_enabled';
 
   // defaults on first install

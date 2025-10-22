@@ -2,18 +2,12 @@ import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_controller.dart';
 
-class TagController extends ApiProvider {
-  final RxList<Tag> items = <Tag>[].obs;
-
+class TagController extends ApiProvider<Tag> {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
     try {
-      final request = ListTagRequest(
-        order: Order.asc,
-        // perPage: 5,
-        orderBy: OrderBy.name,
-      );
+      final request = ListTagRequest(order: Order.asc, orderBy: OrderBy.name);
       final response = await cnx.tags.list(request);
 
       response.map(

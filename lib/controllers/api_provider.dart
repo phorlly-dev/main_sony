@@ -1,20 +1,21 @@
 import 'export_controller.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
-class ApiProvider extends GetxController {
+class ApiProvider<T> extends GetxController {
   final _apiUrl = 'https://soepress.com/wp-json/wp/v2';
   late WordpressClient cnx;
   late GetConnect api;
+  var items = <T>[].obs;
   var classLists = <int, List<String>>{}.obs;
   var yoasts = <int, Map<String, dynamic>>{}.obs;
   var isLoading = false.obs;
   var totalPages = 1.obs;
   var hasError = ''.obs;
   var page = 1.obs;
-  var perPage = 6.obs;
+  var perPage = 5.obs;
   var selectedItem = "home".obs;
 
-  String get apiUrl => _apiUrl; // optional getter
+  String get apiUrl => _apiUrl;
 
   void setActiveMenu(String item) {
     selectedItem.value = item;
@@ -70,6 +71,8 @@ class ApiProvider extends GetxController {
     }
   }
 
+  Map<int, T> get itemMapping => {for (final res in items as List) res.id: res};
+
   Future<List<Map<String, dynamic>>> fetchCustomFieldsForIds({
     required String slug,
     required List<int> ids,
@@ -81,10 +84,12 @@ class ApiProvider extends GetxController {
         '?include=$include'
         '&per_page=${ids.length}'
         '&_fields=id,${fields.join(",")}';
+
     final r = await api.get(url);
     if (r.statusCode == 200 && r.isOk && r.body is List) {
       return (r.body as List).cast<Map<String, dynamic>>();
     }
+
     return const [];
   }
 

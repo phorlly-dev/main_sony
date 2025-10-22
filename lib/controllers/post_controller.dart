@@ -2,14 +2,11 @@ import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_controller.dart';
 
-class PostController extends ApiProvider {
+class PostController extends ApiProvider<Post> {
   final _category = Get.put(CategoryController());
-  final _user = Get.put(UserController());
+  // final _user = Get.put(UserController());
   final _media = Get.put(MediaController());
   final _tag = Get.put(TagController());
-
-  // Reactive lists
-  final RxList<Post> items = <Post>[].obs;
 
   int? _currentUser;
 
@@ -84,17 +81,12 @@ class PostController extends ApiProvider {
     throw Exception('Failed to load post details');
   }
 
-  Map<int, Media> get mediaMap => _media.itemMap;
-
   //Category
   List<MapEntry<int, String>> Function(Post post) get categories =>
       _category.categories;
 
   //Tag
   List<MapEntry<int, String>> Function(Post post) get tags => _tag.tags;
-
-  //User
-  User? Function(Post post) get authorName => _user.authorName;
 
   // Refresh current page
   // This will always refresh using the last filter (category/tag/author)

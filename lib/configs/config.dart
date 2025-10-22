@@ -4,10 +4,12 @@ import 'package:main_sony/utils/theme_manager.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
-import 'controllers/export_controller.dart';
+import '../controllers/export_controller.dart';
 import 'firebase_options.dart';
 
 void appConfig() async {
+  BindingBase.debugZoneErrorsAreFatal = true;
+
   //The guarded zone
   await runZonedGuarded(
     () async {
@@ -39,7 +41,6 @@ void appConfig() async {
       runApp(initApp());
     },
     (error, stack) {
-      log('Caught error: $error');
       throw Exception('Caught error: $error');
     },
   );
@@ -57,7 +58,6 @@ Widget initApp() {
 }
 
 void initControllers() {
-  Get.put(ConnectionController());
   Get.put(PostListController());
   Get.put(PageControllerX());
   Get.put(MenuItemController());

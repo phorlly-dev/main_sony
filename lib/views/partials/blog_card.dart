@@ -31,7 +31,7 @@ class BlogCard extends StatelessWidget {
     //calculate the screen
     final isLandscape = context.isLandscape;
     final colors = Theme.of(context).colorScheme;
-    final author = controller.authorName(post);
+    final author = controller.authorName[post.id];
     final classList = controller.classListFor(post.id);
     final metaGroups = extractCategoriesAndTags(classList);
     final uniqueCategories = getMenuMetaList(
@@ -92,14 +92,14 @@ class BlogCard extends StatelessWidget {
                         icon: Icons.person,
                         label: author?.name?.capitalize ?? '',
                         onTap: () async {
-                          controller.applyFilterAndPaginate(
+                          controller.applyFilter(
                             userId: post.author,
                             slug: '',
                             clearSearch: true,
                           );
                           final name = getName(author?.name ?? '');
                           context.goNamed(
-                            'view_posts',
+                            'posts',
                             pathParameters: {'name': name},
                             queryParameters: {
                               'src': prefix(name),
@@ -111,7 +111,7 @@ class BlogCard extends StatelessWidget {
                               name: name,
                               src: prefix(name),
                               camp: subfix(name),
-                              path: '/view-posts/$name',
+                              path: '/posts/$name',
                             ),
                           );
                         },
@@ -156,7 +156,7 @@ class BlogCard extends StatelessWidget {
                               .map(
                                 (meta) => () async {
                                   controller.setActiveMenu(meta.slug);
-                                  controller.applyFilterAndPaginate(
+                                  controller.applyFilter(
                                     slug: meta.slug,
                                     userId: 0,
                                     clearSearch: true,
@@ -164,7 +164,7 @@ class BlogCard extends StatelessWidget {
 
                                   final name = getName(meta.name);
                                   context.goNamed(
-                                    'view_posts',
+                                    'posts',
                                     pathParameters: {'name': name},
                                     queryParameters: {
                                       'src': prefix(name),
@@ -176,7 +176,7 @@ class BlogCard extends StatelessWidget {
                                       name: name,
                                       src: prefix(name),
                                       camp: subfix(name),
-                                      path: '/view-posts/$name',
+                                      path: '/posts/$name',
                                     ),
                                   );
                                 },
@@ -195,7 +195,7 @@ class BlogCard extends StatelessWidget {
                           onLabelTaps: uniqueTags
                               .map(
                                 (meta) => () async {
-                                  controller.applyFilterAndPaginate(
+                                  controller.applyFilter(
                                     slug: meta.slug,
                                     userId: 0,
                                     clearSearch: true,
@@ -203,7 +203,7 @@ class BlogCard extends StatelessWidget {
 
                                   final name = getName(meta.name);
                                   context.goNamed(
-                                    'view_posts',
+                                    'posts',
                                     pathParameters: {'name': name},
                                     queryParameters: {
                                       'src': prefix(name),
@@ -215,7 +215,7 @@ class BlogCard extends StatelessWidget {
                                       name: name,
                                       src: prefix(name),
                                       camp: subfix(name),
-                                      path: '/view-posts/$name',
+                                      path: '/posts/$name',
                                     ),
                                   );
                                 },

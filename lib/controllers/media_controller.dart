@@ -2,9 +2,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_controller.dart';
 
-class MediaController extends ApiProvider {
-  final RxList<Media> items = <Media>[].obs;
-
+class MediaController extends ApiProvider<Media> {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
@@ -47,19 +45,6 @@ class MediaController extends ApiProvider {
       return [];
     }
   }
-
-  Map<int, List<Media>> get itemBy {
-    final map = <int, List<Media>>{};
-    for (var res in items) {
-      if (res.post != null) {
-        map.putIfAbsent(res.post!, () => []).add(res);
-      }
-    }
-    return map;
-  }
-
-  // Build a lookup map by id for fast access
-  Map<int, Media> get itemMap => {for (var res in items) res.id: res};
 
   @override
   void onInit() {

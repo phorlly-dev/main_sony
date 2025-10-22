@@ -2,16 +2,13 @@ import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_controller.dart';
 
-class CategoryController extends ApiProvider {
-  final RxList<Category> items = <Category>[].obs;
-
+class CategoryController extends ApiProvider<Category> {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
 
     final request = ListCategoryRequest(
       order: Order.asc,
-      // perPage: 5,
       orderBy: OrderBy.name,
     );
     final response = await cnx.categories.list(request);

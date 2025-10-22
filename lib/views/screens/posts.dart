@@ -3,14 +3,14 @@ import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
 
-class ViewPostScreen extends StatelessWidget {
+class PostsScreen extends StatelessWidget {
   final String name;
   final PostListController controller;
   final PageControllerX page;
   final MenuItemController menuItem;
   final ImageSliderController imageSlider;
 
-  const ViewPostScreen({
+  const PostsScreen({
     super.key,
     required this.name,
     required this.controller,
@@ -41,12 +41,12 @@ class ViewPostScreen extends StatelessWidget {
           content: RefreshIndicator(
             onRefresh: () async {
               await Future.wait([
-                controller.refreshCurrentPage(),
+                controller.refreshKeepingPosition(),
                 imageSlider.fetchSliderItems(),
               ]);
             },
             child: Obx(() {
-              final sliders = imageSlider.sliderItems;
+              final sliders = imageSlider.items;
               return ListView(
                 children: [
                   // ImageBanner(),
@@ -56,10 +56,10 @@ class ViewPostScreen extends StatelessWidget {
                           items: sliders,
                           onTap: () async {
                             // Navigate to the post detail screen
-                            final id = imageSlider.postId.value.toString();
+                            final id = encodeId(imageSlider.postId.value);
                             final name = getName(controller.selectedItem.value);
 
-                            context.pushNamed<Post>(
+                            await context.pushNamed<Post>(
                               'post_details',
                               pathParameters: {'id': id, 'name': name},
                               queryParameters: {
@@ -69,6 +69,7 @@ class ViewPostScreen extends StatelessWidget {
                             );
                           },
                         ),
+
                   PostCard(
                     controller: controller,
                     name: controller.selectedItem.value,

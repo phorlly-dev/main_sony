@@ -30,7 +30,7 @@ class IconTexts extends StatelessWidget {
           ...List.generate(
             labels.length,
             (i) => TextSpan(
-              text: (i == 0 ? '' : ', ') + labels[i],
+              text: (i == 0 ? '' : ', ') + substr(key: labels[i], length: 2),
               style: TextStyle(
                 fontSize: textSize,
                 color: color ?? Colors.grey[600],

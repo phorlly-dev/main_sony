@@ -1,11 +1,11 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:main_sony/views/export_views.dart';
-import 'package:main_sony/router.dart';
+import 'package:main_sony/configs/router.dart';
 import 'package:provider/provider.dart';
 import '../utils/theme_manager.dart';
 
-late final FirebaseAnalytics analytics;
-late final FirebaseAnalyticsObserver observer;
+late FirebaseAnalytics analytics;
+late FirebaseAnalyticsObserver observer;
 
 class MasterScreen extends StatefulWidget {
   const MasterScreen({super.key});
@@ -25,7 +25,7 @@ class _MasterScreenState extends State<MasterScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Main SOE',
+      title: 'Main SOE'.toUpperCase(),
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(), // Default light theme

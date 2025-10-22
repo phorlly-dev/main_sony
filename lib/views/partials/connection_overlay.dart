@@ -6,7 +6,7 @@ class ConnectionOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ConnectionController connection = Get.find();
+    final connection = Get.put(ConnectionController());
 
     return Obx(() {
       if (!connection.isOnline.value) {

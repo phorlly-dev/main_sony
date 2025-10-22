@@ -13,7 +13,7 @@ class CustomCodec extends Codec<Object?, Object?> {
 
 class _CustomEncoder extends Converter<Object?, Object?> {
   @override
-  Object? convert(Object? input) {
+  Object? convert(input) {
     if (input == null) return null;
 
     if (input is Post) {
@@ -26,7 +26,7 @@ class _CustomEncoder extends Converter<Object?, Object?> {
 
 class _CustomDecoder extends Converter<Object?, Object?> {
   @override
-  Object? convert(Object? input) {
+  Object? convert(input) {
     if (input == null) return null;
 
     if (input is Map<String, dynamic> &&
@@ -41,7 +41,8 @@ class _CustomDecoder extends Converter<Object?, Object?> {
 
 class AnalyticsObserver extends NavigatorObserver {
   @override
-  void didPush(Route route, Route? previousRoute) async {
+  void didPush(route, previousRoute) async {
+    await analytics.setAnalyticsCollectionEnabled(true);
     await analytics.logScreenView(
       screenName: route.settings.name,
       screenClass: previousRoute?.settings.name,

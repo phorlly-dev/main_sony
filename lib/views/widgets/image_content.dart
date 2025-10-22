@@ -35,6 +35,7 @@ class ImageContent extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: imageUrl!,
         width: double.infinity,
+        memCacheWidth: 600,
         height: isLandscape ? screenHeight.sw * 1.5 : screenHeight.sh,
         fit: BoxFit.cover,
         placeholder: (context, url) => AspectRatio(

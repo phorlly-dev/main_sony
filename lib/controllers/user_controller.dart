@@ -2,9 +2,7 @@ import 'package:wordpress_client/wordpress_client.dart';
 
 import 'export_controller.dart';
 
-class UserController extends ApiProvider {
-  final RxList<User> items = <User>[].obs;
-
+class UserController extends ApiProvider<User> {
   Future<void> _fetchItems() async {
     isLoading.value = true;
     hasError.value = '';
@@ -22,12 +20,6 @@ class UserController extends ApiProvider {
       isLoading.value = false;
     }
   }
-
-  // Build a lookup map by id for fast access
-  Map<int, User> get itemMap => {for (var res in items) res.id: res};
-
-  //User
-  User? authorName(Post post) => itemMap[post.author];
 
   @override
   void onInit() {

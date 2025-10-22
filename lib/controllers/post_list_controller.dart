@@ -1,15 +1,14 @@
-import 'package:wordpress_client/wordpress_client.dart';
+import 'dart:math';
 
+import 'package:wordpress_client/wordpress_client.dart';
 import 'export_controller.dart';
 
-class PostListController extends ApiProvider {
+class PostListController extends ApiProvider<Post> {
   final _media = Get.put(MediaController());
   final _user = Get.put(UserController());
 
   // Data stores
   final RxList<Post> _allPosts = <Post>[].obs;
-  final RxList<Media> _allMedia = <Media>[].obs;
-  final RxList<Post> pagedPosts = <Post>[].obs;
   final RxBool hasMore = true.obs;
   final RxInt _currentUser = 0.obs;
   final RxString _currentSlug = ''.obs;
@@ -58,7 +57,7 @@ class PostListController extends ApiProvider {
     isLoading.value = true;
     hasError.value = '';
     _allPosts.clear();
-    _allMedia.clear();
+    _media.items.clear();
 
     List<int>? authors;
     if (userId != null && userId != 0) authors = [userId];
@@ -84,6 +83,7 @@ class PostListController extends ApiProvider {
         await response.map(
           onSuccess: (res) async {
             final fetchedPosts = res.data;
+            fetchedPosts.shuffle(Random());
             _allPosts.addAll(fetchedPosts);
 
             // Media fetching as before
@@ -93,7 +93,7 @@ class PostListController extends ApiProvider {
                 .toSet();
             if (ids.isNotEmpty) {
               final mediaResult = await _media.fetchItemByIds(ids.toList());
-              _allMedia.addAll(mediaResult);
+              _media.items.addAll(mediaResult);
             }
             // NEW: fetch extras for these posts
             await fetchExtrasForPostIds(fetchedPosts.map((p) => p.id).toList());
@@ -135,11 +135,7 @@ class PostListController extends ApiProvider {
   }
 
   // --- PAGINATION AND FILTER ---
-  void applyFilterAndPaginate({
-    String? slug,
-    int? userId,
-    bool clearSearch = false,
-  }) {
+  void applyFilter({String? slug, int? userId, bool clearSearch = false}) {
     bool changed = false;
 
     if (slug != null) {
@@ -179,113 +175,28 @@ class PostListController extends ApiProvider {
     final all = _filteredPosts;
     final from = (page.value - 1) * perPage.value;
     final to = (from + perPage.value).clamp(0, all.length);
-    pagedPosts.value = all.sublist(
+    items.value = all.sublist(
       from.clamp(0, all.length),
       to.clamp(0, all.length),
     );
   }
 
   // --- STAY ON CURRENT PAGE ON REFRESH ---
-  Future<void> refreshCurrentPage() async {
+  Future<void> refreshKeepingPosition() async {
     final int curPage = page.value;
-    if (pageCount.value <= 24 || _allPosts.isEmpty) {
-      await _fetchAllPosts(userId: _currentUser.value);
-    }
+    await _fetchAllPosts(userId: _currentUser.value);
+
     // After refetch, reapply filter and go to same page
     goToPage(curPage);
   }
 
   // --- MISC ---
-  Map<int, Media> get mediaMap => {for (var res in _allMedia) res.id: res};
-  User? Function(Post post) get authorName => _user.authorName;
-
-  Future<void> fetchFirstPage({int? userId, String? search}) async {
-    isLoading.value = true;
-    hasError.value = '';
-    _allPosts.clear();
-    _allMedia.clear();
-    page.value = 1;
-    hasMore.value = true;
-
-    try {
-      await _fetchPage(1, userId: userId, search: search);
-      _updatePagedPosts(); // show something NOW
-      // optionally kick off prefetch of page 2 in background
-      unawaited(loadMore());
-    } catch (e) {
-      hasError.value = e.toString();
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> loadMore() async {
-    if (!hasMore.value || isLoading.value) return;
-    isLoading.value = true;
-    try {
-      final next = ((_allPosts.length ~/ 100) + 1);
-      await _fetchPage(
-        next,
-        userId: _currentUser.value,
-        search: searchQuery.value,
-      );
-      _updatePagedPosts();
-    } catch (_) {
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // Fetch only ONE page (100 was your batch size; use 10–20 for faster paints)
-  Future<void> _fetchPage(int currPage, {int? userId, String? search}) async {
-    final authors = (userId != null && userId != 0) ? [userId] : null;
-
-    final request = ListPostRequest(
-      order: Order.desc,
-      perPage: pageCount.value, // smaller -> faster
-      page: currPage,
-      author: authors,
-      search: search ?? searchQuery.value,
-      orderBy: OrderBy.date,
-    );
-
-    final response = await cnx.posts.list(request);
-    await response.map(
-      onSuccess: (res) async {
-        final fetched = res.data;
-
-        _allPosts.addAll(fetched);
-
-        // batch media fetch (already ok); keep it concurrent with await
-        final ids = fetched
-            .map((p) => p.featuredMedia)
-            .whereType<int>()
-            .toSet();
-        if (ids.isNotEmpty) {
-          final media = await _media.fetchItemByIds(ids.toList());
-          _allMedia.addAll(media);
-        }
-
-        await fetchExtrasForPostIds(fetched.map((p) => p.id).toList());
-
-        // stop when last page
-        final lastPage = ((res.totalCount / request.perPage).ceil()).clamp(
-          1,
-          999,
-        );
-        hasMore.value = currPage < lastPage;
-      },
-      onFailure: (err) {
-        hasError.value = err.error?.message ?? 'Failure on load data';
-        hasMore.value = false;
-      },
-    );
-  }
+  Map<int, Media> get mediaMap => _media.itemMapping;
+  Map<int, User> get authorName => _user.itemMapping;
 
   @override
   void onInit() {
     super.onInit();
-    fetchFirstPage();
-    // _fetchAllPosts();
+    _fetchAllPosts();
   }
 }

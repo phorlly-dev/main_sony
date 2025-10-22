@@ -1,12 +1,10 @@
 import 'package:wordpress_client/wordpress_client.dart';
-
 import 'export_controller.dart';
 import 'package:main_sony/utils/export_util.dart';
 
-class ImageSliderController extends ApiProvider {
+class ImageSliderController extends ApiProvider<SlideItem> {
   final _media = Get.put(MediaController());
   // Use RxList!
-  final RxList<SlideItem> sliderItems = <SlideItem>[].obs;
   final RxInt postId = 0.obs;
 
   Future<void> fetchSliderItems() async {
@@ -17,7 +15,6 @@ class ImageSliderController extends ApiProvider {
       response.map(
         onSuccess: (res) async {
           final List<Post> posts = res.data;
-          final List<Media> allMedia = [];
           await fetchExtrasForPostIds(posts.map((p) => p.id).toList());
 
           // Media lookup
@@ -27,12 +24,11 @@ class ImageSliderController extends ApiProvider {
               .toSet();
           if (ids.isNotEmpty) {
             final mediaResult = await _media.fetchItemByIds(ids.toList());
-            allMedia.addAll(mediaResult);
+            _media.items.addAll(mediaResult);
           }
-          final mediaMap = {for (var res in allMedia) res.id: res};
 
-            final items = posts.take(10).map((post) {
-            final media = mediaMap[post.featuredMedia];
+          final allItems = posts.take(10).map((post) {
+            final media = _media.itemMapping[post.featuredMedia];
             final imgUrl = ogImageUrl(post.id) as String;
             postId.value = post.id;
 
@@ -43,7 +39,7 @@ class ImageSliderController extends ApiProvider {
             );
           }).toList();
 
-          sliderItems.assignAll(items); // Use assignAll to update observable
+          items.assignAll(allItems); // Use assignAll to update observable
         },
         onFailure: (err) => log(err.error?.message ?? 'Failed to load posts'),
       );

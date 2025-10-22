@@ -13,7 +13,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return PageDataView<Post>(
-        items: controller.pagedPosts,
+        items: controller.items,
         page: controller.page.value,
         totalPages: controller.totalViewPages,
         isLoading: controller.isLoading.value,
@@ -22,7 +22,7 @@ class PostCard extends StatelessWidget {
             ? "No data found."
             : "No results for '${controller.searchQuery.value}'",
         onGoToPage: (page) => controller.goToPage(page),
-        itemBuilder: (context, item, index) {
+        itemBuilder: (ctx, item, idx) {
           // Extract relevant metadata
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Description';
@@ -34,10 +34,10 @@ class PostCard extends StatelessWidget {
             description: desc,
             date: item.date ?? DateTime.now(),
             onReadMore: () {
-              context.pushNamed<Post>(
+              ctx.pushNamed<Post>(
                 'post_details',
                 pathParameters: {
-                  'id': item.id.toString(),
+                  'id': encodeId(item.id),
                   'name': getName(name),
                 },
                 queryParameters: {
@@ -49,7 +49,7 @@ class PostCard extends StatelessWidget {
             controller: controller,
             post: item,
             onComment: () {
-              showCommentDialog(context: context, postId: item.id);
+              showCommentDialog(context: ctx, postId: item.id);
             },
           );
         },

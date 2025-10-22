@@ -1,5 +1,5 @@
 import 'package:main_sony/views/export_views.dart';
-import 'package:main_sony/router.dart';
+import 'package:main_sony/configs/router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

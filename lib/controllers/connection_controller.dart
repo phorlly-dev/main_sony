@@ -39,9 +39,9 @@ class ConnectionController extends PostListController {
       // }
     });
 
-    ever(isOnline, (bool online) {
+    ever(isOnline, (bool online) async {
       if (online) {
-        refreshCurrentPage();
+        await refreshKeepingPosition();
       }
     });
   }

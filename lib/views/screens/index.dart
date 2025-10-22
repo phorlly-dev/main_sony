@@ -29,7 +29,7 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewPostScreen(
+    return PostsScreen(
       name: widget.name,
       controller: _post,
       page: _page,

@@ -1,3 +1,4 @@
+import 'package:hashids2/hashids2.dart';
 import 'package:main_sony/views/export_views.dart';
 
 enum TypeParams { all, category, tag, author, classList }
@@ -48,4 +49,16 @@ Future<void> setLogEvent(Params prams) async {
       'utm_campaign': camp,
     },
   );
+}
+
+final _hashids = HashIds(
+  salt: '2a55e369-50aa-47b6-a79b-b4e547722649',
+  minHashLength: 12,
+);
+
+String encodeId(int id) => _hashids.encode([id]);
+
+int? decodeId(String token) {
+  final nums = _hashids.decode(token);
+  return nums.isEmpty ? null : nums.first;
 }

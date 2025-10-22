@@ -1,12 +1,6 @@
-import 'package:main_sony/config.dart';
-import 'package:main_sony/views/export_views.dart';
+import 'package:main_sony/configs/config.dart';
 
-void main() {
-  BindingBase.debugZoneErrorsAreFatal = true;
-
-  appConfig();
-}
-
+void main() => appConfig();
 
 // final raw = json['class_list'];
 // List<String>? classes;

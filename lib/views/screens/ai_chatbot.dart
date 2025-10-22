@@ -7,51 +7,49 @@ class AiChatbotScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatbotController controller = Get.put(ChatbotController());
+    final controller = Get.put(ChatbotController());
 
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text('Model: ${controller.modelName.value}')),
         actions: [
           // Only wrap popup when observing modelName
-          Obx(
-            () => PopupMenuButton<String>(
+          Obx(() {
+            return PopupMenuButton<String>(
               initialValue: controller.modelName.value,
               onSelected: (val) => controller.modelName.value = val,
               icon: Icon(Icons.more_vert),
-              itemBuilder: (_) => ['gpt-4.1-mini', 'gpt-4o-mini']
-                  .map(
-                    (m) => PopupMenuItem(
-                      value: m,
-                      child: Row(
-                        children: [
-                          Text(m),
-                          if (controller.modelName.value == m) ...[
-                            SizedBox(width: 6),
-                            Icon(Icons.check, size: 16, color: Colors.blue),
-                          ],
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
+              itemBuilder: (_) => ['gpt-4.1-mini', 'gpt-4o-mini'].map((m) {
+                return PopupMenuItem(
+                  value: m,
+                  child: Row(
+                    children: [
+                      Text(m),
+                      if (controller.modelName.value == m) ...[
+                        SizedBox(width: 6),
+                        Icon(Icons.check, size: 16, color: Colors.blue),
+                      ],
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }),
         ],
       ),
       body: Column(
         children: [
           // Message list
           Expanded(
-            child: Obx(
-              () => ListView.builder(
+            child: Obx(() {
+              return ListView.builder(
                 controller: controller.scrollController,
                 padding: EdgeInsets.all(8),
                 itemCount: controller.messages.length,
                 itemBuilder: (ctx, idx) =>
                     _buildMessage(controller.messages[idx], context),
-              ),
-            ),
+              );
+            }),
           ),
           Divider(height: 1),
           // Input field + send button
