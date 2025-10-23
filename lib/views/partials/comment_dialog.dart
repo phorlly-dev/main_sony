@@ -1,122 +1,119 @@
+import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
 
-Future<void> showCommentDialog({
-  required BuildContext context,
-  required int postId,
-  Function()? onSuccess,
-}) async {
-  final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final websiteController = TextEditingController();
-  final commentController = TextEditingController();
+class CommentDialog extends StatelessWidget {
+  final int postId;
 
-  final commentCtrl = Get.put(CommentController());
-  final colors = Theme.of(context).colorScheme;
+  const CommentDialog({super.key, required this.postId});
 
-  await Get.dialog(
-    Obx(
-      () => AlertDialog(
-        title: Text('Leave a Reply'),
-        icon: Icon(Icons.comment_rounded),
-        iconColor: colors.primary,
-        content: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: commentController,
-                  minLines: 3,
-                  maxLines: 8,
-                  decoration: InputDecoration(
-                    labelText: 'Comment',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Comment required'
-                      : null,
+  @override
+  Widget build(BuildContext context) {
+    final commentCtrl = Get.put(CommentController());
+    final formKey = GlobalKey<FormState>();
+
+    // Controllers for form fields
+    final name = TextEditingController();
+    final email = TextEditingController();
+    final website = TextEditingController();
+    final comment = TextEditingController();
+
+    final colors = Theme.of(context).colorScheme;
+
+    return AlertDialog(
+      title: Text('Leave a Reply'),
+      icon: Icon(Icons.comment_rounded),
+      iconColor: colors.primary,
+      content: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: comment,
+                minLines: 3,
+                maxLines: 8,
+                decoration: InputDecoration(
+                  labelText: 'Comment',
+                  border: OutlineInputBorder(),
                 ),
-                SizedBox(height: 12),
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Name required' : null,
-                ),
-                SizedBox(height: 8),
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Email required' : null,
-                ),
-                SizedBox(height: 8),
-                TextFormField(
-                  controller: websiteController,
-                  decoration: InputDecoration(labelText: 'Website'),
-                ),
-              ],
-            ),
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Comment required' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: name,
+                decoration: const InputDecoration(labelText: 'Name'),
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Name required' : null,
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: email,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Email required' : null,
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                keyboardType: TextInputType.url,
+                controller: website,
+                decoration: const InputDecoration(labelText: 'Website'),
+              ),
+            ],
           ),
         ),
-        actions: [
-          ElevatedButton.icon(
-            onPressed: commentCtrl.isSubmitting.value ? null : () => Get.back(),
-            label: Text('Cancel'),
-            icon: Icon(Icons.close_rounded),
-            autofocus: true,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colors.outline, // Dark color (for Cancel)
-              foregroundColor: Colors.white, // Text/Icon color
-              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+      ),
+      actions: [
+        ElevatedButton.icon(
+          onPressed: commentCtrl.isSubmitting.value
+              ? null
+              : () => context.pop(),
+          icon: const Icon(Icons.close_rounded),
+          label: const Text('Cancel'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colors.outline,
+            foregroundColor: Colors.white,
           ),
-
-          ElevatedButton.icon(
+        ),
+        Obx(() {
+          return ElevatedButton.icon(
             onPressed: commentCtrl.isSubmitting.value
                 ? null
                 : () async {
                     if (!formKey.currentState!.validate()) return;
+                    FocusScope.of(context).unfocus();
 
-                    final success = await commentCtrl.submitComment(
+                    await commentCtrl.submitComment(
+                      context,
                       postId: postId,
-                      content: commentController.text.trim(),
-                      authorName: nameController.text.trim(),
-                      authorEmail: emailController.text.trim(),
-                      authorUrl: websiteController.text.trim(),
+                      content: comment.text.trim(),
+                      authorName: name.text.trim(),
+                      authorEmail: email.text.trim(),
+                      authorUrl: website.text.trim(),
                     );
-                    if (success) {
-                      Get.back();
-                      if (onSuccess != null) onSuccess();
+
+                    if (context.mounted) {
+                      context.pop();
                     }
                   },
+            icon: const Icon(Icons.send_rounded),
             label: commentCtrl.isSubmitting.value
-                ? SizedBox(
+                ? const SizedBox(
                     height: 18,
                     width: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : Text('Submit'),
-            icon: Icon(Icons.send_rounded),
-            autofocus: true,
+                : const Text('Submit'),
             style: ElevatedButton.styleFrom(
               backgroundColor: colors.primary,
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
             ),
-          ),
-        ],
-      ),
-    ),
-    barrierDismissible: false,
-  );
+          );
+        }),
+      ],
+    );
+  }
 }

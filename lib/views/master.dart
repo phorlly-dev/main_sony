@@ -31,7 +31,7 @@ class _MasterScreenState extends State<MasterScreen> {
       theme: ThemeData.light(), // Default light theme
       darkTheme: ThemeData.dark(), // Dark theme
       themeMode: context.watch<ThemeManager>().themeMode, // Provider
-      routerConfig: router,
+      routerConfig: MyRouter.router,
     );
   }
 }

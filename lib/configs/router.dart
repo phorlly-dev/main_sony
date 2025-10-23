@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:main_sony/controllers/post_list_controller.dart';
+import 'package:main_sony/controllers/post_controller.dart';
 import 'package:main_sony/utils/custom_class.dart';
 import 'package:main_sony/views/screens/settings.dart';
 import '../views/export_views.dart';
 
-const url = 'https://bubble-blast-shooter.vercel.app';
-final appReady = ValueNotifier<bool>(false);
-final rootNavKey = GlobalKey<NavigatorState>();
-GoRouter get router {
-  return GoRouter(
+class MyRouter {
+  static const url = 'https://bubble-blast-shooter.vercel.app';
+  static final appReady = ValueNotifier<bool>(false);
+  static final rootNavKey = GlobalKey<NavigatorState>();
+  static GoRouter get router => GoRouter(
     observers: [AnalyticsObserver()],
     navigatorKey: rootNavKey,
     // debugLogDiagnostics: true,
@@ -57,7 +57,7 @@ GoRouter get router {
                   src: st.uri.queryParameters['src'] ?? 'in-app',
                   camp: st.uri.queryParameters['camp'] ?? 'none',
                 ),
-                controller: Get.find<PostListController>(),
+                controller: Get.find<PostController>(),
               );
             },
           ),

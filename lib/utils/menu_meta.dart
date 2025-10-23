@@ -5,35 +5,44 @@ import 'export_util.dart';
 
 /// Represents metadata for menu items, including icon, name, and slug.
 class MenuMeta {
+  final int id;
   final IconData icon;
   final String name;
   final String slug;
 
-  const MenuMeta({required this.slug, required this.name, required this.icon});
+  const MenuMeta({
+    required this.id,
+    required this.slug,
+    required this.name,
+    required this.icon,
+  });
 }
 
 /// A predefined list of menu items with their respective slugs, names, and icons.
 final List<MenuMeta> menuItems = [
   // category
-  MenuMeta(slug: "android", name: "Android", icon: Icons.android),
-  MenuMeta(slug: "arcade", name: "Arcade", icon: Icons.games_outlined),
-  MenuMeta(slug: "berita", name: "Berita", icon: Icons.info),
-  MenuMeta(slug: "pc", name: "PC", icon: Icons.computer_rounded),
+  MenuMeta(id: 4, slug: "android", name: "Android", icon: Icons.android),
+  MenuMeta(id: 26, slug: "arcade", name: "Arcade", icon: Icons.games_outlined),
+  MenuMeta(id: 8, slug: "berita", name: "Berita", icon: Icons.info),
+  MenuMeta(id: 1, slug: "pc", name: "PC", icon: Icons.computer_rounded),
 
   // tag
-  MenuMeta(slug: "steam", name: "Steam", icon: Icons.gite_rounded),
+  MenuMeta(id: 16, slug: "steam", name: "Steam", icon: Icons.gite_rounded),
   MenuMeta(
+    id: 30,
     slug: "genshin-impact",
     name: "Genshin Impact",
     icon: Icons.grid_goldenratio_rounded,
   ),
   MenuMeta(
+    id: 7,
     slug: "roblox",
     name: "Roblox",
     icon: Icons.confirmation_num_rounded,
   ),
-  MenuMeta(slug: "pubg", name: "PUBG", icon: Icons.gas_meter_rounded),
+  MenuMeta(id: 6, slug: "pubg", name: "PUBG", icon: Icons.gas_meter_rounded),
   MenuMeta(
+    id: 24,
     slug: "mlbb",
     name: "Mobile Legends",
     icon: Icons.security_update_warning_rounded,
@@ -50,6 +59,7 @@ MenuMeta getMenuMeta(String slug) {
           slug[0].toUpperCase() +
           slug.substring(1), // Default to capitalized slug
       icon: Icons.apps_rounded,
+      id: 1,
     ),
   );
 }
@@ -70,6 +80,7 @@ Set<String> getUsedSlugs(MenuItemController controller, List<Post> posts) {
       }
     }
   }
+
   return slugs;
 }
 

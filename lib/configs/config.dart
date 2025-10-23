@@ -7,47 +7,47 @@ import 'package:provider/provider.dart';
 import '../controllers/export_controller.dart';
 import 'firebase_options.dart';
 
-void appConfig() async {
-  BindingBase.debugZoneErrorsAreFatal = true;
+class Configure {
+  static void appConfig() {
+    BindingBase.debugZoneErrorsAreFatal = true;
 
-  //The guarded zone
-  await runZonedGuarded(
-    () async {
-      // Must be FIRST inside the zone:
-      WidgetsFlutterBinding.ensureInitialized();
+    //The guarded zone
+    runZonedGuarded(
+      () async {
+        // Must be FIRST inside the zone:
+        WidgetsFlutterBinding.ensureInitialized();
 
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
 
-      //init OneSignal
-      await initOneSignal();
+        //init OneSignal
+        await initOneSignal();
 
-      //The error handler early
-      FlutterError.onError = (details) => FlutterError.presentError(details);
+        //The error handler early
+        FlutterError.onError = (details) => FlutterError.presentError(details);
 
-      //Load API Key
-      // await dotenv.load(fileName: ".env");
-      // final key = dotenv.env['OPENAI_API_KEY']!;
-      // OpenAI.apiKey = key;
+        //Load API Key
+        // await dotenv.load(fileName: ".env");
+        // final key = dotenv.env['OPENAI_API_KEY']!;
+        // OpenAI.apiKey = key;
 
-      // Register GetX controllers, etc.
-      initControllers();
+        // Register GetX controllers, etc.
+        initControllers();
 
-      //ScreenUtil
-      await ScreenUtil.ensureScreenSize();
+        //ScreenUtil
+        await ScreenUtil.ensureScreenSize();
 
-      //Run app
-      runApp(initApp());
-    },
-    (error, stack) {
-      throw Exception('Caught error: $error');
-    },
-  );
-}
+        //Run app
+        runApp(initApp());
+      },
+      (error, stack) {
+        throw Exception('Caught error: $error/$stack');
+      },
+    );
+  }
 
-Widget initApp() {
-  return ChangeNotifierProvider(
+  static Widget initApp() => ChangeNotifierProvider(
     create: (_) => ThemeManager(),
     child: ScreenUtilInit(
       designSize: Size(375, 812),
@@ -55,23 +55,23 @@ Widget initApp() {
       builder: (context, child) => const MasterScreen(),
     ),
   );
-}
 
-void initControllers() {
-  Get.put(PostListController());
-  Get.put(PageControllerX());
-  Get.put(MenuItemController());
-  Get.put(ImageSliderController());
-}
+  static void initControllers() {
+    Get.put(PostController());
+    Get.put(PageControllerX());
+    Get.put(MenuItemController());
+    Get.put(ImageSliderController());
+  }
 
-Future<void> initOneSignal() async {
-  await NotificationPrefs.init();
+  static Future<void> initOneSignal() async {
+    await NotificationPrefs.init();
 
-  await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  OneSignal.initialize("554a089c-a5ad-4ec6-9741-1063bb2e07e5");
+    await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+    OneSignal.initialize("554a089c-a5ad-4ec6-9741-1063bb2e07e5");
 
-  await NotificationPrefs.syncToOneSignal();
+    await NotificationPrefs.syncToOneSignal();
 
-  // Optional: associate a user id so you can target from backend
-  // await OneSignal.login('external_user_id');
+    // Optional: associate a user id so you can target from backend
+    // await OneSignal.login('external_user_id');
+  }
 }

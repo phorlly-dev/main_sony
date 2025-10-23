@@ -1,6 +1,6 @@
 import 'package:main_sony/configs/config.dart';
 
-void main() => appConfig();
+void main() => Configure.appConfig();
 
 // final raw = json['class_list'];
 // List<String>? classes;

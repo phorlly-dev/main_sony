@@ -38,17 +38,20 @@ Future<void> setLogEvent(Params prams) async {
   final name = prams.name;
   final src = prams.src;
   final camp = prams.camp;
-
-  await analytics.setAnalyticsCollectionEnabled(true);
-  await analytics.logEvent(
-    name: 'pages_tracked',
-    parameters: {
-      'path': path,
-      'name': name,
-      'utm_source': src,
-      'utm_campaign': camp,
-    },
-  );
+  try {
+    await analytics.setAnalyticsCollectionEnabled(true);
+    await analytics.logEvent(
+      name: 'pages_tracked',
+      parameters: {
+        'path': path,
+        'name': name,
+        'utm_source': src,
+        'utm_campaign': camp,
+      },
+    );
+  } catch (e, st) {
+    debugPrint('LogEvent failed: $e/$st');
+  }
 }
 
 final _hashids = HashIds(

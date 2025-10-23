@@ -5,7 +5,7 @@ import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class PostsScreen extends StatelessWidget {
   final String name;
-  final PostListController controller;
+  final PostController controller;
   final PageControllerX page;
   final MenuItemController menuItem;
   final ImageSliderController imageSlider;
@@ -54,12 +54,12 @@ class PostsScreen extends StatelessWidget {
                       ? SizedBox.shrink()
                       : ImageSlider(
                           items: sliders,
-                          onTap: () async {
+                          onTap: () {
                             // Navigate to the post detail screen
                             final id = encodeId(imageSlider.postId.value);
                             final name = getName(controller.selectedItem.value);
 
-                            await context.pushNamed<Post>(
+                            context.pushNamed<Post>(
                               'post_details',
                               pathParameters: {'id': id, 'name': name},
                               queryParameters: {

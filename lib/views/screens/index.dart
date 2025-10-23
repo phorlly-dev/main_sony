@@ -13,7 +13,7 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  late PostListController _post;
+  late PostController _post;
   late MenuItemController _menuItem;
   late PageControllerX _page;
   late ImageSliderController _imageSlider;
@@ -21,7 +21,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   void initState() {
     super.initState();
-    _post = Get.find<PostListController>();
+    _post = Get.find<PostController>();
     _page = Get.find<PageControllerX>();
     _menuItem = Get.find<MenuItemController>();
     _imageSlider = Get.find<ImageSliderController>();

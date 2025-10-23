@@ -13,7 +13,7 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ensure the PostListController is available
-    final postCtrl = Get.find<PostListController>();
+    final postCtrl = Get.find<PostController>();
 
     return Drawer(
       child: SafeArea(

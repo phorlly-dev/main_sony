@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
+import 'package:main_sony/utils/taxonomy_meta.dart';
 import 'package:main_sony/views/export_views.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class BlogCard extends StatelessWidget {
-  final PostListController controller;
+  final PostController controller;
   final Post post;
-  final String imageUrl;
+  final String? imageUrl;
   final String title;
   final DateTime date;
   final String description;
@@ -16,7 +17,7 @@ class BlogCard extends StatelessWidget {
 
   const BlogCard({
     super.key,
-    required this.imageUrl,
+    this.imageUrl,
     required this.title,
     required this.date,
     required this.description,
@@ -31,14 +32,17 @@ class BlogCard extends StatelessWidget {
     //calculate the screen
     final isLandscape = context.isLandscape;
     final colors = Theme.of(context).colorScheme;
-    final author = controller.authorName[post.id];
+    final author = controller.authorName[post.author];
+    final metaGroups = extractCategoriesAndTagsFromPost(post);
     final classList = controller.classListFor(post.id);
-    final metaGroups = extractCategoriesAndTags(classList);
-    final uniqueCategories = getMenuMetaList(
-      metaGroups.categories.toSet().toList(),
-    );
-    final uniqueTags = getMenuMetaList(metaGroups.tags.toSet().toList());
-    // EdgeInsets.symmetric(horizontal: 12, vertical: 4) // mobile
+    final groupeds = extractCategoriesAndTags(classList);
+    var uniqueCategories = getByIds(metaGroups.categoryIds);
+    var uniqueTags = getByIds(metaGroups.tagIds);
+
+    if (uniqueCategories.isEmpty || uniqueTags.isEmpty) {
+      uniqueTags = getMenuMetaList(groupeds.tags.toSet().toList());
+      uniqueCategories = getMenuMetaList(groupeds.categories.toSet().toList());
+    }
 
     return Card(
       color: colors.surface,
@@ -50,7 +54,7 @@ class BlogCard extends StatelessWidget {
             onTap: onReadMore,
             child: ImageContent(
               imageUrl: imageUrl,
-              screenHeight: .20,
+              screenHeight: .2,
               isLandscape: isLandscape,
             ),
           ),
@@ -88,9 +92,10 @@ class BlogCard extends StatelessWidget {
                         label: dateStr(date: date),
                         color: colors.secondaryFixedDim,
                       ),
+
                       IconText(
                         icon: Icons.person,
-                        label: author?.name?.capitalize ?? '',
+                        label: author?.name ?? 'Admin System',
                         onTap: () async {
                           controller.applyFilter(
                             userId: post.author,
@@ -106,16 +111,19 @@ class BlogCard extends StatelessWidget {
                               'camp': subfix(name),
                             },
                           );
-                          await setLogEvent(
-                            Params(
-                              name: name,
-                              src: prefix(name),
-                              camp: subfix(name),
-                              path: '/posts/$name',
+
+                          unawaited(
+                            setLogEvent(
+                              Params(
+                                name: name,
+                                src: prefix(name),
+                                camp: subfix(name),
+                                path: '/posts/$name',
+                              ),
                             ),
                           );
                         },
-                        color: colors.secondary,
+                        color: AppColorRole.success.color,
                       ),
                       IconText(
                         icon: Icons.comment,
@@ -171,12 +179,15 @@ class BlogCard extends StatelessWidget {
                                       'camp': subfix(name),
                                     },
                                   );
-                                  await setLogEvent(
-                                    Params(
-                                      name: name,
-                                      src: prefix(name),
-                                      camp: subfix(name),
-                                      path: '/posts/$name',
+
+                                  unawaited(
+                                    setLogEvent(
+                                      Params(
+                                        name: name,
+                                        src: prefix(name),
+                                        camp: subfix(name),
+                                        path: '/posts/$name',
+                                      ),
                                     ),
                                   );
                                 },
@@ -210,12 +221,15 @@ class BlogCard extends StatelessWidget {
                                       'camp': subfix(name),
                                     },
                                   );
-                                  await setLogEvent(
-                                    Params(
-                                      name: name,
-                                      src: prefix(name),
-                                      camp: subfix(name),
-                                      path: '/posts/$name',
+
+                                  unawaited(
+                                    setLogEvent(
+                                      Params(
+                                        name: name,
+                                        src: prefix(name),
+                                        camp: subfix(name),
+                                        path: '/posts/$name',
+                                      ),
                                     ),
                                   );
                                 },

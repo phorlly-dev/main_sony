@@ -6,19 +6,19 @@ class ThemeManager with ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
 
   void toggleTheme(BuildContext context) {
-    switch (_themeMode) {
-      case ThemeMode.system:
-        _themeMode = Theme.of(context).brightness == Brightness.dark
-            ? ThemeMode.light
-            : ThemeMode.dark;
-        break;
-      case ThemeMode.light:
-        _themeMode = ThemeMode.dark;
-        break;
-      case ThemeMode.dark:
-        _themeMode = ThemeMode.system;
-        break;
+    // What is currently rendered?
+    final isDarkNow = Theme.of(context).brightness == Brightness.dark;
+
+    if (_themeMode == ThemeMode.system) {
+      // Switch to the opposite of what you see now
+      _themeMode = isDarkNow ? ThemeMode.light : ThemeMode.dark;
+    } else {
+      // Flip between explicit light/dark
+      _themeMode = (_themeMode == ThemeMode.dark)
+          ? ThemeMode.light
+          : ThemeMode.dark;
     }
+
     notifyListeners();
   }
 }

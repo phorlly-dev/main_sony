@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'export_controller.dart';
 
-class ConnectionController extends PostListController {
+class ConnectionController extends PostController {
   var isOnline = true.obs;
   late StreamSubscription<List<ConnectivityResult>> _subscription;
 

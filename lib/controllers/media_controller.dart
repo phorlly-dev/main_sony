@@ -1,61 +1,22 @@
 import 'package:wordpress_client/wordpress_client.dart';
-
 import 'export_controller.dart';
 
 class MediaController extends ApiProvider<Media> {
-  Future<void> _fetchItems() async {
-    isLoading.value = true;
-    hasError.value = '';
+  Future<void> getMedia() async {
+    await fetchList(callback: () => cnx.media.list(ListMediaRequest()));
+  }
 
-    try {
-      final request = ListMediaRequest(
-        order: Order.desc,
-        perPage: 100,
-        orderBy: OrderBy.date,
+  Future<void> ensureMediaForPosts(List<Post> posts) async {
+    final ids = posts.map((p) => p.featuredMedia).whereType<int>().toSet();
+    final missing = ids.where((id) => !items.any((u) => u.id == id)).toList();
+    if (missing.isNotEmpty) {
+      final res = await getByIds(
+        slug: 'media',
+        ids: missing,
+        fromJson: Media.fromJson,
       );
-      final response = await cnx.media.list(request);
 
-      response.map(
-        onSuccess: (res) => items.value = res.data,
-        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
-      );
-    } catch (e) {
-      hasError.value = e.toString();
-    } finally {
-      isLoading.value = false;
+      items.assignAll(res);
     }
-  }
-
-  Future<List<Media>> fetchItemByIds(List<int> ids) async {
-    final url = '$apiUrl/media?include=${ids.join(",")}';
-    final response = await api.get(url);
-    if (response.statusCode == 200 && response.isOk) {
-      final data = response.body;
-
-      if (data is List) {
-        return (data).map((json) => Media.fromJson(json)).toList();
-      } else if (data is Map<String, dynamic>) {
-        return [Media.fromJson(data)];
-      } else {
-        hasError.value = 'Unexpected response format';
-        return [];
-      }
-    } else {
-      hasError.value = 'Failed to fetch media';
-      return [];
-    }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    _fetchItems();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    hasError.value = '';
-    isLoading.value = false;
   }
 }

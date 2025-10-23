@@ -8,5 +8,4 @@ export 'class_list_meta.dart';
 export 'constants.dart';
 export 'menu_meta.dart';
 export 'params.dart';
-export 'responsive.dart';
 export 'utility.dart';

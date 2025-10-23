@@ -4,7 +4,7 @@ import 'package:main_sony/views/export_views.dart';
 
 class ListMenuItems extends StatelessWidget {
   final MenuItemController controller;
-  final PostListController postList;
+  final PostController postList;
 
   const ListMenuItems({
     super.key,
@@ -15,11 +15,12 @@ class ListMenuItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final posts = controller.items;
-      final usedSlugs = getUsedSlugs(controller, posts);
-
-      // Only menuItems whose slug appears in posts
-      final visibleMenuItems = getVisibleMenuItems(menuItems, usedSlugs);
+      final seen = <String>{};
+      final visibleMenuItems = controller.items.expand((post) {
+        return controller
+            .menuItemsForPost(post)
+            .where((meta) => seen.add(meta.slug));
+      }).toList();
 
       return Column(
         children: [
@@ -43,12 +44,16 @@ class ListMenuItems extends StatelessWidget {
                   queryParameters: {'src': prefix(name), 'camp': subfix(name)},
                 );
                 context.go(uri.toString());
-                await setLogEvent(
-                  Params(
-                    name: name,
-                    src: prefix(name),
-                    camp: subfix(name),
-                    path: uri.path,
+
+                // Fire and forget logging
+                unawaited(
+                  setLogEvent(
+                    Params(
+                      name: name,
+                      src: prefix(name),
+                      camp: subfix(name),
+                      path: uri.path,
+                    ),
                   ),
                 );
               },

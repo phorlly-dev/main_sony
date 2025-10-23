@@ -3,9 +3,8 @@ import 'export_controller.dart';
 import 'package:main_sony/utils/export_util.dart';
 
 class ImageSliderController extends ApiProvider<SlideItem> {
-  final _media = Get.put(MediaController());
-  // Use RxList!
   final RxInt postId = 0.obs;
+  final _media = Get.put(MediaController());
 
   Future<void> fetchSliderItems() async {
     try {
@@ -14,26 +13,19 @@ class ImageSliderController extends ApiProvider<SlideItem> {
       final response = await cnx.posts.list(request);
       response.map(
         onSuccess: (res) async {
-          final List<Post> posts = res.data;
-          await fetchExtrasForPostIds(posts.map((p) => p.id).toList());
+          final posts = res.data;
 
           // Media lookup
-          final ids = posts
-              .map((p) => p.featuredMedia)
-              .whereType<int>()
-              .toSet();
-          if (ids.isNotEmpty) {
-            final mediaResult = await _media.fetchItemByIds(ids.toList());
-            _media.items.addAll(mediaResult);
-          }
+          await _media.ensureMediaForPosts(posts);
+          await fetchExtrasForPostIds(posts.map((p) => p.id).toList());
 
           final allItems = posts.take(10).map((post) {
             final media = _media.itemMapping[post.featuredMedia];
-            final imgUrl = ogImageUrl(post.id) as String;
+            final imgUrl = ogImageUrl(post.id);
             postId.value = post.id;
 
             return SlideItem(
-              imageUrl: media?.sourceUrl ?? imgUrl,
+              imageUrl: media?.sourceUrl ?? imgUrl ?? '',
               title: post.title?.rendered ?? 'No Title',
               date: dateStr(date: post.date ?? DateTime.now()),
             );

@@ -1,3 +1,4 @@
+import 'package:get/get_utils/get_utils.dart';
 import 'package:main_sony/views/export_views.dart';
 
 class IconText extends StatelessWidget {
@@ -12,7 +13,7 @@ class IconText extends StatelessWidget {
     required this.label,
     this.icon = Icons.menu_open_rounded,
     this.iconSize = 16,
-    this.textSize = 12,
+    this.textSize = 13,
     this.color,
     this.onTap,
   });
@@ -32,7 +33,7 @@ class IconText extends StatelessWidget {
             child: GestureDetector(
               onTap: onTap,
               child: Text(
-                label,
+                label.capitalize!,
                 style: TextStyle(
                   fontSize: textSize,
                   color: color ?? Colors.grey[600],

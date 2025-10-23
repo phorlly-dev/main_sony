@@ -1,36 +1,22 @@
+import 'export_controller.dart';
 import 'package:wordpress_client/wordpress_client.dart';
 
-import 'export_controller.dart';
-
 class UserController extends ApiProvider<User> {
-  Future<void> _fetchItems() async {
-    isLoading.value = true;
-    hasError.value = '';
-    try {
-      final request = ListUserRequest();
-      final response = await cnx.users.list(request);
+  Future<void> getUsers() async {
+    await fetchList(callback: () => cnx.users.list(ListUserRequest()));
+  }
 
-      response.map(
-        onSuccess: (res) => items.value = res.data,
-        onFailure: (err) => hasError.value = err.error?.message ?? 'Error',
+  Future<void> ensureUsersForPosts(List<Post> posts) async {
+    final ids = posts.map((p) => p.author).whereType<int>().toSet();
+    final missing = ids.where((id) => !items.any((u) => u.id == id)).toList();
+    if (missing.isNotEmpty) {
+      final res = await getByIds(
+        slug: 'users',
+        ids: missing,
+        fromJson: User.fromJson,
       );
-    } catch (e) {
-      hasError.value = e.toString();
-    } finally {
-      isLoading.value = false;
+
+      items.addAll(res);
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    _fetchItems();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    hasError.value = '';
-    isLoading.value = false;
   }
 }

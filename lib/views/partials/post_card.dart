@@ -1,11 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:main_sony/controllers/export_controller.dart';
 import 'package:main_sony/views/export_views.dart';
+import 'package:main_sony/views/widgets/show_comment_dialog.dart';
 import 'package:wordpress_client/wordpress_client.dart' show Post;
 
 class PostCard extends StatelessWidget {
   final String name;
-  final PostListController controller;
+  final PostController controller;
 
   const PostCard({super.key, required this.controller, required this.name});
 
@@ -27,7 +28,8 @@ class PostCard extends StatelessWidget {
           final title = item.title?.rendered ?? 'No Title';
           final desc = item.excerpt?.rendered ?? 'No Description';
           final media = controller.mediaMap[item.featuredMedia];
-          final imgUrl = controller.ogImageUrl(item.id) as String;
+          final imgUrl = controller.ogImageUrl(item.id);
+
           return BlogCard(
             imageUrl: media?.sourceUrl ?? imgUrl,
             title: title,
@@ -49,7 +51,7 @@ class PostCard extends StatelessWidget {
             controller: controller,
             post: item,
             onComment: () {
-              showCommentDialog(context: ctx, postId: item.id);
+              showCommentDialog(ctx, item.id);
             },
           );
         },

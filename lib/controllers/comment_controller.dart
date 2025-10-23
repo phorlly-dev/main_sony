@@ -1,11 +1,14 @@
+import 'package:main_sony/views/export_views.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wordpress_client/wordpress_client.dart';
-
 import 'export_controller.dart';
 
 class CommentController extends ApiProvider {
   final RxBool isSubmitting = false.obs;
 
-  Future<bool> submitComment({
+  Future<void> submitComment(
+    BuildContext ctx, {
     required int postId,
     required String content,
     required String authorName,
@@ -20,36 +23,33 @@ class CommentController extends ApiProvider {
         authorDisplayName: authorName,
         authorEmail: authorEmail,
         authorUrl: authorUrl ?? '',
+        date: DateTime.now(),
       );
       final response = await cnx.comments.create(request);
-      bool success = false;
 
       response.map(
         onSuccess: (res) {
-          Get.snackbar(
-            'Success',
-            'Comment submitted for review.',
-            snackPosition: SnackPosition.BOTTOM,
+          showTopSnackBar(
+            Overlay.of(ctx),
+            CustomSnackBar.success(message: 'Comment submitted for review.'),
           );
-          success = true;
         },
         onFailure: (err) {
-          Get.snackbar(
-            'Has Error Happen!',
-            err.error?.message ?? 'Failed to submit comment',
-            snackPosition: SnackPosition.BOTTOM,
+          showTopSnackBar(
+            Overlay.of(ctx),
+            CustomSnackBar.error(
+              message: err.error?.message ?? 'Failed to submit comment',
+            ),
           );
         },
       );
-
-      return success;
     } catch (e) {
-      Get.snackbar(
-        'Somthing Wrong!',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return false;
+      if (ctx.mounted) {
+        showTopSnackBar(
+          Overlay.of(ctx),
+          CustomSnackBar.error(message: e.toString()),
+        );
+      }
     } finally {
       isSubmitting.value = false;
     }

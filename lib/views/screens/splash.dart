@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _initApp() async {
     await Future.delayed(Duration(milliseconds: 360));
-    appReady.value = true;
+    MyRouter.appReady.value = true;
     await analytics.logAppOpen();
   }
 
